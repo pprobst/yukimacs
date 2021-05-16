@@ -1,2 +1,0 @@
-# yukimacs
-My Emacs config.

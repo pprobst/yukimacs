@@ -1,0 +1,251 @@
+#+STARTUP: overview
+#+TITLE: yukimacs
+#+LANGUAGE: en
+#+OPTIONS: num:nil
+An Emacs config built from the ground up, heavily inspired by [[https://github.com/daedreth/UncleDavesEmacs/][Uncle Dave's Emacs]] and [[https://github.com/snackon/Witchmacs][Witchmacs]].
+
+* Org mode
+#+begin_src emacs-lisp
+  (require 'org-tempo)
+  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+
+  (use-package org
+      :config
+      (add-hook 'org-mode-hook 'org-indent-mode)
+      (add-hook 'org-mode-hook
+                '(lambda ()
+                   (visual-line-mode 1))))
+
+  (use-package org-indent
+      :diminish org-indent-mode)
+
+  (use-package htmlize
+      :ensure t)
+
+#+end_src
+
+* Terminal
+** Setting default shell
+#+begin_src emacs-lisp
+  ;;(defvar my-term-shell "/bin/bash")
+  ;;(defadvice ansi-term (before force-bash)
+  ;;  (interactive (list my-term-shell)))
+  ;;(ad-activate 'ansi-term)
+#+end_src
+
+* QoL
+Quality-of-life modifications.
+** 'y' or 'n' instead of 'yes' or 'no' when confirming
+#+begin_src emacs-lisp
+  (defalias 'yes-or-no-p 'y-or-n-p)
+#+end_src
+
+** Disable backup files
+#+begin_src emacs-lisp
+  (setq make-backup-file nil)
+  (setq auto-save-default nil)
+#+end_src
+
+** Show line numbers
+#+begin_src emacs-lisp
+  (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+  (add-hook 'text-mode-hook 'display-line-numbers-mode)
+#+end_src
+
+** Show parent parentheses
+#+begin_src emacs-lisp
+  (show-paren-mode 1)
+#+end_src
+
+** Diable GUI elements
+#+begin_src emacs-lisp
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1)
+#+end_src
+
+** Enable copy-pasting outside of Emacs
+#+begin_src emacs-lisp
+  (setq x-select-enable-clipboard t)
+#+end_src
+
+** Disable the default startup screen
+#+begin_src emacs-lisp
+  (setq inhibit-startup-message t)
+#+end_src
+
+** Conservative scroll
+When at the end of the "page", scroll just one line at a time.
+#+begin_src emacs-lisp
+  (setq scroll-conservatively 100)
+#+end_src
+
+** Disable ring bell sound
+#+begin_src emacs-lisp
+  (setq ring-bell-function 'ignore)
+#+end_src
+
+** Prettify symbols
+#+begin_src emacs-lisp
+  (global-prettify-symbols-mode t)
+#+end_src
+
+** Indentation
+#+begin_src emacs-lisp
+  (setq-default tab-width 4)
+  (setq-default standard-indent 4)
+  (setq c-basic-offset tab-width)
+  (setq-default electric-indent-inhibit t)
+  (setq-default indent-tabs-mode t)
+  (setq backward-delete-char-untabify-method 'nil)
+#+end_src
+
+** Switches cursor automatically to new window
+#+begin_src emacs-lisp
+  (defun split-and-follow-horizontally ()
+      (interactive)
+      (split-window-below)
+      (balance-windows)
+      (other-window 1))
+  (global-set-key (kbd "C-x 2") 'split-and-follow-horizontally)
+
+  (defun split-and-follow-vertically ()
+      (interactive)
+      (split-window-right)
+      (balance-windows)
+      (other-window 1))
+  (global-set-key (kbd "C-x 3") 'split-and-follow-vertically)
+#+end_src
+
+** Highlights current line
+#+begin_src emacs-lisp
+  (when window-system (global-hl-line-mode t))
+#+end_src
+
+** Bracket pair-matching
+#+begin_src emacs-lisp
+  (setq electric-pair-pairs '(
+                              (?\{ . ?\})
+                              (?\( . ?\))
+                              (?\[ . ?\])
+                              (?\" . ?\")
+                              ))
+  (electric-pair-mode t)
+#+end_src
+
+** Visiting the configuration
+#+begin_src emacs-lisp
+  (defun config-visit()
+    (interactive)
+    (find-file "~/.emacs.d/config.org"))
+  (global-set-key (kbd "C-c e") 'config-visit)
+#+end_src
+
+** Reloading the configuration
+#+begin_src emacs-lisp
+  (defun config-reload ()
+    "Reloads ~/.emacs.d/config.org at runtine"
+    (interactive)
+    (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
+  (global-set-key (kbd "C-c r") 'config-reload)
+#+end_src
+
+** Defer loading most packages for quicker startup times
+#+begin_src emacs-lisp
+  (setq use-package-always-defer t)
+#+end_src
+
+* Essential packages
+** =which-key=
+Helps you with commands -- it shows suggestions while you're typing.
+#+begin_src emacs-lisp
+  (use-package which-key
+    :ensure t
+    :init
+    (which-key-mode))
+#+end_src
+
+** =evil=
+Imports keybindings and some functionalities from Vi.
+Useful if, like me, you've been a Vim user for some time.
+#+begin_src emacs-lisp
+  (use-package evil
+    :ensure t
+    :defer nil
+    :init
+    (setq evil-want-keybinding nil)
+    (setq evil-want-C-u-scroll t)
+    :config
+    (evil-mode 1))
+#+end_src
+
+** =beacon=
+Briefly highlights the cursor when switching windows/buffers.
+#+begin_src emacs-lisp
+  (use-package beacon
+    :ensure t
+    :init
+    (beacon-mode 1))
+#+end_src
+
+** =auto-package-update=
+Automatically updates packages (and removes old ones).
+#+begin_src emacs-lisp
+  (use-package auto-package-update
+    :defer nil
+    :ensure t
+    :config
+    (setq auto-package-update-delete-old-versions t)
+    (setq auto-package-update-hide-results t)
+    (auto-package-update-maybe))
+#+end_src
+
+** =ido=
+Makes switching buffers and finding files more intuitive.
+#+begin_src emacs-lisp
+  (use-package ido
+    :init
+    (ido-mode 1)
+    :config
+    (setq ido-enable-flex-matching nil)
+    (setq ido-create-new-buffer 'always)
+    (setq ido-everywhere t))
+
+  (use-package ido-vertical-mode
+    :ensure t
+    :init
+    (ido-vertical-mode 1))
+
+  (setq ido-vertical-define-keys 'C-n-and-C-p-only)
+#+end_src
+
+** =avy=
+M-s <character> to move to the place of said <character> instead of moving the cursor to it.
+It's hard to explain, but you'll use C-n and C-p way less.
+#+begin_src emacs-lisp
+   (use-package avy
+      :ensure t
+      :bind
+      ("M-s" . avy-goto-char))
+#+end_src
+
+** =rainbow=
+Highlights colors hexadecials with the appropriate color.
+#+begin_src emacs-lisp
+  (use-package rainbow-mode
+    :ensure t
+    :init (rainbow-mode 1))
+#+end_src
+
+** =powerline=
+#+begin_src emacs-lisp
+  (require 'powerline)
+  (use-package powerline
+     :ensure t
+     :init
+     (powerline-center-evil-theme)
+     :hook
+     ('after-init-hook) . 'powerline-reset)
+#+end_src
+
+* Programming
