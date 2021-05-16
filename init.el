@@ -1,4 +1,4 @@
-;;; This fixed garbage collection, makes emacs start up faster ;;;;;;;
+;;; This fixed garbage collection makes emacs start up faster ;;;;;;;
 (setq gc-cons-threshold 402653184
       gc-cons-percentage 0.6)
 
@@ -21,7 +21,8 @@
 (setq package-enable-at-startup nil)
 
 (add-to-list 'package-archives
-	     '("melpa" . "https://melpa.org/packages/"))
+	     '("melpa" . "https://melpa.org/packages/")
+		 '("org" . "https://orgmode.org/elpa/"))
 (package-initialize)
 
 (unless (package-installed-p 'use-package)
@@ -57,4 +58,4 @@
  '(custom-safe-themes
    '("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default))
  '(package-selected-packages
-   '(rainbow-mode ido-vertical-mode auto-package-update which-key use-package spacemacs-theme htmlize evil doom-themes beacon)))
+   '(powerline treemacs-magit magit slime-company slime company-jedi company-irony company-c-headers flycheck-clang-analyzer dap-mode auto-yasnippet yasnippet-snippets lsp-ui yasnippet company dashboard treemacs-evil treemacs rainbow-delimiters rainbow-mode switch-window avy ido-vertical-mode auto-package-update beacon evil which-key diminish htmlize doom-themes spacemacs-theme use-package)))
