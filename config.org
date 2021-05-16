@@ -238,8 +238,24 @@ It's hard to explain, but you'll use C-n and C-p way less.
       ("M-s" . avy-goto-char))
 #+end_src
 
+** =switch-window=
+Don't keep using C-x o to switch windows anymore.
+#+begin_src emacs-lisp
+   (use-package switch-window
+      :ensure t
+      :config
+      (setq switch-window-input-style 'minibuffer)
+      (setq switch-window-increase 4)
+      (setq switch-window-threshold 2)
+      (setq switch-window-shortcut-style 'qwerty)
+      (setq switch-window-qwerty-shortcuts
+            '("a" "s" "d" "f" "j" "k" "l"))
+      :bind
+      ([remap other-window] . switch-window))
+#+end_src
+
 ** =rainbow=
-Highlights colors hexadecials with the appropriate color.
+Highlights color hexadecimals with the appropriate color.
 #+begin_src emacs-lisp
   (use-package rainbow-mode
     :ensure t
