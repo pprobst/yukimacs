@@ -7,7 +7,7 @@ An Emacs config built from the ground up, heavily inspired by [[https://github.c
 /If Vim expands your mind, Emacs blows it./
 
 * =Org= mode
-You might've heard of people that use Emacs just because of [[https://orgmode.org/][=Org=]] mode. Folks use it for a myiriad of reasons; from simple note-taking to literate programming and computational notebooks.
+You might've heard of people that use Emacs just because of [[https://orgmode.org/][Org]] mode. Folks use it for a myiriad of reasons; from simple note-taking to literate programming and computational notebooks.
 
 #+begin_src emacs-lisp
   (require 'org-tempo)
