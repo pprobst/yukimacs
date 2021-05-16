@@ -493,6 +493,9 @@ Language server. Will provide us with IDE-like features.
     (add-hook 'c++-mode-hook 'irony-mode)
     (add-hook 'c-mode-hook 'irony-mode)
     (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+
+  (add-hook 'c-mode-hook 'lsp)
+  (add-hook 'c++-mode-hook 'lsp)
 #+end_src
 
 ** Python
@@ -519,6 +522,12 @@ Language server. Will provide us with IDE-like features.
     :config
       (require 'company)
       (add-hook 'python-mode-hook 'python-mode-company-init))
+
+  (use-package lsp-python-ms
+    :ensure t
+    :hook (python-mode . (lambda ()
+                           (require 'lsp-python-ms)
+                           (lsp))))
 #+end_src
 
 ** Emacs Lisp
@@ -542,6 +551,27 @@ Language server. Will provide us with IDE-like features.
 
 ** Rust
 #+begin_src emacs-lisp
+  (use-package rustic
+    :ensure t
+    :init
+    (setq rustic-lsp-server 'rust-analyzer)
+    (setq rustic-flycheck-setup-mode-line-p nil)
+    :hook ((rustic-mode . (lambda ()
+                            (lsp-ui-doc-mode)
+                            (company-mode))))
+    :config
+    (setq rust-indent-method-chain t)
+    (setq rustic-format-on-save t))
+
+  (use-package flycheck-rust
+    :ensure t)
+#+end_src
+
+** Yaml
+#+begin_src emacs-lisp
+  (use-package yaml-mode
+    :commands yaml-mode
+    :ensure t)
 #+end_src
 
 ** Git integration
