@@ -13,7 +13,6 @@ Remove your current =~/.emacs= and =~/.emacs.d=.
 
 * =Org= mode
 You might've heard of people that use Emacs just because of [[https://orgmode.org/][Org]] mode. Folks use it for a myriad of reasons; from simple note-taking to literate programming and computational notebooks. This configuration file itself is in Org mode, with small sections of Emacs Lisp.
-
 #+begin_src emacs-lisp
   (require 'org-tempo)
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
@@ -33,7 +32,6 @@ You might've heard of people that use Emacs just because of [[https://orgmode.or
 
   (use-package htmlize
       :ensure t)
-
 #+end_src
 
 * Eshell
@@ -370,26 +368,9 @@ Highlights color hexadecimals with the appropriate color.
     (setq dashboard-init-info (format "%d packages loaded in %s"
                                       (length package-activated-list) (emacs-init-time)))
     (setq dashboard-set-footer nil))
-
 #+end_src
 
 * Programming
-** =company=
-Autocompletion.
-#+begin_src emacs-lisp
-  (use-package company
-    :ensure t
-    :diminish (company-mode irony-mode)
-    :config
-    (setq company-idle-delay 0)
-    (setq company-minimum-prefix-length 3)
-    (define-key company-active-map (kbd "M-n") nil)
-    (define-key company-active-map (kbd "M-p") nil)
-    (define-key company-active-map (kbd "C-n") #'company-select-next)
-    (define-key company-active-map (kbd "C-p") #'company-select-previous)
-    (define-key company-active-map (kbd "SPC") #'company-abort))
-#+end_src
-
 ** =yasnippet=
 Useful snippets.
 #+begin_src emacs-lisp
@@ -473,27 +454,6 @@ Language server. Will provide us with IDE-like features.
       (require 'flycheck-clang-analyzer)
        (flycheck-clang-analyzer-setup)))
 
-  (with-eval-after-load 'company
-    (add-hook 'c++-mode-hook 'company-mode)
-    (add-hook 'c-mode-hook 'company-mode))
-
-  (use-package company-c-headers
-    :ensure t)
-
-  (use-package company-irony
-    :ensure t
-    :config
-    (setq company-backends '((company-c-headers
-                              company-dabbrev-code
-                              company-irony))))
-
-  (use-package irony
-    :ensure t
-    :config
-    (add-hook 'c++-mode-hook 'irony-mode)
-    (add-hook 'c-mode-hook 'irony-mode)
-    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
-
   (add-hook 'c-mode-hook 'lsp)
   (add-hook 'c++-mode-hook 'lsp)
 #+end_src
@@ -502,26 +462,6 @@ Language server. Will provide us with IDE-like features.
 #+begin_src emacs-lisp
   (add-hook 'python-mode-hook 'yas-minor-mode)
   (add-hook 'python-mode-hook 'flycheck-mode)
-
-  (with-eval-after-load 'company
-      (add-hook 'python-mode-hook 'company-mode))
-
-  (use-package company-jedi
-    :ensure t
-    :config
-      (require 'company)
-      (add-to-list 'company-backends 'company-jedi))
-
-  (defun python-mode-company-init ()
-    (setq-local company-backends '((company-jedi
-                                    company-etags
-                                    company-dabbrev-code))))
-
-  (use-package company-jedi
-    :ensure t
-    :config
-      (require 'company)
-      (add-hook 'python-mode-hook 'python-mode-company-init))
 
   (use-package lsp-python-ms
     :ensure t
@@ -534,7 +474,6 @@ Language server. Will provide us with IDE-like features.
 #+begin_src emacs-lisp
   (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
   (add-hook 'emacs-lisp-mode-hook 'yas-minor-mode)
-  (add-hook 'emacs-lisp-mode-hook 'company-mode)
 
   (use-package slime
     :ensure t
@@ -542,11 +481,17 @@ Language server. Will provide us with IDE-like features.
     (setq inferior-lisp-program "/usr/bin/sbcl") ;; install SBCL from your repos
     (setq slime-contribs '(slime-fancy)))
 
-  (use-package slime-company
+  ;; Better help buffer
+  (use-package helpful
     :ensure t
-    :init
-      (require 'company)
-      (slime-setup '(slime-fancy slime-company)))
+    :custom
+    (counsel-describe-function-function #'helpful-callable)
+    (counsel-describe-variable-function #'helpful-variable)
+    :bind
+    ([remap describe-function] . counsel-describe-function)
+    ([remap describe-command] . helpful-command)
+    ([remap describe-variable] . counsel-describe-variable)
+    ([remap describe-key] . helpful-key))
 #+end_src
 
 ** Rust
@@ -565,6 +510,13 @@ Language server. Will provide us with IDE-like features.
 
   (use-package flycheck-rust
     :ensure t)
+#+end_src
+
+** Go
+#+begin_src emacs-lisp
+  ;(use-package go-mode
+  ;  ensure t
+  ;  :hook (go-mode . lsp-deferred))
 #+end_src
 
 ** Yaml
