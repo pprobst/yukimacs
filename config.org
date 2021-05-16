@@ -4,7 +4,11 @@
 #+OPTIONS: num:nil
 An Emacs config built from the ground up, heavily inspired by [[https://github.com/daedreth/UncleDavesEmacs/][Uncle Dave's Emacs]] and [[https://github.com/snackon/Witchmacs][Witchmacs]].
 
-* Org mode
+/If Vim expands your mind, Emacs blows it./
+
+* =Org= mode
+You might've heard of people that use Emacs just because of [[https://orgmode.org/][=Org=]] mode. Folks use it for a myiriad of reasons; from simple note-taking to literate programming and computational notebooks.
+
 #+begin_src emacs-lisp
   (require 'org-tempo)
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
