@@ -2,7 +2,7 @@
 #+TITLE: yukimacs
 #+LANGUAGE: en
 #+OPTIONS: num:nil
-A GNU/Emacs config built from the ground up, heavily inspired by [[https://github.com/daedreth/UncleDavesEmacs/][Uncle Dave's Emacs]] and [[https://github.com/snackon/Witchmacs][Witchmacs]].
+A GNU/Emacs config built from the ground up (no Spacemacs or Doom Emacs), heavily inspired by [[https://github.com/daedreth/UncleDavesEmacs/][Uncle Dave's Emacs]] and [[https://github.com/snackon/Witchmacs][Witchmacs]].
 
 /If Vim expands your mind, Emacs blows it./
 
@@ -25,6 +25,9 @@ You might've heard of people that use Emacs just because of [[https://orgmode.or
                 '(lambda ()
                    (visual-line-mode 1))))
 
+  ;; Don't split src window. 
+  (setq org-src-window-setup 'current-window)
+
   (use-package org-indent
       :diminish org-indent-mode)
 
@@ -33,13 +36,57 @@ You might've heard of people that use Emacs just because of [[https://orgmode.or
 
 #+end_src
 
-* Terminal
-** Setting default shell
+* Eshell
+** Prompt
 #+begin_src emacs-lisp
-  ;;(defvar my-term-shell "/bin/bash")
-  ;;(defadvice ansi-term (before force-bash)
-  ;;  (interactive (list my-term-shell)))
-  ;;(ad-activate 'ansi-term)
+  (setq eshell-prompt-regexp "^[^αλ\n]*[αλ] ")
+  (setq eshell-prompt-function
+        (lambda nil
+          (concat
+           (if (string= (eshell/pwd) (getenv "HOME"))
+               (propertize "~" 'face `(:foreground "#99CCFF"))
+             (replace-regexp-in-string
+              (getenv "HOME")
+              (propertize "~" 'face `(:foreground "#99CCFF"))
+              (propertize (eshell/pwd) 'face `(:foreground "#99CCFF"))))
+           (if (= (user-uid) 0)
+               (propertize " α " 'face `(:foreground "#FF6666"))
+           (propertize " λ " 'face `(:foreground "#A6E22E"))))))
+
+  (setq eshell-highlight-prompt nil)
+#+end_src
+
+** Aliases
+#+begin_src emacs-lisp
+  (defalias 'open 'find-file-other-window)
+  (defalias 'clean 'eshell/clear-scrollback)
+#+end_src
+
+** Open files as root
+#+begin_src emacs-lisp
+  (defun eshell/sudo-open (filename)
+    "Open a file as root in Eshell."
+    (let ((qual-filename (if (string-match "^/" filename)
+                             filename
+                           (concat (expand-file-name (eshell/pwd)) "/" filename))))
+      (switch-to-buffer
+       (find-file-noselect
+        (concat "/sudo::" qual-filename)))))
+#+end_src
+
+** Super-Control-RET to open Eshell
+#+begin_src emacs-lisp
+  (defun eshell-other-window ()
+    "Create or visit an eshell buffer."
+    (interactive)
+    (if (not (get-buffer "*eshell*"))
+        (progn
+          (split-window-sensibly (selected-window))
+          (other-window 1)
+          (eshell))
+      (switch-to-buffer-other-window "*eshell*")))
+
+  (global-set-key (kbd "<s-C-return>") 'eshell-other-window)
 #+end_src
 
 * QoL
@@ -164,7 +211,14 @@ When at the end of the "page", scroll just one line at a time.
   (setq use-package-always-defer t)
 #+end_src
 
-* Essential packages
+* General packages
+** =diminish=
+Hides minor modes to prevent clutter.
+#+begin_src emacs-lisp
+  (use-package diminish
+    :ensure t)
+#+end_src
+
 ** =which-key=
 Helps you with commands -- it shows suggestions while you're typing.
 #+begin_src emacs-lisp
