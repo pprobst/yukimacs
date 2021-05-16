@@ -224,8 +224,8 @@ Helps you with commands -- it shows suggestions while you're typing.
 #+begin_src emacs-lisp
   (use-package which-key
     :ensure t
-    :init
-    (which-key-mode))
+    :diminish which-key-mode
+    :init (which-key-mode))
 #+end_src
 
 ** =evil=
@@ -247,6 +247,7 @@ Briefly highlights the cursor when switching windows/buffers.
 #+begin_src emacs-lisp
   (use-package beacon
     :ensure t
+    :diminish beacon-mode
     :init
     (beacon-mode 1))
 #+end_src
@@ -313,11 +314,13 @@ Highlights color hexadecimals with the appropriate color.
 #+begin_src emacs-lisp
   (use-package rainbow-mode
     :ensure t
+    :diminish rainbow-mode
     :init
       (add-hook 'prog-mode-hook 'rainbow-mode))
 
   (use-package rainbow-delimiters
     :ensure t
+    :diminish rainbow-delimiters-mode
     :init
       (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 #+end_src
@@ -347,6 +350,11 @@ Highlights color hexadecimals with the appropriate color.
   (use-package treemacs-evil
     :after treemacs evil
     :ensure t)
+
+  (use-package treemacs-icons-dired
+    :after treemacs dired
+    :ensure t
+    :config (treemacs-icons-dired-mode))
   #+end_src
 
 ** =dashboard=
@@ -387,6 +395,7 @@ Useful snippets.
 #+begin_src emacs-lisp
   (use-package yasnippet
     :ensure t
+    :diminish yas-minor-mode
     :config
       (use-package yasnippet-snippets
         :ensure t)
@@ -399,6 +408,7 @@ Useful snippets.
 Syntax checking.
 #+begin_src emacs-lisp
   (use-package flycheck
+    :diminish flycheck-mode
     :hook (after-init . global-flycheck-mode)
     :custom
     (flycheck-check-syntax-automatically '(save mode-enabled)))
@@ -407,8 +417,12 @@ Syntax checking.
 ** =eldoc=
 Display documentation (e.g. arguments of a function).
 #+begin_src emacs-lisp
-;  (use-package eldoc
-;    :hook (after-init . global-eldoc-mode))
+  (use-package eldoc
+    :diminish eldoc-mode
+    :hook (after-init . global-eldoc-mode))
+
+  (use-package abbrev
+    :diminish abbrev-mode)
 #+end_src
 
 ** =LSP=
