@@ -1,0 +1,11 @@
+*.html
+*.eld
+*.dat
+*ido*
+*.html
+*.pdf
+*.tex
+
+config.el
+elpa
+auto-save-list
