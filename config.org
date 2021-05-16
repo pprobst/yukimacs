@@ -12,7 +12,7 @@ Remove your current =~/.emacs= and =~/.emacs.d=.
 =git clone https://github.com/pprobst/yukimacs ~/.emacs.d=
 
 * =Org= mode
-You might've heard of people that use Emacs just because of [[https://orgmode.org/][Org]] mode. Folks use it for a myiriad of reasons; from simple note-taking to literate programming and computational notebooks. This configuration file itself is in Org mode, with small sections of Emacs Lisp.
+You might've heard of people that use Emacs just because of [[https://orgmode.org/][Org]] mode. Folks use it for a myriad of reasons; from simple note-taking to literate programming and computational notebooks. This configuration file itself is in Org mode, with small sections of Emacs Lisp.
 
 #+begin_src emacs-lisp
   (require 'org-tempo)
