@@ -7,11 +7,23 @@ A GNU/Emacs config built from the ground up (no Spacemacs or Doom Emacs), heavil
 /If Vim expands your mind, Emacs blows it./
 
 * Installing
+** 1. Install the dependencies.
+=clang= (you probably already have this)
+
+=python-lsp-server=
+
+=rustup component add rust-src=
+
+=rust-analyzer=
+
+=sbcl=
+
+** 2. =clone= this repository.
 Remove your current =~/.emacs= and =~/.emacs.d=.
 
 =git clone https://github.com/pprobst/yukimacs ~/.emacs.d=
 
-Or, preferably pick what you want separatey.
+Or, preferably, pick what you want separately.
 
 * =Org= mode
 You might've heard of people that use Emacs just because of [[https://orgmode.org/][Org]] mode. Folks use it for a myriad of reasons; from simple note-taking to literate programming and computational notebooks. This configuration file itself is in Org mode, with small sections of Emacs Lisp.
@@ -242,8 +254,8 @@ Useful if, like me, you've been a Vim user for some time.
     (evil-mode 1))
 #+end_src
 
-** =popup-kill-ring==
-Browse through your kill-ring with M-y instead of merely "cycling" through it. Useful when yanking and pasting, for example.
+** =popup-kill-ring=
+Browse through your kill-ring with M-y instead of merely "cycling" through it. Useful when "copying" and "pasting", for example.
 #+begin_src emacs-lisp
   (use-package popup-kill-ring
     :ensure t
