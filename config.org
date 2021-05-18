@@ -11,6 +11,8 @@ Remove your current =~/.emacs= and =~/.emacs.d=.
 
 =git clone https://github.com/pprobst/yukimacs ~/.emacs.d=
 
+Or, preferably pick what you want separatey.
+
 * =Org= mode
 You might've heard of people that use Emacs just because of [[https://orgmode.org/][Org]] mode. Folks use it for a myriad of reasons; from simple note-taking to literate programming and computational notebooks. This configuration file itself is in Org mode, with small sections of Emacs Lisp.
 #+begin_src emacs-lisp
@@ -240,6 +242,14 @@ Useful if, like me, you've been a Vim user for some time.
     (evil-mode 1))
 #+end_src
 
+** =popup-kill-ring==
+Browse through your kill-ring with M-y instead of merely "cycling" through it. Useful when yanking and pasting, for example.
+#+begin_src emacs-lisp
+  (use-package popup-kill-ring
+    :ensure t
+    :bind ("M-y" . popup-kill-ring))
+#+end_src
+
 ** =beacon=
 Briefly highlights the cursor when switching windows/buffers.
 #+begin_src emacs-lisp
@@ -325,10 +335,10 @@ Highlights color hexadecimals with the appropriate color.
 
 ** =powerline=
 #+begin_src emacs-lisp
-  (require 'powerline)
   (use-package powerline
      :ensure t
      :init
+     (require 'powerline)
      (powerline-center-evil-theme)
      :hook
      ('after-init-hook) . 'powerline-reset)
