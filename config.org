@@ -284,26 +284,9 @@ Automatically updates packages (and removes old ones).
     (auto-package-update-maybe))
 #+end_src
 
-** =ido=
-Makes switching buffers and finding files more intuitive.
-#+begin_src emacs-lisp
-  (use-package ido
-    :init
-    (ido-mode 1)
-    :config
-    (setq ido-enable-flex-matching nil)
-    (setq ido-create-new-buffer 'always)
-    (setq ido-everywhere t))
-
-  (use-package ido-vertical-mode
-    :ensure t
-    :init
-    (ido-vertical-mode 1))
-
-  (setq ido-vertical-define-keys 'C-n-and-C-p-only)
-#+end_src
-
 ** =avy=
+The best thing ever.
+
 M-s <character> to move to the place of said <character> instead of moving the cursor to it.
 It's hard to explain, but you'll use C-n and C-p way less.
 #+begin_src emacs-lisp
@@ -313,6 +296,54 @@ It's hard to explain, but you'll use C-n and C-p way less.
       ("M-s" . avy-goto-char))
 #+end_src
 
+** =selectrum=
+A better completion UI. Searching for files and commands is now easier.
+#+begin_src emacs-lisp
+  (use-package selectrum
+    :ensure t
+    :hook (after-init . selectrum-mode))
+
+  ;; "Your candidates are sorted by frecency. Your most recent choices are saved,
+  ;; and those are sorted first. After that, your most frequent choices are saved,
+  ;; and those are sorted next. The rest of the candidates are sorted by length.
+  ;; This algorithm turns out to do very well in practice while being fast and
+  ;; not very magical."
+  (use-package prescient
+    :ensure t
+    :after selectrum
+    :config
+    (prescient-persist-mode 1))
+
+  (use-package selectrum-prescient
+    :ensure t
+    :after (selectrum prescient)
+    :config
+    (selectrum-prescient-mode 1))
+
+  ;; Search without order.
+  ;; (e.g. try M-x emacs time)
+  (use-package orderless
+    :ensure t
+    :after selectrum
+    :custom
+    (completion-styles (list 'orderless))
+    (selectrum-refine-candidates-function #'orderless-filter)
+    (selectrum-highlight-candidates-function #'orderless-highlight-matches))
+#+end_src
+
+** =ctrlf=
+Better isearch.
+#+begin_src emacs-lisp
+  ; C-s: ctrlf-forward-default (originally isearch-forward)
+  ; C-r: ctrlf-backward-default (originally isearch-backward)
+  ; C-M-s: ctrlf-forward-alternate (originally isearch-forward-regexp)
+  ; C-M-r: ctrlf-backward-alternate (originally isearch-backward-regexp)
+  ; M-s _: ctrlf-forward-symbol (originally isearch-forward-symbol)
+  ; M-s .: ctrlf-forward-symbol-at-point (originally isearch-forward-symbol-at-point)
+  (use-package ctrlf
+    :ensure t
+    :init (ctrlf-mode +1))
+#+end_src
 ** =switch-window=
 Don't keep using C-x o to switch windows anymore.
 #+begin_src emacs-lisp
@@ -330,7 +361,7 @@ Don't keep using C-x o to switch windows anymore.
 #+end_src
 
 ** =rainbow=
-Highlights color hexadecimals with the appropriate color.
+=rainbow-mode= highlights color hexadecimals with the appropriate color, while =rainbow-delimiters= colors delimiters (e.g. parentheses).
 #+begin_src emacs-lisp
   (use-package rainbow-mode
     :ensure t
