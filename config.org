@@ -380,6 +380,8 @@ Don't keep using C-x o to switch windows anymore.
 #+begin_src emacs-lisp
   (use-package powerline
      :ensure t
+     :config
+     (setq powerline-default-separator 'bar)
      :init
      (require 'powerline)
      (powerline-center-evil-theme)
@@ -413,14 +415,39 @@ Don't keep using C-x o to switch windows anymore.
   (use-package dashboard
     :ensure t
     :defer nil
+    :preface
+    (defun create-scratch-buffer ()
+      "Create a scratch buffer"
+      (interactive)
+      (switch-to-buffer (get-buffer-create "*scratch*"))
+      (lisp-interaction-mode))
     :config
     (dashboard-setup-startup-hook)
-    (setq dashboard-items '((recents . 5)))
+    (setq dashboard-items '((recents . 10)))
     (setq dashboard-banner-logo-title "YUKIMACS : It's a Wonderful Everyday!")
+    (setq dashboard-startup-banner "~/.emacs.d/img/emacs-logo-256.png")
     (setq dashboard-center-content t)
     (setq dashboard-init-info (format "%d packages loaded in %s"
                                       (length package-activated-list) (emacs-init-time)))
-    (setq dashboard-set-footer nil))
+    (setq dashboard-set-footer nil)
+    (setq dashboard-set-navigator t)
+    (setq dashboard-navigator-buttons
+          `(;; line1
+            ((,nil
+              "Yukimacs on github"
+              "Open Witchmacs' github page on your browser"
+              (lambda (&rest _) (browse-url "https://github.com/pprobst/yukimacs"))
+              'default)
+             (,nil
+              "Open scratch buffer"
+              "Switch to the scratch buffer"
+              (lambda (&rest _) (create-scratch-buffer))
+              'default)
+             (nil
+              "Open config.org"
+              "Open Witchmacs' configuration file for easy editing"
+              (lambda (&rest _) (find-file "~/.emacs.d/config.org"))
+              'default)))))
 #+end_src
 
 * Programming
@@ -523,7 +550,7 @@ Language server. Will provide us with IDE-like features.
                            (lsp))))
 #+end_src
 
-** Emacs Lisp
+** Lisp
 #+begin_src emacs-lisp
   (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
   (add-hook 'emacs-lisp-mode-hook 'yas-minor-mode)
