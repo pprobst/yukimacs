@@ -4,7 +4,7 @@
 #+OPTIONS: num:nil
 A GNU/Emacs config built from the ground up (no Spacemacs or Doom Emacs), /heavily/ inspired by [[https://github.com/daedreth/UncleDavesEmacs/][Uncle Dave's Emacs]] and [[https://github.com/snackon/Witchmacs][Witchmacs]].
 
-[[[[./screenshot.png]]]]
+[[./screenshot.png]]
 
 /If Vim expands your mind, Emacs blows it./
 
