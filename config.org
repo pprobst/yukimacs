@@ -2,7 +2,7 @@
 #+TITLE: yukimacs
 #+LANGUAGE: en
 #+OPTIONS: num:nil
-A GNU/Emacs config built from the ground up (no Spacemacs or Doom Emacs), heavily inspired by [[https://github.com/daedreth/UncleDavesEmacs/][Uncle Dave's Emacs]] and [[https://github.com/snackon/Witchmacs][Witchmacs]].
+A GNU/Emacs config built from the ground up (no Spacemacs or Doom Emacs), /heavily/ inspired by [[https://github.com/daedreth/UncleDavesEmacs/][Uncle Dave's Emacs]] and [[https://github.com/snackon/Witchmacs][Witchmacs]].
 
 /If Vim expands your mind, Emacs blows it./
 
@@ -425,7 +425,7 @@ Don't keep using C-x o to switch windows anymore.
     (dashboard-setup-startup-hook)
     (setq dashboard-items '((recents . 10)))
     (setq dashboard-banner-logo-title "YUKIMACS : It's a Wonderful Everyday!")
-    (setq dashboard-startup-banner "~/.emacs.d/img/emacs-logo-256.png")
+    (setq dashboard-startup-banner "~/.emacs.d/img/yukimacs-logo.png")
     (setq dashboard-center-content t)
     (setq dashboard-init-info (format "%d packages loaded in %s"
                                       (length package-activated-list) (emacs-init-time)))
@@ -435,7 +435,7 @@ Don't keep using C-x o to switch windows anymore.
           `(;; line1
             ((,nil
               "Yukimacs on github"
-              "Open Witchmacs' github page on your browser"
+              "Open yukimacs' github on your browser"
               (lambda (&rest _) (browse-url "https://github.com/pprobst/yukimacs"))
               'default)
              (,nil
@@ -445,7 +445,7 @@ Don't keep using C-x o to switch windows anymore.
               'default)
              (nil
               "Open config.org"
-              "Open Witchmacs' configuration file for easy editing"
+              "Open yukimacs' config file for easy editing"
               (lambda (&rest _) (find-file "~/.emacs.d/config.org"))
               'default)))))
 #+end_src
