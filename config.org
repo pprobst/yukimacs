@@ -132,7 +132,7 @@ Quality-of-life modifications.
     (tool-bar-mode -1)
     (menu-bar-mode -1)
     (scroll-bar-mode -1)
-    (set-fringe-mode 5) 
+    (set-fringe-mode 5)
 #+end_src
 
 ** Enable copy-pasting outside of Emacs
@@ -639,4 +639,4 @@ Language server. Will provide us with IDE-like features.
 
 
 * DISCLAIMER
-This free software project is not related in any way to the video game development company /KeroQ/.
+This free software project is not related in any way to the video game development company [[https://www.keromakura.net/][/KeroQ/]].
