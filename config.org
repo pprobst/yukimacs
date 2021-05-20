@@ -127,11 +127,12 @@ Quality-of-life modifications.
   (show-paren-mode 1)
 #+end_src
 
-** Diable GUI elements
+** Change GUI elements
 #+begin_src emacs-lisp
-  (tool-bar-mode -1)
-  (menu-bar-mode -1)
-  (scroll-bar-mode -1)
+    (tool-bar-mode -1)
+    (menu-bar-mode -1)
+    (scroll-bar-mode -1)
+    (set-fringe-mode 5) 
 #+end_src
 
 ** Enable copy-pasting outside of Emacs
@@ -233,6 +234,15 @@ Hides minor modes to prevent clutter.
     :ensure t)
 #+end_src
 
+** =no-littering=
+Keep folders clean.
+#+begin_src emacs-lisp
+  (use-package no-littering
+    :ensure t)
+
+  (setq auto-save-file-name-transforms
+        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+#+end_src
 ** =which-key=
 Helps you with commands -- it shows suggestions while you're typing.
 #+begin_src emacs-lisp
@@ -278,12 +288,13 @@ Briefly highlights the cursor when switching windows/buffers.
 Automatically updates packages (and removes old ones).
 #+begin_src emacs-lisp
   (use-package auto-package-update
-    :defer nil
-    :ensure t
+    :custom
+    (auto-package-update-interval 7)
+    (auto-package-update-prompt-before-update t)
+    (auto-package-update-hide-results t)
     :config
-    (setq auto-package-update-delete-old-versions t)
-    (setq auto-package-update-hide-results t)
-    (auto-package-update-maybe))
+    (auto-package-update-maybe)
+    (auto-package-update-at-time "12:00"))
 #+end_src
 
 ** =avy=
@@ -529,15 +540,18 @@ Language server. Will provide us with IDE-like features.
   (add-hook 'c++-mode-hook 'yas-minor-mode)
   (add-hook 'c-mode-hook 'yas-minor-mode)
 
-  (use-package flycheck-clang-analyzer
-    :ensure t
-    :config
-    (with-eval-after-load 'flycheck
-      (require 'flycheck-clang-analyzer)
-       (flycheck-clang-analyzer-setup)))
-
   (add-hook 'c-mode-hook 'lsp)
   (add-hook 'c++-mode-hook 'lsp)
+
+  (use-package ccls
+    :ensure t
+    :config
+    (setq ccls-executable "ccls")
+    (setq lsp-prefer-flymake nil)
+    (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
+    (setq ccls-sem-highlight-method 'overlay)
+    :hook ((c-mode c++-mode) .
+           (lambda () (require 'ccls) (lsp))))
 #+end_src
 
 ** Python
@@ -622,3 +636,7 @@ Language server. Will provide us with IDE-like features.
       :after treemacs magit
       :ensure t)
 #+end_src
+
+
+* DISCLAIMER
+This free software project is not related in any way to the video game development company /KeroQ/.
