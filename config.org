@@ -639,4 +639,4 @@ Language server. Will provide us with IDE-like features.
 
 
 * DISCLAIMER
-This free software project is not related in any way to the video game development company [[https://www.keromakura.net/][/KeroQ/]].
+This free software project is not related in any way to the video game development company [[https://www.keromakura.net/][KeroQ]].
