@@ -12,13 +12,15 @@ A GNU/Emacs config built from the ground up (no Spacemacs or Doom Emacs), /heavi
 ** 1. Install the dependencies if you need them.
 =clang= (you probably already have this)
 
+=ccls=
+
+=sbcl=
+
 =python-lsp-server=
 
 =rustup component add rust-src=
 
 =rust-analyzer=
-
-=sbcl=
 
 ** 2. =clone= this repository.
 Remove your current =~/.emacs= and =~/.emacs.d=.
@@ -44,10 +46,14 @@ You might've heard of people that use Emacs just because of [[https://orgmode.or
   (setq org-src-window-setup 'current-window)
 
   (use-package org-indent
+      :ensure nil
       :diminish org-indent-mode)
 
-  (use-package htmlize
-      :ensure t)
+  (use-package htmlize)
+
+  (use-package org-bullets
+    ;; :disabled t
+    :hook (org-mode . org-bullets-mode))
 #+end_src
 
 * Eshell
@@ -221,24 +227,18 @@ When at the end of the "page", scroll just one line at a time.
   (global-set-key (kbd "C-c r") 'config-reload)
 #+end_src
 
-** Defer loading most packages for quicker startup times
-#+begin_src emacs-lisp
-  (setq use-package-always-defer t)
-#+end_src
 
 * General packages
 ** =diminish=
 Hides minor modes to prevent clutter.
 #+begin_src emacs-lisp
-  (use-package diminish
-    :ensure t)
+  (use-package diminish)
 #+end_src
 
 ** =no-littering=
 Keep folders clean.
 #+begin_src emacs-lisp
-  (use-package no-littering
-    :ensure t)
+  (use-package no-littering)
 
   (setq auto-save-file-name-transforms
         `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
@@ -247,7 +247,6 @@ Keep folders clean.
 Helps you with commands -- it shows suggestions while you're typing.
 #+begin_src emacs-lisp
   (use-package which-key
-    :ensure t
     :diminish which-key-mode
     :init (which-key-mode))
 #+end_src
@@ -257,7 +256,6 @@ Imports keybindings and some functionalities from Vi.
 Useful if, like me, you've been a Vim user for some time.
 #+begin_src emacs-lisp
   (use-package evil
-    :ensure t
     :defer nil
     :init
     (setq evil-want-keybinding nil)
@@ -270,7 +268,6 @@ Useful if, like me, you've been a Vim user for some time.
 Browse through your kill-ring with M-y instead of merely "cycling" through it. Useful when "copying" and "pasting", for example.
 #+begin_src emacs-lisp
   (use-package popup-kill-ring
-    :ensure t
     :bind ("M-y" . popup-kill-ring))
 #+end_src
 
@@ -278,7 +275,6 @@ Browse through your kill-ring with M-y instead of merely "cycling" through it. U
 Briefly highlights the cursor when switching windows/buffers.
 #+begin_src emacs-lisp
   (use-package beacon
-    :ensure t
     :diminish beacon-mode
     :init
     (beacon-mode 1))
@@ -304,7 +300,6 @@ M-s <character> to move to the place of said <character> instead of moving the c
 It's hard to explain, but you'll use C-n and C-p way less.
 #+begin_src emacs-lisp
    (use-package avy
-      :ensure t
       :bind
       ("M-s" . avy-goto-char))
 #+end_src
@@ -313,7 +308,6 @@ It's hard to explain, but you'll use C-n and C-p way less.
 A better completion UI. Searching for files and commands is now easier.
 #+begin_src emacs-lisp
   (use-package selectrum
-    :ensure t
     :hook (after-init . selectrum-mode))
 
   ;; "Your candidates are sorted by frecency. Your most recent choices are saved,
@@ -322,13 +316,11 @@ A better completion UI. Searching for files and commands is now easier.
   ;; This algorithm turns out to do very well in practice while being fast and
   ;; not very magical."
   (use-package prescient
-    :ensure t
     :after selectrum
     :config
     (prescient-persist-mode 1))
 
   (use-package selectrum-prescient
-    :ensure t
     :after (selectrum prescient)
     :config
     (selectrum-prescient-mode 1))
@@ -336,7 +328,6 @@ A better completion UI. Searching for files and commands is now easier.
   ;; Search without order.
   ;; (e.g. try M-x emacs time)
   (use-package orderless
-    :ensure t
     :after selectrum
     :custom
     (completion-styles (list 'orderless))
@@ -354,14 +345,12 @@ Better isearch.
   ; M-s _: ctrlf-forward-symbol (originally isearch-forward-symbol)
   ; M-s .: ctrlf-forward-symbol-at-point (originally isearch-forward-symbol-at-point)
   (use-package ctrlf
-    :ensure t
     :init (ctrlf-mode +1))
 #+end_src
 ** =switch-window=
 Don't keep using C-x o to switch windows anymore.
 #+begin_src emacs-lisp
    (use-package switch-window
-      :ensure t
       :config
       (setq switch-window-input-style 'minibuffer)
       (setq switch-window-increase 4)
@@ -377,13 +366,11 @@ Don't keep using C-x o to switch windows anymore.
 =rainbow-mode= highlights color hexadecimals with the appropriate color, while =rainbow-delimiters= colors delimiters (e.g. parentheses).
 #+begin_src emacs-lisp
   (use-package rainbow-mode
-    :ensure t
     :diminish rainbow-mode
     :init
       (add-hook 'prog-mode-hook 'rainbow-mode))
 
   (use-package rainbow-delimiters
-    :ensure t
     :diminish rainbow-delimiters-mode
     :init
       (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
@@ -392,7 +379,6 @@ Don't keep using C-x o to switch windows anymore.
 ** =powerline=
 #+begin_src emacs-lisp
   (use-package powerline
-     :ensure t
      :config
      (setq powerline-default-separator 'bar)
      :init
@@ -405,8 +391,6 @@ Don't keep using C-x o to switch windows anymore.
 ** =treemacs=
 #+begin_src emacs-lisp
   (use-package treemacs
-    :ensure t
-    :defer t
     :bind (:map global-map
                 ("C-x t t" . treemacs)
                 ("C-x t 1" . treemacs-select-window))
@@ -414,19 +398,16 @@ Don't keep using C-x o to switch windows anymore.
     (treemacs-resize-icons 15))
 
   (use-package treemacs-evil
-    :after treemacs evil
-    :ensure t)
+    :after treemacs evil)
 
   (use-package treemacs-icons-dired
     :after treemacs dired
-    :ensure t
     :config (treemacs-icons-dired-mode))
   #+end_src
 
 ** =dashboard=
 #+begin_src emacs-lisp
   (use-package dashboard
-    :ensure t
     :defer nil
     :preface
     (defun create-scratch-buffer ()
@@ -468,13 +449,10 @@ Don't keep using C-x o to switch windows anymore.
 Useful snippets.
 #+begin_src emacs-lisp
   (use-package yasnippet
-    :ensure t
     :diminish yas-minor-mode
     :config
-      (use-package yasnippet-snippets
-        :ensure t)
-      (use-package auto-yasnippet
-        :ensure t)
+      (use-package yasnippet-snippets)
+      (use-package auto-yasnippet)
       (yas-reload-all))
 #+end_src
 
@@ -494,9 +472,6 @@ Display documentation (e.g. arguments of a function).
   (use-package eldoc
     :diminish eldoc-mode
     :hook (after-init . global-eldoc-mode))
-
-  (use-package abbrev
-    :diminish abbrev-mode)
 #+end_src
 
 ** =LSP=
@@ -511,7 +486,6 @@ Language server. Will provide us with IDE-like features.
 
   ;; Enhance UI
   (use-package lsp-ui
-    :ensure t
     :after (lsp-mode)
     :hook (lsp-mode . lsp-ui-mode)
     :custom
@@ -521,14 +495,12 @@ Language server. Will provide us with IDE-like features.
     (lsp-ui-peek-always-show t))
 
   (use-package dap-mode
-    :ensure t
     :after lsp-mode
     :config
     (dap-mode t)
     (dap-ui-mode t))
 
   (use-package lsp-treemacs
-    :ensure t
     :after (lsp-mode)
     :commands lsp-treemacs
     :config
@@ -544,7 +516,6 @@ Language server. Will provide us with IDE-like features.
   (add-hook 'c++-mode-hook 'lsp)
 
   (use-package ccls
-    :ensure t
     :config
     (setq ccls-executable "ccls")
     (setq lsp-prefer-flymake nil)
@@ -560,7 +531,6 @@ Language server. Will provide us with IDE-like features.
   (add-hook 'python-mode-hook 'flycheck-mode)
 
   (use-package lsp-python-ms
-    :ensure t
     :hook (python-mode . (lambda ()
                            (require 'lsp-python-ms)
                            (lsp))))
@@ -572,14 +542,12 @@ Language server. Will provide us with IDE-like features.
   (add-hook 'emacs-lisp-mode-hook 'yas-minor-mode)
 
   (use-package slime
-    :ensure t
     :config
     (setq inferior-lisp-program "/usr/bin/sbcl") ;; install SBCL from your repos
     (setq slime-contribs '(slime-fancy)))
 
   ;; Better help buffer
   (use-package helpful
-    :ensure t
     :custom
     (counsel-describe-function-function #'helpful-callable)
     (counsel-describe-variable-function #'helpful-variable)
@@ -593,7 +561,6 @@ Language server. Will provide us with IDE-like features.
 ** Rust
 #+begin_src emacs-lisp
   (use-package rustic
-    :ensure t
     :init
     (setq rustic-lsp-server 'rust-analyzer)
     (setq rustic-flycheck-setup-mode-line-p nil)
@@ -604,28 +571,24 @@ Language server. Will provide us with IDE-like features.
     (setq rust-indent-method-chain t)
     (setq rustic-format-on-save t))
 
-  (use-package flycheck-rust
-    :ensure t)
+  (use-package flycheck-rust)
 #+end_src
 
 ** Go
 #+begin_src emacs-lisp
   ;(use-package go-mode
-  ;  ensure t
   ;  :hook (go-mode . lsp-deferred))
 #+end_src
 
 ** Yaml
 #+begin_src emacs-lisp
   (use-package yaml-mode
-    :commands yaml-mode
-    :ensure t)
+    :commands yaml-mode)
 #+end_src
 
 ** Git integration
 #+begin_src emacs-lisp
   (use-package magit
-    :ensure t
     :config
     (setq magit-push-always-verify nil)
     (setq git-commit-summary-max-length 50)
@@ -633,8 +596,7 @@ Language server. Will provide us with IDE-like features.
     ("M-g" . magit-status))
 
   (use-package treemacs-magit
-      :after treemacs magit
-      :ensure t)
+      :after treemacs magit)
 #+end_src
 
 
