@@ -59,6 +59,14 @@
    `(rainbow-delimiters-depth-8-face ((t (:foreground ,comment))))
    `(rainbow-delimiters-depth-9-face ((t (:foreground ,foreground)))))
 
+   ;; This doesn't work here. Why?
+   `(mode-line-inactive ((t (:inherit mode-line :background "#171717" :foreground "#d2d5d6" :box (:line-width -1 :color "#323333") :weight light))))
+   `(powerline-active0 ((t (:inherit mode-line))))
+   `(powerline-active1 ((t (:inherit mode-line :background "#171717" :foreground "#d2d5d6"))))
+   `(powerline-active2 ((t (:inherit mode-line :background "#1c1c1c" :foreground "#b294bb"))))
+   `(powerline-inactive1 ((t (:inherit mode-line-inactive :background "#171717"))))
+   `(powerline-inactive2 ((t (:inherit mode-line-inactive :background "#0f0f0f"))))
+
    `(dashboard-text-banner ((t (:foreground ,red))))
    `(dashboard-heading ((t (:foreground ,red))))
 

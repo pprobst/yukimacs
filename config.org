@@ -138,7 +138,7 @@ Quality-of-life modifications.
     (tool-bar-mode -1)
     (menu-bar-mode -1)
     (scroll-bar-mode -1)
-    (set-fringe-mode 5)
+    (set-fringe-mode 1)
 #+end_src
 
 ** Enable copy-pasting outside of Emacs
@@ -173,7 +173,7 @@ When at the end of the "page", scroll just one line at a time.
   (setq-default standard-indent 4)
   (setq c-basic-offset tab-width)
   (setq-default electric-indent-inhibit t)
-  (setq-default indent-tabs-mode t)
+  (setq-default indent-tabs-mode nil) ;; spaces instead of tabs
   (setq backward-delete-char-untabify-method 'nil)
 #+end_src
 
@@ -227,7 +227,6 @@ When at the end of the "page", scroll just one line at a time.
   (global-set-key (kbd "C-c r") 'config-reload)
 #+end_src
 
-
 * General packages
 ** =diminish=
 Hides minor modes to prevent clutter.
@@ -262,6 +261,10 @@ Useful if, like me, you've been a Vim user for some time.
     (setq evil-want-C-u-scroll t)
     :config
     (evil-mode 1))
+
+  ;; Commenting lines
+  (use-package evil-nerd-commenter
+    :bind ("M-/" . evilnc-comment-or-uncomment-lines))
 #+end_src
 
 ** =popup-kill-ring=
