@@ -242,6 +242,21 @@ Keep folders clean.
   (setq auto-save-file-name-transforms
         `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 #+end_src
+** =all-the-icons=
+Icons on Emacs. Backend for other packages.
+#+begin_src emacs-lisp
+  ;; Run M-x all-the-icons-install-fonts 
+  (use-package all-the-icons)
+
+  (use-package all-the-icons-dired
+    :after all-the-icons
+    :hook
+    ((dired-mode . all-the-icons-dired-mode))
+    :diminish
+    :config
+    (setq all-the-icons-dired-monochrome nil))
+#+end_src
+
 ** =which-key=
 Helps you with commands -- it shows suggestions while you're typing.
 #+begin_src emacs-lisp
@@ -396,17 +411,37 @@ Don't keep using C-x o to switch windows anymore.
   (use-package treemacs
     :bind (:map global-map
                 ("C-x t t" . treemacs)
-                ("C-x t 1" . treemacs-select-window))
-    :custom
-    (treemacs-resize-icons 15))
+                ("C-x t 1" . treemacs-select-window)))
+
+  (use-package treemacs-all-the-icons
+    :after (treemacs all-the-icons)
+    :config (treemacs-load-theme "all-the-icons"))
 
   (use-package treemacs-evil
     :after treemacs evil)
 
-  (use-package treemacs-icons-dired
-    :after treemacs dired
-    :config (treemacs-icons-dired-mode))
+
+  (use-package treemacs-magit
+    :after (treemacs magit))
+
+  ;(use-package treemacs-icons-dired
+  ;  :after treemacs dired
+  ;  :config (treemacs-icons-dired-mode))
   #+end_src
+
+** =centaur-tabs=
+Tabs!
+#+begin_src emacs-lisp
+  (use-package centaur-tabs
+    :disabled
+    :demand
+    :config
+    (setq centaur-tabs-set-bar 'box
+          centaur-tabs-set-icons t
+          centaur-tabs-gray-out-icons 'buffer
+          centaur-tabs-height 24)
+    (centaur-tabs-mode t))
+#+end_src
 
 ** =dashboard=
 #+begin_src emacs-lisp
@@ -420,6 +455,8 @@ Don't keep using C-x o to switch windows anymore.
       (lisp-interaction-mode))
     :config
     (dashboard-setup-startup-hook)
+    (dashboard-modify-heading-icons '((recents . "file-text")
+                                      (bookmarks . "book")))
     (setq dashboard-items '((recents . 10)))
     (setq dashboard-banner-logo-title "YUKIMACS : It's a Wonderful Everyday!")
     (setq dashboard-startup-banner "~/.emacs.d/img/yukimacs-logo.png")
@@ -428,6 +465,8 @@ Don't keep using C-x o to switch windows anymore.
                                       (length package-activated-list) (emacs-init-time)))
     (setq dashboard-set-footer nil)
     (setq dashboard-set-navigator t)
+    (setq dashboard-set-heading-icons t)
+    (setq dashboard-set-file-icons t)
     (setq dashboard-navigator-buttons
           `(;; line1
             ((,nil
@@ -492,7 +531,7 @@ Language server. Will provide us with IDE-like features.
     :after (lsp-mode)
     :hook (lsp-mode . lsp-ui-mode)
     :custom
-    (lsp-ui-doc-delay 3.0)
+    (lsp-ui-doc-delay 2.0)
     (lsp-ui-doc-include-signature t)
     (lsp-ui-flycheck-enable t)
     (lsp-ui-peek-always-show t))
@@ -510,6 +549,18 @@ Language server. Will provide us with IDE-like features.
     (lsp-treemacs-sync-mode 1))
 #+end_src
 
+** =company=
+Provides completion.
+#+begin_src emacs-lisp
+  (use-package company
+    :diminish company-mode
+    :config
+    (setq company-dabbrev-other-buffers t
+          company-dabbrev-code-other-buffers t)
+    :hook ((text-mode . company-mode)
+           (prog-mode . company-mode)
+           (org-mode . company-mode)))
+#+end_src
 ** C & C++
 #+begin_src emacs-lisp
   (add-hook 'c++-mode-hook 'yas-minor-mode)
