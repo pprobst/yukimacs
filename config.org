@@ -138,7 +138,7 @@ Quality-of-life modifications.
     (tool-bar-mode -1)
     (menu-bar-mode -1)
     (scroll-bar-mode -1)
-    (set-fringe-mode 1)
+    (set-fringe-mode 5)
 #+end_src
 
 ** Enable copy-pasting outside of Emacs
@@ -409,6 +409,7 @@ Don't keep using C-x o to switch windows anymore.
 ** =powerline=
 #+begin_src emacs-lisp
   (use-package powerline
+     :disabled 
      :config
      (setq powerline-default-separator 'bar)
      :init
@@ -418,31 +419,46 @@ Don't keep using C-x o to switch windows anymore.
      ('after-init-hook) . 'powerline-reset)
 #+end_src
 
+** =doom-modeline=
+Alternative to powerline. Choose powerline or doom-modeline.
+#+begin_src emacs-lisp
+  (use-package doom-modeline
+    :config
+    (setq doom-modeline-height 30)
+    (setq doom-modeline-bar-width 4)
+    (setq doom-modeline-minor-modes t)
+    :hook (after-init . doom-modeline-mode))
+#+end_src
+
 ** =treemacs=
 #+begin_src emacs-lisp
   (use-package treemacs
+    :config
+    (setq treemacs-width 30)
     :bind (:map global-map
                 ("C-x t t" . treemacs)
                 ("C-x t 1" . treemacs-select-window)))
 
   (use-package treemacs-all-the-icons
-    :after (treemacs all-the-icons)
-    :config (treemacs-load-theme "all-the-icons"))
+    :after treemacs
+    :init
+    (require 'treemacs-all-the-icons)
+    (treemacs-load-theme 'all-the-icons))
 
   (use-package treemacs-evil
-    :after treemacs evil)
-
+    :after (treemacs evil))
 
   (use-package treemacs-magit
     :after (treemacs magit))
 
-  ;(use-package treemacs-icons-dired
-  ;  :after treemacs dired
-  ;  :config (treemacs-icons-dired-mode))
+  (use-package treemacs-icons-dired
+    ;:disabled
+    :after (treemacs dired)
+    :config (treemacs-icons-dired-mode))
   #+end_src
 
 ** =centaur-tabs=
-Tabs!
+Tabs! Disabled by default.
 #+begin_src emacs-lisp
   (use-package centaur-tabs
     :disabled
