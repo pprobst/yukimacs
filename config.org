@@ -7,9 +7,9 @@ A GNU/Emacs config built from the ground up (no Spacemacs or Doom Emacs), /heavi
 [[./screenshot.png]]
 
 /If Vim expands your mind, Emacs blows it./
-
 * Installing
 ** 1. Install the dependencies if you need them.
+
 =clang= (you probably already have this)
 
 =ccls=
@@ -37,6 +37,7 @@ You might've heard of people that use Emacs just because of [[https://orgmode.or
 
   (use-package org
       :config
+      ;(setq org-startup-with-inline-images t)
       (add-hook 'org-mode-hook 'org-indent-mode)
       (add-hook 'org-mode-hook
                 '(lambda ()
@@ -53,9 +54,23 @@ You might've heard of people that use Emacs just because of [[https://orgmode.or
 
   (use-package htmlize)
 
-  (use-package org-bullets
-    ;; :disabled t
-    :hook (org-mode . org-bullets-mode))
+  ;; Better org-bullets
+  (use-package org-superstar
+    :hook (org-mode . org-superstar-mode))
+
+  ;(use-package org-bullets
+  ;  :hook (org-mode . org-bullets-mode))
+
+  ;; Evil bindings for Org mode
+  (use-package evil-org
+    :after (evil org)
+    :config
+    (add-hook 'org-mode-hook 'evil-org-mode)
+    (add-hook 'evil-org-mode-hook
+              (lambda ()
+                (evil-org-set-key-theme '(navigation insert textobjects additional calendar))))
+    (require 'evil-org-agenda)
+    (evil-org-agenda-set-keys))
 #+end_src
 
 * Eshell
@@ -137,7 +152,7 @@ Quality-of-life modifications.
 
 ** New lines at the end of the file
 #+begin_src emacs-lisp
-  (setq next-line-add-newlines t)
+  ;(setq next-line-add-newlines t)
 #+end_src
 
 ** Change GUI elements
@@ -255,6 +270,7 @@ Keep folders clean.
   (setq auto-save-file-name-transforms
         `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 #+end_src
+
 ** =all-the-icons=
 Icons on Emacs. Backend for other packages.
 #+begin_src emacs-lisp
@@ -388,6 +404,7 @@ Better isearch.
   (use-package ctrlf
     :init (ctrlf-mode +1))
 #+end_src
+
 ** =switch-window=
 Don't keep using C-x o to switch windows anymore.
 #+begin_src emacs-lisp
@@ -434,6 +451,7 @@ Don't keep using C-x o to switch windows anymore.
 Alternative to powerline. Choose powerline or doom-modeline.
 #+begin_src emacs-lisp
   (use-package doom-modeline
+    ;:disabled
     :config
     (setq doom-modeline-height 30)
     (setq doom-modeline-bar-width 4)
@@ -618,6 +636,7 @@ Provides completion.
            (prog-mode . company-mode)
            (org-mode . company-mode)))
 #+end_src
+
 ** C & C++
 #+begin_src emacs-lisp
   (add-hook 'c++-mode-hook 'yas-minor-mode)
@@ -699,6 +718,15 @@ Provides completion.
     :commands yaml-mode)
 #+end_src
 
+** Markdown
+#+begin_src emacs-lisp
+  (use-package markdown-mode
+    :mode (("README\\.md\\'" . gfm-mode)
+           ("\\.md\\'" . markdown-mode)
+           ("\\.markdown\\'" . markdown-mode))
+    :init (setq markdown-command "multimarkdown"))
+#+end_src
+
 ** Git integration
 #+begin_src emacs-lisp
   (use-package magit
@@ -715,13 +743,4 @@ Provides completion.
 
 * DISCLAIMER
 This free software project is not related in any way to the video game development company [[https://www.keromakura.net/][KeroQ]].
-
-
-
-
-
-
-
-
-
 

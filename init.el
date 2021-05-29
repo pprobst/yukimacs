@@ -66,8 +66,8 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(yukimacs))
  '(custom-safe-themes
-   '("92c2a2ac69867c76be89dbb38fcbaf1e6eaabc30736a39b5d49cb2c84902e0d8" default))
+   '("b31dcb14acd5e19cf615e2809a71aaa9a43543da2d4dfc794a1cc5e27c797afc" default))
  '(package-selected-packages
-   '(treemacs-projectile evil-collection treemacs-all-the-icons all-the-icons-dired all-the-icons evil-nerd-commenter org-bullets ccls no-littering ctrlf orderless popup-kill-ring helpful company-lsp lsp-python-ms flycheck-rust rustic powerline treemacs-magit magit slime-company slime company-jedi company-irony company-c-headers flycheck-clang-analyzer dap-mode auto-yasnippet yasnippet-snippets lsp-ui yasnippet company dashboard treemacs-evil treemacs rainbow-delimiters rainbow-mode switch-window avy ido-vertical-mode auto-package-update beacon evil which-key diminish htmlize doom-themes spacemacs-theme use-package)))
+   '(evil-org org-superstar treemacs-projectile evil-collection treemacs-all-the-icons all-the-icons-dired all-the-icons evil-nerd-commenter ccls no-littering ctrlf orderless popup-kill-ring helpful company-lsp lsp-python-ms flycheck-rust rustic powerline treemacs-magit magit slime-company slime company-jedi company-irony company-c-headers flycheck-clang-analyzer dap-mode auto-yasnippet yasnippet-snippets lsp-ui yasnippet company dashboard treemacs-evil treemacs rainbow-delimiters rainbow-mode switch-window avy ido-vertical-mode auto-package-update beacon evil which-key diminish htmlize doom-themes spacemacs-theme use-package)))
 
 

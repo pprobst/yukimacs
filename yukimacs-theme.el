@@ -19,7 +19,8 @@
       (aqua "#6A8F9B")
       (blue "#5083A9")
       (clear-blue "#6D9AC5")
-      (purple "#b294bb"))
+      (purple "#b294bb")
+      (more-purple "#543D62"))
 
   (custom-theme-set-faces
    'yukimacs
@@ -60,6 +61,9 @@
    `(org-level-2 ((,class (:foreground ,orange))))
    `(org-level-3 ((,class (:foreground ,yellow))))
    `(org-special-keyword ((,class (:foreground ,purple))))
+   `(org-block-begin-line ((,class (:underline nil :foreground ,comment :background ,current-line))))
+   `(org-block-background ((,class (:background ,fringe-color))))
+   `(org-block-end-line ((,class (:overline nil :foreground ,comment :background ,current-line))))
 
    `(region ((,class (:background ,purple))))
 
