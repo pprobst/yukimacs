@@ -38,12 +38,12 @@
    `(font-lock-comment-face ((,class (:foreground ,comment))))
    `(font-lock-constant-face ((,class (:foreground ,green))))
    `(font-lock-doc-string-face ((,class (:foreground ,comment))))
-   `(font-lock-function-name-face ((,class (:foreground ,blue))))
+   `(font-lock-function-name-face ((,class (:foreground ,clear-blue))))
    `(font-lock-keyword-face ((,class (:foreground ,purple))))
    `(font-lock-string-face ((,class (:foreground ,green))))
    `(font-lock-type-face ((,class (:foreground ,red))))
    `(font-lock-variable-name-face ((,class (:foreground ,foreground))))
-   `(font-lock-warning-face ((,class (:foreground ,red))))
+   `(font-lock-warning-face ((,class (:foreground ,orange))))
 
    `(hl-line ((,class (:background ,current-line))))
 
@@ -77,8 +77,9 @@
    `(rainbow-delimiters-depth-9-face ((,class (:foreground ,foreground))))
 
    `(mode-line ((,class (:foreground ,foreground :background nil))))
-
    `(mode-line-inactive ((,class (:inherit mode-line :background ,fringe-color :foreground ,foreground :box (:line-width -1 :color ,selection) :weight light))))
+   `(header-line ((,class (:inherit mode-line :background ,fringe-color :foreground ,foreground :box nil))))
+
    `(powerline-active0 ((,class (:inherit mode-line))))
    `(powerline-active1 ((,class (:inherit mode-line :background ,fringe-color :foreground ,foreground))))
    `(powerline-active2 ((,class (:inherit mode-line :background "#1c1c1c" :foreground ,purple))))

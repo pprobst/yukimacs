@@ -45,6 +45,8 @@
   (package-refresh-contents)
   (package-install 'doom-themes))
 
+(setq-default shell-file-name "/bin/sh")
+
 ;; Loads config
 (when (file-readable-p "~/.emacs.d/config.org")
   (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
@@ -64,6 +66,8 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(yukimacs))
  '(custom-safe-themes
-   '("a3b192d985408e5f63fa1169a33171940160509fd5c886ba629ddc9119089dba" default))
+   '("92c2a2ac69867c76be89dbb38fcbaf1e6eaabc30736a39b5d49cb2c84902e0d8" default))
  '(package-selected-packages
-   '(evil-collection treemacs-all-the-icons all-the-icons-dired all-the-icons evil-nerd-commenter org-bullets ccls no-littering ctrlf orderless popup-kill-ring helpful company-lsp lsp-python-ms flycheck-rust rustic powerline treemacs-magit magit slime-company slime company-jedi company-irony company-c-headers flycheck-clang-analyzer dap-mode auto-yasnippet yasnippet-snippets lsp-ui yasnippet company dashboard treemacs-evil treemacs rainbow-delimiters rainbow-mode switch-window avy ido-vertical-mode auto-package-update beacon evil which-key diminish htmlize doom-themes spacemacs-theme use-package)))
+   '(treemacs-projectile evil-collection treemacs-all-the-icons all-the-icons-dired all-the-icons evil-nerd-commenter org-bullets ccls no-littering ctrlf orderless popup-kill-ring helpful company-lsp lsp-python-ms flycheck-rust rustic powerline treemacs-magit magit slime-company slime company-jedi company-irony company-c-headers flycheck-clang-analyzer dap-mode auto-yasnippet yasnippet-snippets lsp-ui yasnippet company dashboard treemacs-evil treemacs rainbow-delimiters rainbow-mode switch-window avy ido-vertical-mode auto-package-update beacon evil which-key diminish htmlize doom-themes spacemacs-theme use-package)))
+
+
