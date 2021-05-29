@@ -42,6 +42,8 @@ You might've heard of people that use Emacs just because of [[https://orgmode.or
                 '(lambda ()
                    (visual-line-mode 1))))
 
+  (setq org-hide-emphasis-markers t)
+
   ;; Don't split src window.
   (setq org-src-window-setup 'current-window)
 
@@ -133,6 +135,11 @@ Quality-of-life modifications.
   (show-paren-mode 1)
 #+end_src
 
+** New lines at the end of the file
+#+begin_src emacs-lisp
+  (setq next-line-add-newlines t)
+#+end_src
+
 ** Change GUI elements
 #+begin_src emacs-lisp
     (tool-bar-mode -1)
@@ -176,10 +183,10 @@ When at the end of the "page", scroll just one line at a time.
 ** Indentation
 #+begin_src emacs-lisp
   (setq-default tab-width 4)
+  (setq-default indent-tabs-mode nil) ;; spaces instead of tabs
   (setq-default standard-indent 4)
   (setq c-basic-offset tab-width)
   (setq-default electric-indent-inhibit t)
-  (setq-default indent-tabs-mode nil) ;; spaces instead of tabs
   (setq backward-delete-char-untabify-method 'nil)
 #+end_src
 
@@ -252,7 +259,11 @@ Keep folders clean.
 Icons on Emacs. Backend for other packages.
 #+begin_src emacs-lisp
   ;; Run M-x all-the-icons-install-fonts 
-  (use-package all-the-icons)
+  (use-package all-the-icons
+    :commands all-the-icons-install-fonts
+    :init
+    (unless (find-font (font-spec :name "all-the-icons"))
+      (all-the-icons-install-fonts t)))
 
   (use-package all-the-icons-dired
     :after all-the-icons
@@ -451,6 +462,9 @@ Alternative to powerline. Choose powerline or doom-modeline.
   (use-package treemacs-magit
     :after (treemacs magit))
 
+  (use-package treemacs-projectile
+    :after (treemacs projectile))
+
   (use-package treemacs-icons-dired
     ;:disabled
     :after (treemacs dired)
@@ -485,7 +499,8 @@ Tabs! Disabled by default.
     (dashboard-setup-startup-hook)
     (dashboard-modify-heading-icons '((recents . "file-text")
                                       (bookmarks . "book")))
-    (setq dashboard-items '((recents . 10)))
+    (setq dashboard-items '((recents  . 5)
+                            (projects . 5)))
     (setq dashboard-banner-logo-title "YUKIMACS : It's a Wonderful Everyday!")
     (setq dashboard-startup-banner "~/.emacs.d/img/yukimacs-logo.png")
     (setq dashboard-center-content t)
@@ -515,6 +530,20 @@ Tabs! Disabled by default.
 #+end_src
 
 * Programming
+** =projectile=
+Project management.
+#+begin_src emacs-lisp
+  (use-package projectile
+    :diminish
+    :config
+    (projectile-mode t)
+    (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
+    ;(setq projectile-track-known-projects-automatically nil)
+    (setq projectile-enable-caching t)
+    (setq projectile-require-project-root t)
+    (setq projectile-dynamic-mode-line nil))
+#+end_src
+
 ** =yasnippet=
 Useful snippets.
 #+begin_src emacs-lisp
@@ -686,3 +715,13 @@ Provides completion.
 
 * DISCLAIMER
 This free software project is not related in any way to the video game development company [[https://www.keromakura.net/][KeroQ]].
+
+
+
+
+
+
+
+
+
+
