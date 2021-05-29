@@ -64,6 +64,6 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(yukimacs))
  '(custom-safe-themes
-   '("8c8c6a30bc953213d90d398f37b37ca4a0b56ad66ce760b134a858793b844587" default))
+   '("a3b192d985408e5f63fa1169a33171940160509fd5c886ba629ddc9119089dba" default))
  '(package-selected-packages
    '(evil-collection treemacs-all-the-icons all-the-icons-dired all-the-icons evil-nerd-commenter org-bullets ccls no-littering ctrlf orderless popup-kill-ring helpful company-lsp lsp-python-ms flycheck-rust rustic powerline treemacs-magit magit slime-company slime company-jedi company-irony company-c-headers flycheck-clang-analyzer dap-mode auto-yasnippet yasnippet-snippets lsp-ui yasnippet company dashboard treemacs-evil treemacs rainbow-delimiters rainbow-mode switch-window avy ido-vertical-mode auto-package-update beacon evil which-key diminish htmlize doom-themes spacemacs-theme use-package)))

@@ -10,11 +10,15 @@
       (comment "#A5A7A8")
       (cursor "#B9BCBD")
       (red "#CC6666")
+      (more-red "#E23C42")
       (orange "#de935f")
       (yellow "#f0c674")
       (green "#6A9B88")
+      (more-green "#6A9B76")
+      (hl-green "#46806D")
       (aqua "#6A8F9B")
       (blue "#5083A9")
+      (clear-blue "#6D9AC5")
       (purple "#b294bb"))
 
   (custom-theme-set-faces
@@ -25,6 +29,11 @@
    `(minibuffer-prompt ((,class (:foreground ,blue))))
    `(mode-line ((,class (:background ,current-line :foreground ,foreground))))
    `(region ((,class (:background ,selection))))
+   `(error ((,class (:foreground ,more-red :weight bold))))
+   `(escape-glyph ((,class (:foreground ,clear-blue))))
+   `(highlight ((,class (:background ,hl-green))))
+   `(link ((,class (:foreground ,clear-blue :underline t))))
+   `(success ((,class (:foreground ,more-green :weight bold))))
 
    `(font-lock-comment-face ((,class (:foreground ,comment))))
    `(font-lock-constant-face ((,class (:foreground ,green))))
@@ -69,11 +78,11 @@
 
    `(mode-line ((,class (:foreground ,foreground :background nil))))
 
-   `(mode-line-inactive ((,class (:inherit mode-line :background "#171717" :foreground "#d2d5d6" :box (:line-width -1 :color "#323333") :weight light))))
+   `(mode-line-inactive ((,class (:inherit mode-line :background ,fringe-color :foreground ,foreground :box (:line-width -1 :color ,selection) :weight light))))
    `(powerline-active0 ((,class (:inherit mode-line))))
-   `(powerline-active1 ((,class (:inherit mode-line :background "#171717" :foreground "#d2d5d6"))))
-   `(powerline-active2 ((,class (:inherit mode-line :background "#1c1c1c" :foreground "#b294bb"))))
-   `(powerline-inactive1 ((,class (:inherit mode-line-inactive :background "#171717"))))
+   `(powerline-active1 ((,class (:inherit mode-line :background ,fringe-color :foreground ,foreground))))
+   `(powerline-active2 ((,class (:inherit mode-line :background "#1c1c1c" :foreground ,purple))))
+   `(powerline-inactive1 ((,class (:inherit mode-line-inactive :background ,fringe-color))))
    `(powerline-inactive2 ((,class (:inherit mode-line-inactive :background "#0f0f0f"))))
 
    `(dashboard-text-banner ((,class (:foreground ,purple))))
