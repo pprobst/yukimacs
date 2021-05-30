@@ -15,9 +15,10 @@
 (unless (functionp 'json-serialize)
   (message "Native JSON is *not* available, lsp performance will suffer..."))
 
-;; do not steal focus while doing async compilations
+;; Do not steal focus while doing async compilations
 (setq warning-suppress-types '((comp)))
 
+(setq comp-deferred-compilation t)
 
 (defvar startup/file-name-handler-alist file-name-handler-alist)
 (setq file-name-handler-alist nil)
@@ -26,7 +27,7 @@
   (setq file-name-handler-alist startup/file-name-handler-alist))
 
 (defun startup/reset-gc ()
-  (setq gc-cons-threshold 16777216
+  (setq gc-cons-threshold 10000000
 	gc-cons-percentage 0.1))
 
 (add-hook 'emacs-startup-hook 'startup/revert-file-name-handler-alist)
