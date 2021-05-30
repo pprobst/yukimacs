@@ -1,5 +1,6 @@
+;;; yukimacs-theme.el --- A theme based on Tomorrow Night
+
 (deftheme yukimacs "2021-05-19")
-;; based on tomorrow night
 
 (let ((class '((class color) (min-colors 89)))
       (background "#0F0F0F")
@@ -51,13 +52,14 @@
    `(linum ((,class (:background ,current-line :foreground ,foreground))))
 
    `(org-date ((,class (:foreground ,purple))))
-   `(org-done ((,class (:foreground ,green))))
    `(org-hide ((,class (:foreground ,current-line))))
    `(org-link ((,class (:foreground ,blue))))
-   `(org-todo ((,class (:foreground ,red))))
-   `(org-code ((,class (:foreground ,aqua))))
+   `(org-done ((,class (:bold t :weight bold :foreground ,green
+                              :box (:line-width 1 :style none)))))
+   `(org-todo ((,class (:bold t :foreground ,red :weight bold
+                              :box (:line-width 1 :style none)))))
    `(org-checkbox ((,class (:foreground ,green))))
-   `(org-level-1 ((,class (:foreground ,red))))
+   `(org-level-1 ((,class (:foreground ,purple))))
    `(org-level-2 ((,class (:foreground ,orange))))
    `(org-level-3 ((,class (:foreground ,yellow))))
    `(org-special-keyword ((,class (:foreground ,purple))))
@@ -104,3 +106,5 @@
      [unspecified ,background ,red ,green ,yellow ,blue ,purple ,blue ,foreground])))
 
 (provide-theme 'yukimacs)
+
+;;; yukimacs-theme.el ends here

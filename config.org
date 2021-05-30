@@ -2,11 +2,13 @@
 #+TITLE: yukimacs
 #+LANGUAGE: en
 #+OPTIONS: num:nil
+
 A GNU/Emacs config built from the ground up (no Spacemacs or Doom Emacs), /heavily/ inspired by [[https://github.com/daedreth/UncleDavesEmacs/][Uncle Dave's Emacs]] and [[https://github.com/snackon/Witchmacs][Witchmacs]].
 
 [[./screenshot.png]]
 
-/If Vim expands your mind, Emacs blows it./
+The font is [[https://gitlab.com/protesilaos/iosevka-comfy][Iosevka Comfy]].
+
 * Installing
 ** 1. Install the dependencies if you need them.
 
@@ -157,10 +159,10 @@ Quality-of-life modifications.
 
 ** Change GUI elements
 #+begin_src emacs-lisp
-    (tool-bar-mode -1)
-    (menu-bar-mode -1)
-    (scroll-bar-mode -1)
-    (set-fringe-mode 5)
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1)
+  (set-fringe-mode 7)
 #+end_src
 
 ** Enable copy-pasting outside of Emacs
@@ -437,7 +439,7 @@ Don't keep using C-x o to switch windows anymore.
 ** =powerline=
 #+begin_src emacs-lisp
   (use-package powerline
-     :disabled 
+     ;:disabled 
      :config
      (setq powerline-default-separator 'bar)
      :init
@@ -451,7 +453,7 @@ Don't keep using C-x o to switch windows anymore.
 Alternative to powerline. Choose powerline or doom-modeline.
 #+begin_src emacs-lisp
   (use-package doom-modeline
-    ;:disabled
+    :disabled
     :config
     (setq doom-modeline-height 30)
     (setq doom-modeline-bar-width 4)
@@ -503,6 +505,13 @@ Tabs! Disabled by default.
     (centaur-tabs-mode t))
 #+end_src
 
+** =page-break-lines=
+Display ugly ^L page breaks as tidy horizontal lines.
+#+begin_src emacs-lisp
+  (use-package page-break-lines
+    :requires dashboard)
+#+end_src
+
 ** =dashboard=
 #+begin_src emacs-lisp
   (use-package dashboard
@@ -517,22 +526,24 @@ Tabs! Disabled by default.
     (dashboard-setup-startup-hook)
     (dashboard-modify-heading-icons '((recents . "file-text")
                                       (bookmarks . "book")))
-    (setq dashboard-items '((recents  . 5)
-                            (projects . 5)))
-    (setq dashboard-banner-logo-title "YUKIMACS : It's a Wonderful Everyday!")
+    (setq dashboard-items '((recents  . 5)))
+                            ;(projects . 5)))
+    (setq dashboard-banner-logo-title "Y U K I M A C S")
     (setq dashboard-startup-banner "~/.emacs.d/img/yukimacs-logo.png")
     (setq dashboard-center-content t)
     (setq dashboard-init-info (format "%d packages loaded in %s"
                                       (length package-activated-list) (emacs-init-time)))
-    (setq dashboard-set-footer nil)
+    ;(setq dashboard-set-footer nil)
+    (setq dashboard-footer-messages '("\"It's a Wonderful Everyday!\""))
+    (setq dashboard-footer-icon "")
     (setq dashboard-set-navigator t)
     (setq dashboard-set-heading-icons t)
     (setq dashboard-set-file-icons t)
     (setq dashboard-navigator-buttons
           `(;; line1
             ((,nil
-              "Yukimacs on github"
-              "Open yukimacs' github on your browser"
+              "Yukimacs on GitHub"
+              "Open yukimacs' GitHub on your browser"
               (lambda (&rest _) (browse-url "https://github.com/pprobst/yukimacs"))
               'default)
              (,nil
@@ -739,7 +750,6 @@ Provides completion.
   (use-package treemacs-magit
       :after treemacs magit)
 #+end_src
-
 
 * DISCLAIMER
 This free software project is not related in any way to the video game development company [[https://www.keromakura.net/][KeroQ]].

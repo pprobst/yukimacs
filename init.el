@@ -1,3 +1,5 @@
+;;; init.el
+
 ;;; This fixed garbage collection makes emacs start up faster ;;;;;;;
 (setq gc-cons-threshold 402653184
       gc-cons-percentage 0.6)
@@ -45,6 +47,10 @@
   (package-refresh-contents)
   (package-install 'doom-themes))
 
+(unless (package-installed-p 'modus-themes)
+  (package-refresh-contents)
+  (package-install 'modus-themes))
+
 (setq-default shell-file-name "/bin/sh")
 
 ;; Loads config
@@ -58,7 +64,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :extend nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 130 :width normal :foundry "UKWN" :family "Iosevka")))))
+ '(default ((t (:inherit nil :extend nil :stipple nil :background "#0F0F0F" :foreground "#D2D5D6" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "BE5N" :family "Iosevka Comfy")))))
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -66,8 +72,8 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(yukimacs))
  '(custom-safe-themes
-   '("b31dcb14acd5e19cf615e2809a71aaa9a43543da2d4dfc794a1cc5e27c797afc" default))
+   '("b99b27cb80bddd0944447da9d33393aa40c6ed6c13c9c60acd2f15bad52ed22e" default))
  '(package-selected-packages
    '(evil-org org-superstar treemacs-projectile evil-collection treemacs-all-the-icons all-the-icons-dired all-the-icons evil-nerd-commenter ccls no-littering ctrlf orderless popup-kill-ring helpful company-lsp lsp-python-ms flycheck-rust rustic powerline treemacs-magit magit slime-company slime company-jedi company-irony company-c-headers flycheck-clang-analyzer dap-mode auto-yasnippet yasnippet-snippets lsp-ui yasnippet company dashboard treemacs-evil treemacs rainbow-delimiters rainbow-mode switch-window avy ido-vertical-mode auto-package-update beacon evil which-key diminish htmlize doom-themes spacemacs-theme use-package)))
 
-
+;;; init.el ends here
