@@ -1,7 +1,6 @@
 #+STARTUP: overview
 #+TITLE: yukimacs
 #+LANGUAGE: en
-#+OPTIONS: num:nil
 
 A GNU/Emacs config built from the ground up (no Spacemacs or Doom Emacs), /heavily/ inspired by [[https://github.com/daedreth/UncleDavesEmacs/][Uncle Dave's Emacs]] and [[https://github.com/snackon/Witchmacs][Witchmacs]].
 
@@ -9,7 +8,81 @@ A GNU/Emacs config built from the ground up (no Spacemacs or Doom Emacs), /heavi
 
 The font is [[https://gitlab.com/protesilaos/iosevka-comfy][Iosevka Comfy]].
 
-* Installing
+* Table of Contents                                                     :TOC:
+- [[#installing][Installing]]
+  - [[#1-install-the-dependencies-if-you-need-them][1. Install the dependencies if you need them.]]
+  - [[#2-clone-this-repository][2. =clone= this repository.]]
+- [[#org-mode][=Org= mode]]
+- [[#eshell][Eshell]]
+  - [[#prompt][Prompt]]
+  - [[#aliases][Aliases]]
+  - [[#open-files-as-root][Open files as root]]
+  - [[#super-control-ret-to-open-eshell][Super-Control-RET to open Eshell]]
+- [[#qol][QoL]]
+  - [[#y-or-n-instead-of-yes-or-no-when-confirming]['y' or 'n' instead of 'yes' or 'no' when confirming]]
+  - [[#disable-backup-files][Disable backup files]]
+  - [[#show-line-numbers][Show line numbers]]
+  - [[#show-parent-parentheses][Show parent parentheses]]
+  - [[#new-lines-at-the-end-of-the-file][New lines at the end of the file]]
+  - [[#utf-8-everywhere][UTF-8 everywhere]]
+  - [[#change-gui-elements][Change GUI elements]]
+  - [[#enable-copy-pasting-outside-of-emacs][Enable copy-pasting outside of Emacs]]
+  - [[#disable-the-default-startup-screen][Disable the default startup screen]]
+  - [[#conservative-scroll][Conservative scroll]]
+  - [[#disable-ring-bell-sound][Disable ring bell sound]]
+  - [[#prettify-symbols][Prettify symbols]]
+  - [[#indentation][Indentation]]
+  - [[#no-line-wrap-in-prog-mode][No line wrap in prog-mode]]
+  - [[#switches-cursor-automatically-to-new-window][Switches cursor automatically to new window]]
+  - [[#highlights-current-line][Highlights current line]]
+  - [[#bracket-pair-matching][Bracket pair-matching]]
+  - [[#visiting-the-configuration][Visiting the configuration]]
+  - [[#reloading-the-configuration][Reloading the configuration]]
+- [[#general-packages][General packages]]
+  - [[#diminish][=diminish=]]
+  - [[#no-littering][=no-littering=]]
+  - [[#all-the-icons][=all-the-icons=]]
+  - [[#which-key][=which-key=]]
+  - [[#evil][=evil=]]
+  - [[#popup-kill-ring][=popup-kill-ring=]]
+  - [[#beacon][=beacon=]]
+  - [[#highlight-numbers][=highlight-numbers=]]
+  - [[#hl-todo][=hl-todo=]]
+  - [[#flyspell][=flyspell=]]
+  - [[#auto-package-update][=auto-package-update=]]
+  - [[#avy][=avy=]]
+  - [[#selectrum][=selectrum=]]
+  - [[#marginalia][=marginalia=]]
+  - [[#ctrlf][=ctrlf=]]
+  - [[#switch-window][=switch-window=]]
+  - [[#rainbow][=rainbow=]]
+  - [[#powerline][=powerline=]]
+  - [[#doom-modeline][=doom-modeline=]]
+  - [[#treemacs][=treemacs=]]
+  - [[#centaur-tabs][=centaur-tabs=]]
+  - [[#page-break-lines][=page-break-lines=]]
+  - [[#dashboard][=dashboard=]]
+- [[#programming][Programming]]
+  - [[#projectile][=projectile=]]
+  - [[#yasnippet][=yasnippet=]]
+  - [[#flycheck][=flycheck=]]
+  - [[#eldoc][=eldoc=]]
+  - [[#lsp][=LSP=]]
+  - [[#company][=company=]]
+  - [[#c--c][C & C++]]
+  - [[#cmake][CMake]]
+  - [[#python][Python]]
+  - [[#lisp][Lisp]]
+  - [[#haskell][Haskell]]
+  - [[#rust][Rust]]
+  - [[#go][Go]]
+  - [[#yaml][Yaml]]
+  - [[#markdown][Markdown]]
+  - [[#latex][LaTeX]]
+  - [[#git-integration][Git integration]]
+- [[#disclaimer][DISCLAIMER]]
+
+* Installing                                                            :TOC:
 ** 1. Install the dependencies if you need them.
 
 =aspell=, =aspell-en=
@@ -33,14 +106,31 @@ Remove your current =~/.emacs= and =~/.emacs.d=.
 
 =git clone https://github.com/pprobst/yukimacs ~/.emacs.d=
 
-Or, preferably, pick what you want separately.
-
-* =Org= mode
+Or, preferably, pick what you want se
+* =Org= mode                                                              :TOC:
 You might've heard of people that use Emacs just because of [[https://orgmode.org/][Org]] mode. Folks use it for a myriad of reasons; from simple note-taking to literate programming and computational notebooks. This configuration file itself is in Org mode, with small sections of Emacs Lisp.
+
 #+begin_src emacs-lisp
+  ;; Source block expansion
   (require 'org-tempo)
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+#+end_src
 
+| Typing the below + TAB | Expands to ...                          |
+|------------------------+-----------------------------------------|
+| <a                     | '#+BEGIN_EXPORT ascii' … '#+END_EXPORT  |
+| <c                     | '#+BEGIN_CENTER' … '#+END_CENTER'       |
+| <C                     | '#+BEGIN_COMMENT' … '#+END_COMMENT'     |
+| <e                     | '#+BEGIN_EXAMPLE' … '#+END_EXAMPLE'     |
+| <E                     | '#+BEGIN_EXPORT' … '#+END_EXPORT'       |
+| <h                     | '#+BEGIN_EXPORT html' … '#+END_EXPORT'  |
+| <l                     | '#+BEGIN_EXPORT latex' … '#+END_EXPORT' |
+| <q                     | '#+BEGIN_QUOTE' … '#+END_QUOTE'         |
+| <s                     | '#+BEGIN_SRC' … '#+END_SRC'             |
+| <v                     | '#+BEGIN_VERSE' … '#+END_VERSE'         |
+| <el                    | '#+BEGIN_SRC emacs-lisp' …  '#+END_SRC' |
+
+#+begin_src emacs-lisp
   (use-package org
       :config
       ;(setq org-startup-with-inline-images t)
@@ -58,14 +148,25 @@ You might've heard of people that use Emacs just because of [[https://orgmode.or
       :ensure nil
       :diminish org-indent-mode)
 
+  (setq org-todo-keywords
+          '((sequence
+             "TODO(t)"
+             "WAIT(w)" 
+             "|"                 ; Separates "active" and "inactive" states.
+             "DONE(d)"
+             "CANCELLED(c)" )))
+
   (use-package htmlize)
 
   ;; Better org-bullets
   (use-package org-superstar
     :hook (org-mode . org-superstar-mode))
 
-  ;(use-package org-bullets
-  ;  :hook (org-mode . org-bullets-mode))
+  ;; Automatically create a table of contents.
+  (use-package toc-org
+    :hook
+    (org-mode-hook . toc-org-mode)
+    (markdown-mode-hook . toc-org-mode))
 
   ;; Evil bindings for Org mode
   (use-package evil-org
@@ -79,7 +180,7 @@ You might've heard of people that use Emacs just because of [[https://orgmode.or
     (evil-org-agenda-set-keys))
 #+end_src
 
-* Eshell
+* Eshell                                                                :TOC:
 ** Prompt
 #+begin_src emacs-lisp
   (setq eshell-prompt-regexp "^[^αλ\n]*[αλ] ")
@@ -132,7 +233,7 @@ You might've heard of people that use Emacs just because of [[https://orgmode.or
   (global-set-key (kbd "<s-C-return>") 'eshell-other-window)
 #+end_src
 
-* QoL
+* QoL                                                                   :TOC:
 Quality-of-life modifications.
 ** 'y' or 'n' instead of 'yes' or 'no' when confirming
 #+begin_src emacs-lisp
@@ -275,7 +376,7 @@ When at the end of the "page", scroll just one line at a time.
   (global-set-key (kbd "C-c r") 'config-reload)
 #+end_src
 
-* General packages
+* General packages                                                      :TOC:
 ** =diminish=
 Hides minor modes to prevent clutter.
 #+begin_src emacs-lisp
@@ -626,7 +727,7 @@ Display ugly ^L page breaks as tidy horizontal lines.
               'default)))))
 #+end_src
 
-* Programming
+* Programming                                                           :TOC:
 ** =projectile=
 Project management.
 #+begin_src emacs-lisp
@@ -876,6 +977,6 @@ Oof.
       :after treemacs magit)
 #+end_src
 
-* DISCLAIMER
+* DISCLAIMER                                                            :TOC:
 This free software project is not related in any way to the video game development company [[https://www.keromakura.net/][KeroQ]].
 
