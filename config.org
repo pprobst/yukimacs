@@ -12,11 +12,15 @@ The font is [[https://gitlab.com/protesilaos/iosevka-comfy][Iosevka Comfy]].
 * Installing
 ** 1. Install the dependencies if you need them.
 
+=aspell=, =aspell-en=
+
 =clang= (you probably already have this)
 
 =ccls=
 
 =sbcl=
+
+=haskell-language-server=
 
 =python-lsp-server=
 
@@ -145,6 +149,7 @@ Quality-of-life modifications.
 #+begin_src emacs-lisp
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
   (add-hook 'text-mode-hook 'display-line-numbers-mode)
+  (global-set-key (kbd "<f9>") 'display-line-numbers-mode)
 #+end_src
 
 ** Show parent parentheses
@@ -155,6 +160,14 @@ Quality-of-life modifications.
 ** New lines at the end of the file
 #+begin_src emacs-lisp
   ;(setq next-line-add-newlines t)
+#+end_src
+
+** UTF-8 everywhere
+#+begin_src emacs-lisp
+  (prefer-coding-system 'utf-8)
+  (set-default-coding-systems 'utf-8)
+  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8)
 #+end_src
 
 ** Change GUI elements
@@ -205,6 +218,11 @@ When at the end of the "page", scroll just one line at a time.
   (setq c-basic-offset tab-width)
   (setq-default electric-indent-inhibit t)
   (setq backward-delete-char-untabify-method 'nil)
+#+end_src
+
+** No line wrap in prog-mode
+#+begin_src emacs-lisp
+  (add-hook 'prog-mode-hook 'toggle-truncate-lines)
 #+end_src
 
 ** Switches cursor automatically to new window
@@ -339,6 +357,49 @@ Briefly highlights the cursor when switching windows/buffers.
     (beacon-mode 1))
 #+end_src
 
+** =highlight-numbers=
+Numbers are important enough to be highlighted.
+#+begin_src emacs-lisp
+  (use-package highlight-numbers
+    :hook (prog-mode . highlight-numbers-mode))
+#+end_src
+
+** =hl-todo=
+Highlight words like "TODO" etc. during programming.
+#+begin_src emacs-lisp
+  (use-package hl-todo
+    :hook (prog-mode . hl-todo-mode)
+    :config
+    (setq hl-todo-keyword-faces
+      '(("FIXME" error bold)
+        ("TODO" org-todo)
+        ("NOTE" bold))))
+#+end_src
+
+** =flyspell=
+On-the-fly spellchecking.
+#+begin_src emacs-lisp
+  (use-package flyspell
+    :diminish flyspell-mode)
+
+  (use-package guess-language
+    :ensure t
+    :config
+    (setq guess-language-languages '(en pt))
+    (setq guess-language-min-paragraph-length 10)
+    :hook
+    (text-mode . guess-language-mode))
+
+  (add-hook 'text-mode-hook 'flyspell-mode)
+  (add-hook 'org-mode-hook 'flyspell-mode)
+
+  (add-hook
+   'prog-mode-hook
+   (lambda ()
+     (ispell-change-dictionary "english")
+     (flyspell-prog-mode)))
+#+end_src
+
 ** =auto-package-update=
 Automatically updates packages (and removes old ones).
 #+begin_src emacs-lisp
@@ -392,6 +453,13 @@ A better completion UI. Searching for files and commands is now easier.
     (completion-styles (list 'orderless))
     (selectrum-refine-candidates-function #'orderless-filter)
     (selectrum-highlight-candidates-function #'orderless-highlight-matches))
+#+end_src
+
+** =marginalia=
+Good looking and helpful annotations in the completion buffer. Works very well with Selectrum.
+#+begin_src emacs-lisp
+  (use-package marginalia
+    :init (marginalia-mode))
 #+end_src
 
 ** =ctrlf=
@@ -645,7 +713,8 @@ Provides completion.
           company-dabbrev-code-other-buffers t)
     :hook ((text-mode . company-mode)
            (prog-mode . company-mode)
-           (org-mode . company-mode)))
+           (org-mode . company-mode))
+           (company-mode . yas-minor-mode))
 #+end_src
 
 ** C & C++
@@ -668,10 +737,15 @@ Provides completion.
   (setq-default c-basic-offset 4)
 #+end_src
 
+** CMake
+Oof.
+#+begin_src emacs-lisp
+  (use-package cmake-mode)
+#+end_src
+
 ** Python
 #+begin_src emacs-lisp
   (add-hook 'python-mode-hook 'yas-minor-mode)
-  (add-hook 'python-mode-hook 'flycheck-mode)
 
   (use-package lsp-python-ms
     :hook (python-mode . (lambda ()
@@ -699,6 +773,19 @@ Provides completion.
     ([remap describe-command] . helpful-command)
     ([remap describe-variable] . counsel-describe-variable)
     ([remap describe-key] . helpful-key))
+#+end_src
+
+** Haskell
+#+begin_src emacs-lisp
+  (use-package haskell-mode
+    :config
+    (use-package lsp-haskell)
+    (require 'lsp)
+    (require 'lsp-haskell)
+    (add-hook 'haskell-mode-hook #'haskell-indentation-mode)
+    (add-hook 'haskell-mode-hook #'yas-minor-mode)
+    (add-hook 'haskell-mode-hook #'lsp)
+    (setq haskell-stylish-on-save t))
 #+end_src
 
 ** Rust
@@ -736,6 +823,44 @@ Provides completion.
            ("\\.md\\'" . markdown-mode)
            ("\\.markdown\\'" . markdown-mode))
     :init (setq markdown-command "multimarkdown"))
+#+end_src
+
+** LaTeX
+#+begin_src emacs-lisp
+  (use-package auctex
+    :hook
+    (TeX-mode . TeX-PDF-mode)
+    (TeX-mode . company-mode)
+    :init
+    (setq reftex-plug-into-AUCTeX t)
+    (setq TeX-parse-self t)
+    (setq-default TeX-master nil)
+
+    (setq TeX-open-quote  "<<")
+    (setq TeX-close-quote ">>")
+    (setq TeX-electric-sub-and-superscript t)
+    (setq font-latex-fontify-script nil)
+    (setq TeX-show-compilation nil)
+
+    (setq preview-scale-function 1.5)
+    (setq preview-gs-options
+      '("-q" "-dNOSAFER" "-dNOPAUSE" "-DNOPLATFONTS"
+        "-dPrinted" "-dTextAlphaBits=4" "-dGraphicsAlphaBits=4"))
+
+    (setq reftex-label-alist '(AMSTeX)))
+
+  (use-package company-auctex
+    :init
+    (company-auctex-init))
+
+  (use-package company-math
+    :init
+    (add-to-list 'company-backends 'company-math))
+
+  (use-package company-reftex
+    :init
+    (add-to-list 'company-backends 'company-reftex-citations)
+    (add-to-list 'company-backends 'company-reftex-labels))
 #+end_src
 
 ** Git integration
