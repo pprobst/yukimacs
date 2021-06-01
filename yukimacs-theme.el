@@ -16,7 +16,7 @@
       (yellow "#f0c674")
       (green "#6A9B88")
       (more-green "#6A9B76")
-      (hl-green "#46806D")
+      (hl-green "#365148")
       (aqua "#6A8F9B")
       (blue "#5083A9")
       (clear-blue "#6D9AC5")
