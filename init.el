@@ -89,7 +89,8 @@
  '(custom-enabled-themes '(yukimacs))
  '(custom-safe-themes
    '("6bda183d18f135e040523c3480735f66076b8e6b006525ea27ba6ea56819b9a7" default))
+ '(org-export-backends '(ascii beamer html icalendar latex man md odt))
  '(package-selected-packages
-   '(toc-org cmake-mode guess-language hl-todo highlight-numbers company-reftex company-math company-auctex auctex marginalia lsp-haskell haskell-mode evil-org org-superstar treemacs-projectile evil-collection treemacs-all-the-icons all-the-icons-dired all-the-icons evil-nerd-commenter ccls no-littering ctrlf orderless popup-kill-ring helpful company-lsp lsp-python-ms flycheck-rust rustic powerline treemacs-magit magit slime-company slime company-jedi company-irony company-c-headers flycheck-clang-analyzer dap-mode auto-yasnippet yasnippet-snippets lsp-ui yasnippet company dashboard treemacs-evil treemacs rainbow-delimiters rainbow-mode switch-window avy ido-vertical-mode auto-package-update beacon evil which-key diminish htmlize doom-themes spacemacs-theme use-package)))
+   '(emojify toc-org cmake-mode guess-language hl-todo highlight-numbers company-reftex company-math company-auctex auctex marginalia lsp-haskell haskell-mode evil-org org-superstar treemacs-projectile evil-collection treemacs-all-the-icons all-the-icons-dired all-the-icons evil-nerd-commenter ccls no-littering ctrlf orderless popup-kill-ring helpful company-lsp lsp-python-ms flycheck-rust rustic powerline treemacs-magit magit slime-company slime company-jedi company-irony company-c-headers flycheck-clang-analyzer dap-mode auto-yasnippet yasnippet-snippets lsp-ui yasnippet company dashboard treemacs-evil treemacs rainbow-delimiters rainbow-mode switch-window avy ido-vertical-mode auto-package-update beacon evil which-key diminish htmlize doom-themes spacemacs-theme use-package)))
 
 ;;; init.el ends here

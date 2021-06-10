@@ -42,6 +42,7 @@ The font is [[https://gitlab.com/protesilaos/iosevka-comfy][Iosevka Comfy]].
   - [[#diminish][=diminish=]]
   - [[#no-littering][=no-littering=]]
   - [[#all-the-icons][=all-the-icons=]]
+  - [[#emojify][=emojify=]]
   - [[#which-key][=which-key=]]
   - [[#evil][=evil=]]
   - [[#popup-kill-ring][=popup-kill-ring=]]
@@ -116,8 +117,8 @@ You might've heard of people that use Emacs just because of [[https://orgmode.or
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
 #+end_src
 
-| Typing the below + TAB | Expands to ...                          |
-|------------------------+-----------------------------------------|
+| Typing the below + TAB | Expands to ...                        |
+|------------------------+---------------------------------------|
 | <a                     | '#+BEGIN_EXPORT ascii' … '#+END_EXPORT  |
 | <c                     | '#+BEGIN_CENTER' … '#+END_CENTER'       |
 | <C                     | '#+BEGIN_COMMENT' … '#+END_COMMENT'     |
@@ -135,10 +136,13 @@ You might've heard of people that use Emacs just because of [[https://orgmode.or
       :config
       ;(setq org-startup-with-inline-images t)
       (add-hook 'org-mode-hook 'org-indent-mode)
+      (add-hook 'org-mode-hook 'prettify-symbols-mode)
+      (add-hook 'org-mode-hook 'org-toggle-pretty-entities)
       (add-hook 'org-mode-hook
                 '(lambda ()
                    (visual-line-mode 1))))
 
+  (setq org-hide-leading-stars t)
   (setq org-hide-emphasis-markers t)
 
   ;; Don't split src window.
@@ -164,6 +168,7 @@ You might've heard of people that use Emacs just because of [[https://orgmode.or
 
   ;; Automatically create a table of contents.
   (use-package toc-org
+    :after (org-mode markdown-mode)
     :hook
     (org-mode-hook . toc-org-mode)
     (markdown-mode-hook . toc-org-mode))
@@ -411,6 +416,13 @@ Icons on Emacs. Backend for other packages.
     (setq all-the-icons-dired-monochrome nil))
 #+end_src
 
+** =emojify=
+Cringe stuff.
+#+begin_src emacs-lisp
+  (use-package emojify
+    :hook (after-init . global-emojify-mode))
+#+end_src
+
 ** =which-key=
 Helps you with commands -- it shows suggestions while you're typing.
 #+begin_src emacs-lisp
@@ -494,11 +506,11 @@ On-the-fly spellchecking.
   (add-hook 'text-mode-hook 'flyspell-mode)
   (add-hook 'org-mode-hook 'flyspell-mode)
 
-  (add-hook
-   'prog-mode-hook
-   (lambda ()
-     (ispell-change-dictionary "english")
-     (flyspell-prog-mode)))
+  ;(add-hook
+  ; 'prog-mode-hook
+  ; (lambda ()
+  ;   (ispell-change-dictionary "english")
+  ;   (flyspell-prog-mode)))
 #+end_src
 
 ** =auto-package-update=
@@ -809,13 +821,19 @@ Provides completion.
 #+begin_src emacs-lisp
   (use-package company
     :diminish company-mode
+    :bind
+    (:map company-active-map
+          ("C-n". company-select-next)
+          ("C-p". company-select-previous)
+          ("M-<". company-select-first)
+          ("M->". company-select-last))
     :config
     (setq company-dabbrev-other-buffers t
           company-dabbrev-code-other-buffers t)
     :hook ((text-mode . company-mode)
            (prog-mode . company-mode)
-           (org-mode . company-mode))
-           (company-mode . yas-minor-mode))
+           (org-mode . company-mode)
+           (company-mode . yas-minor-mode)))
 #+end_src
 
 ** C & C++
@@ -891,6 +909,8 @@ Oof.
 
 ** Rust
 #+begin_src emacs-lisp
+  ;; https://robert.kra.hn/posts/2021-02-07_rust-with-emacs/#code-completion-and-snippets
+
   (use-package rustic
     :init
     (setq rustic-lsp-server 'rust-analyzer)
@@ -898,6 +918,15 @@ Oof.
     :hook ((rustic-mode . (lambda ()
                             (lsp-ui-doc-mode)
                             (company-mode))))
+    :bind (:map rustic-mode-map
+                ("M-j" . lsp-ui-imenu)
+                ("M-?" . lsp-find-references)
+                ("C-c C-c l" . flycheck-list-errors)
+                ("C-c C-c a" . lsp-execute-code-action)
+                ("C-c C-c r" . lsp-rename)
+                ("C-c C-c q" . lsp-workspace-restart)
+                ("C-c C-c Q" . lsp-workspace-shutdown)
+                ("C-c C-c s" . lsp-rust-analyzer-status))
     :config
     (setq rust-indent-method-chain t)
     (setq rustic-format-on-save t))
