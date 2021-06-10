@@ -1,9 +1,8 @@
 ;;; init.el
 
-;;; Better startup/performance.
-;; https://emacs-lsp.github.io/lsp-mode/page/performance/
-(setq gc-cons-threshold 100000000
-      read-process-output-max (* 1024 1024))
+;; We up the gc threshold to temporarily prevent it from running, then reset it later by
+;; enabling `gcmh-mode'. Not resetting it will cause stuttering/freezes.
+(setq gc-cons-threshold most-positive-fixnum)
 
 ;; https://www.masteringemacs.org/article/speed-up-emacs-libjansson-native-elisp-compilation
 (if (and (fboundp 'native-comp-available-p)
@@ -25,10 +24,6 @@
 
 (defun startup/revert-file-name-handler-alist ()
   (setq file-name-handler-alist startup/file-name-handler-alist))
-
-(defun startup/reset-gc ()
-  (setq gc-cons-threshold 10000000
-	gc-cons-percentage 0.1))
 
 (add-hook 'emacs-startup-hook 'startup/revert-file-name-handler-alist)
 (add-hook 'emacs-startup-hook 'startup/reset-gc)
@@ -66,6 +61,13 @@
 (unless (package-installed-p 'modus-themes)
   (package-refresh-contents)
   (package-install 'modus-themes))
+
+;; GCMH - the Garbage Collector Magic Hack
+(use-package gcmh
+  :custom
+  (gcmh-idle-delay 1000)
+  (gcmh-high-cons-threshold (* 16 1024 1024)) ;; 16 MB
+  :hook (after-init . gcmh-mode))
 
 (setq-default shell-file-name "/bin/sh")
 
