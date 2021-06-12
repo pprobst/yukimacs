@@ -21,6 +21,7 @@
       (blue "#5083A9")
       (clear-blue "#6D9AC5")
       (purple "#b294bb")
+      (purple-code "#B68BC4")
       (more-purple "#543D62"))
 
   (custom-theme-set-faces
@@ -41,7 +42,7 @@
    `(font-lock-constant-face ((,class (:foreground ,green))))
    `(font-lock-doc-string-face ((,class (:foreground ,comment))))
    `(font-lock-function-name-face ((,class (:foreground ,clear-blue))))
-   `(font-lock-keyword-face ((,class (:foreground ,purple))))
+   `(font-lock-keyword-face ((,class (:foreground ,purple-code))))
    `(font-lock-string-face ((,class (:foreground ,green))))
    `(font-lock-type-face ((,class (:foreground ,red))))
    `(font-lock-variable-name-face ((,class (:foreground ,foreground))))
