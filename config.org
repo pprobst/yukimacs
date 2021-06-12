@@ -486,6 +486,7 @@ Highlight words like "TODO" etc. during programming.
     (setq hl-todo-keyword-faces
       '(("FIXME" error bold)
         ("TODO" org-todo)
+        ("DONE" org-done)
         ("NOTE" bold))))
 #+end_src
 
