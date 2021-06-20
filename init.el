@@ -63,6 +63,7 @@
 
 ;; GCMH - the Garbage Collector Magic Hack
 (use-package gcmh
+  :diminish
   :custom
   (gcmh-idle-delay 1000)
   (gcmh-high-cons-threshold (* 16 1024 1024)) ;; 16 MB
@@ -92,6 +93,6 @@
    '("c493feac62227a461d56be5798cb188d4f1da0cfa8c0406f499d1422adb9baa2" default))
  '(org-export-backends '(ascii beamer html icalendar latex man md odt))
  '(package-selected-packages
-   '(emojify toc-org cmake-mode guess-language hl-todo highlight-numbers company-reftex company-math company-auctex auctex marginalia lsp-haskell haskell-mode evil-org org-superstar treemacs-projectile evil-collection treemacs-all-the-icons all-the-icons-dired all-the-icons evil-nerd-commenter ccls no-littering ctrlf orderless popup-kill-ring helpful company-lsp lsp-python-ms flycheck-rust rustic powerline treemacs-magit magit slime-company slime company-jedi company-irony company-c-headers flycheck-clang-analyzer dap-mode auto-yasnippet yasnippet-snippets lsp-ui yasnippet company dashboard treemacs-evil treemacs rainbow-delimiters rainbow-mode switch-window avy ido-vertical-mode auto-package-update beacon evil which-key diminish htmlize doom-themes spacemacs-theme use-package)))
+   '(exec-path-from-shell emojify toc-org cmake-mode guess-language hl-todo highlight-numbers company-reftex company-math company-auctex auctex marginalia lsp-haskell haskell-mode evil-org org-superstar treemacs-projectile evil-collection treemacs-all-the-icons all-the-icons-dired all-the-icons evil-nerd-commenter ccls no-littering ctrlf orderless popup-kill-ring helpful company-lsp lsp-python-ms flycheck-rust rustic powerline treemacs-magit magit slime-company slime company-jedi company-irony company-c-headers flycheck-clang-analyzer dap-mode auto-yasnippet yasnippet-snippets lsp-ui yasnippet company dashboard treemacs-evil treemacs rainbow-delimiters rainbow-mode switch-window avy ido-vertical-mode auto-package-update beacon evil which-key diminish htmlize doom-themes spacemacs-theme use-package)))
 
 ;;; init.el ends here

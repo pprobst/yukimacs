@@ -40,6 +40,7 @@ The font is [[https://gitlab.com/protesilaos/iosevka-comfy][Iosevka Comfy]].
   - [[#reloading-the-configuration][Reloading the configuration]]
 - [[#general-packages][General packages]]
   - [[#diminish][=diminish=]]
+  - [[#exec-path-from-shell][=exec-path-from-shell=]]
   - [[#no-littering][=no-littering=]]
   - [[#all-the-icons][=all-the-icons=]]
   - [[#emojify][=emojify=]]
@@ -350,7 +351,7 @@ When at the end of the "page", scroll just one line at a time.
 
 ** Highlights current line
 #+begin_src emacs-lisp
-  (when window-system (global-hl-line-mode t))
+  (add-hook 'after-init-hook 'global-hl-line-mode)
 #+end_src
 
 ** Bracket pair-matching
@@ -386,6 +387,17 @@ When at the end of the "page", scroll just one line at a time.
 Hides minor modes to prevent clutter.
 #+begin_src emacs-lisp
   (use-package diminish)
+#+end_src
+
+** =exec-path-from-shell=
+A GNU Emacs library to ensure environment variables inside Emacs look the same as in the user's shell.
+#+begin_src emacs-lisp
+  (use-package exec-path-from-shell
+    :init)
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize))
+  (when (daemonp)
+    (exec-path-from-shell-initialize))
 #+end_src
 
 ** =no-littering=
@@ -738,6 +750,9 @@ Display ugly ^L page breaks as tidy horizontal lines.
               "Open yukimacs' config file for easy editing"
               (lambda (&rest _) (find-file "~/.emacs.d/config.org"))
               'default)))))
+
+  ;; With Emacs as daemon mode, when running `emacsclient`, open *dashboard* instead of *scratch*.
+  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
 #+end_src
 
 * Programming                                                           :TOC:
