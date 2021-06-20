@@ -61,7 +61,6 @@ The font is [[https://gitlab.com/protesilaos/iosevka-comfy][Iosevka Comfy]].
   - [[#powerline][=powerline=]]
   - [[#doom-modeline][=doom-modeline=]]
   - [[#treemacs][=treemacs=]]
-  - [[#centaur-tabs][=centaur-tabs=]]
   - [[#page-break-lines][=page-break-lines=]]
   - [[#dashboard][=dashboard=]]
 - [[#programming][Programming]]
@@ -108,7 +107,7 @@ Remove your current =~/.emacs= and =~/.emacs.d=.
 
 =git clone https://github.com/pprobst/yukimacs ~/.emacs.d=
 
-Or, preferably, pick what you want separately.
+Or, preferably, pick what you want se
 * =Org= mode                                                              :TOC:
 You might've heard of people that use Emacs just because of [[https://orgmode.org/][Org]] mode. Folks use it for a myriad of reasons; from simple note-taking to literate programming and computational notebooks. This configuration file itself is in Org mode, with small sections of Emacs Lisp.
 
@@ -684,20 +683,6 @@ Alternative to powerline. Choose powerline or doom-modeline.
     :after (treemacs dired)
     :config (treemacs-icons-dired-mode))
   #+end_src
-
-** =centaur-tabs=
-Tabs! Disabled by default.
-#+begin_src emacs-lisp
-  (use-package centaur-tabs
-    :disabled
-    :demand
-    :config
-    (setq centaur-tabs-set-bar 'box
-          centaur-tabs-set-icons t
-          centaur-tabs-gray-out-icons 'buffer
-          centaur-tabs-height 24)
-    (centaur-tabs-mode t))
-#+end_src
 
 ** =page-break-lines=
 Display ugly ^L page breaks as tidy horizontal lines.
