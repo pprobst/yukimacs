@@ -12,6 +12,7 @@ The font is [[https://gitlab.com/protesilaos/iosevka-comfy][Iosevka Comfy]].
 - [[#installing][Installing]]
   - [[#1-install-the-dependencies-if-you-need-them][1. Install the dependencies if you need them.]]
   - [[#2-clone-this-repository][2. =clone= this repository.]]
+- [[#themes][Themes]]
 - [[#org-mode][=Org= mode]]
 - [[#eshell][Eshell]]
   - [[#prompt][Prompt]]
@@ -51,7 +52,6 @@ The font is [[https://gitlab.com/protesilaos/iosevka-comfy][Iosevka Comfy]].
   - [[#highlight-numbers][=highlight-numbers=]]
   - [[#hl-todo][=hl-todo=]]
   - [[#flyspell][=flyspell=]]
-  - [[#auto-package-update][=auto-package-update=]]
   - [[#avy][=avy=]]
   - [[#selectrum][=selectrum=]]
   - [[#marginalia][=marginalia=]]
@@ -108,6 +108,16 @@ Remove your current =~/.emacs= and =~/.emacs.d=.
 =git clone https://github.com/pprobst/yukimacs ~/.emacs.d=
 
 Or, preferably, pick what you want separately.
+* Themes                                                                :TOC:
+#+begin_src emacs-lisp
+  (use-package spacemacs-theme
+    :defer t)
+  (use-package doom-themes
+    :defer t)
+  (use-package modus-themes
+    :defer t)
+#+end_src
+
 * =Org= mode                                                              :TOC:
 You might've heard of people that use Emacs just because of [[https://orgmode.org/][Org]] mode. Folks use it for a myriad of reasons; from simple note-taking to literate programming and computational notebooks. This configuration file itself is in Org mode, with small sections of Emacs Lisp.
 
@@ -137,7 +147,7 @@ You might've heard of people that use Emacs just because of [[https://orgmode.or
       ;(setq org-startup-with-inline-images t)
       (add-hook 'org-mode-hook 'org-indent-mode)
       (add-hook 'org-mode-hook 'prettify-symbols-mode)
-      (add-hook 'org-mode-hook 'org-toggle-pretty-entities)
+      ;(add-hook 'org-mode-hook 'org-toggle-pretty-entities)
       (add-hook 'org-mode-hook
                 '(lambda ()
                    (visual-line-mode 1))))
@@ -149,13 +159,13 @@ You might've heard of people that use Emacs just because of [[https://orgmode.or
   (setq org-src-window-setup 'current-window)
 
   (use-package org-indent
-      :ensure nil
-      :diminish org-indent-mode)
+      :diminish
+      :straight nil)
 
   (setq org-todo-keywords
           '((sequence
              "TODO(t)"
-             "WAIT(w)" 
+             "WAIT(w)"
              "|"                 ; Separates "active" and "inactive" states.
              "DONE(d)"
              "CANCELLED(c)" )))
@@ -175,6 +185,7 @@ You might've heard of people that use Emacs just because of [[https://orgmode.or
 
   ;; Evil bindings for Org mode
   (use-package evil-org
+    :diminish
     :after (evil org)
     :config
     (add-hook 'org-mode-hook 'evil-org-mode)
@@ -411,7 +422,7 @@ Keep folders clean.
 ** =all-the-icons=
 Icons on Emacs. Backend for other packages.
 #+begin_src emacs-lisp
-  ;; Run M-x all-the-icons-install-fonts 
+  ;; Run M-x all-the-icons-install-fonts
   (use-package all-the-icons
     :commands all-the-icons-install-fonts
     :init
@@ -438,7 +449,7 @@ Cringe stuff.
 Helps you with commands -- it shows suggestions while you're typing.
 #+begin_src emacs-lisp
   (use-package which-key
-    :diminish which-key-mode
+    :diminish
     :init (which-key-mode))
 #+end_src
 
@@ -456,6 +467,7 @@ Useful if, like me, you've been a Vim user for some time.
 
   ;; Extra bindings for Evil
   (use-package evil-collection
+    :diminish evil-collection-unimpaired-mode
     :after (evil)
     :config
     (evil-collection-init))
@@ -476,7 +488,7 @@ Browse through your kill-ring with M-y instead of merely "cycling" through it. U
 Briefly highlights the cursor when switching windows/buffers.
 #+begin_src emacs-lisp
   (use-package beacon
-    :diminish beacon-mode
+    :diminish
     :init
     (beacon-mode 1))
 #+end_src
@@ -508,7 +520,6 @@ On-the-fly spellchecking.
     :diminish flyspell-mode)
 
   (use-package guess-language
-    :ensure t
     :config
     (setq guess-language-languages '(en pt))
     (setq guess-language-min-paragraph-length 10)
@@ -523,19 +534,6 @@ On-the-fly spellchecking.
   ; (lambda ()
   ;   (ispell-change-dictionary "english")
   ;   (flyspell-prog-mode)))
-#+end_src
-
-** =auto-package-update=
-Automatically updates packages (and removes old ones).
-#+begin_src emacs-lisp
-  (use-package auto-package-update
-    :custom
-    (auto-package-update-interval 7)
-    (auto-package-update-prompt-before-update t)
-    (auto-package-update-hide-results t)
-    :config
-    (auto-package-update-maybe)
-    (auto-package-update-at-time "12:00"))
 #+end_src
 
 ** =avy=
@@ -619,12 +617,12 @@ Don't keep using C-x o to switch windows anymore.
 =rainbow-mode= highlights color hexadecimals with the appropriate color, while =rainbow-delimiters= colors delimiters (e.g. parentheses).
 #+begin_src emacs-lisp
   (use-package rainbow-mode
-    :diminish rainbow-mode
+    :diminish
     :init
       (add-hook 'prog-mode-hook 'rainbow-mode))
 
   (use-package rainbow-delimiters
-    :diminish rainbow-delimiters-mode
+    :diminish
     :init
       (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 #+end_src
@@ -632,7 +630,7 @@ Don't keep using C-x o to switch windows anymore.
 ** =powerline=
 #+begin_src emacs-lisp
   (use-package powerline
-     ;:disabled 
+     ;:disabled
      :config
      (setq powerline-default-separator 'bar)
      :init
@@ -710,8 +708,7 @@ Display ugly ^L page breaks as tidy horizontal lines.
     (setq dashboard-banner-logo-title "Y U K I M A C S")
     (setq dashboard-startup-banner "~/.emacs.d/img/yukimacs-logo.png")
     (setq dashboard-center-content t)
-    (setq dashboard-init-info (format "%d packages loaded in %s"
-                                      (length package-activated-list) (emacs-init-time)))
+    (setq dashboard-init-info (format "Loaded in %s" (emacs-init-time)))
     ;(setq dashboard-set-footer nil)
     (setq dashboard-footer-messages '("\"It's a Wonderful Everyday!\""))
     (setq dashboard-footer-icon "")
@@ -770,7 +767,7 @@ Useful snippets.
 Syntax checking.
 #+begin_src emacs-lisp
   (use-package flycheck
-    :diminish flycheck-mode
+    :diminish
     :hook (after-init . global-flycheck-mode)
     :custom
     (flycheck-check-syntax-automatically '(save mode-enabled)))
@@ -780,7 +777,7 @@ Syntax checking.
 Display documentation (e.g. arguments of a function).
 #+begin_src emacs-lisp
   (use-package eldoc
-    :diminish eldoc-mode
+    :diminish
     :hook (after-init . global-eldoc-mode))
 #+end_src
 
@@ -821,7 +818,7 @@ Language server. Will provide us with IDE-like features.
 Provides completion.
 #+begin_src emacs-lisp
   (use-package company
-    :diminish company-mode
+    :diminish
     :bind
     (:map company-active-map
           ("C-n". company-select-next)
