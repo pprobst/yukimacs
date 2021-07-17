@@ -8,6 +8,8 @@ A GNU/Emacs config built from the ground up (no Spacemacs or Doom Emacs), /heavi
 
 The font is [[https://gitlab.com/protesilaos/iosevka-comfy][Iosevka Comfy]].
 
+I highly recommend you to use [[https://www.emacswiki.org/emacs/EmacsAsDaemon][Emacs as a daemon]].
+
 * Table of Contents                                                     :TOC:
 - [[#installing][Installing]]
   - [[#1-install-the-dependencies-if-you-need-them][1. Install the dependencies if you need them.]]
@@ -77,6 +79,8 @@ The font is [[https://gitlab.com/protesilaos/iosevka-comfy][Iosevka Comfy]].
   - [[#haskell][Haskell]]
   - [[#rust][Rust]]
   - [[#go][Go]]
+  - [[#ron][RON]]
+  - [[#json][JSON]]
   - [[#yaml][Yaml]]
   - [[#markdown][Markdown]]
   - [[#latex][LaTeX]]
@@ -868,6 +872,11 @@ Oof.
     :hook (python-mode . (lambda ()
                            (require 'lsp-python-ms)
                            (lsp))))
+
+  ;; Reformat python code with black
+  (use-package python-black
+    :after python
+    :hook (python-mode . python-black-on-save-mode-enable-dwim))
 #+end_src
 
 ** Lisp
@@ -936,6 +945,19 @@ Oof.
 #+begin_src emacs-lisp
   ;(use-package go-mode
   ;  :hook (go-mode . lsp-deferred))
+#+end_src
+
+** RON
+Syntax highlights Rusty Object Notation
+#+begin_src emacs-lisp
+    (use-package ron-mode
+      :mode (("\\.ron\\'" . ron-mode)))
+#+end_src
+
+** JSON
+#+begin_src emacs-lisp
+  (use-package json-mode
+    :mode (("\\.json\\'" . json-mode)))
 #+end_src
 
 ** Yaml
