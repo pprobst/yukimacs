@@ -4,6 +4,8 @@
 
 A GNU/Emacs config built from the ground up (no Spacemacs or Doom Emacs), /heavily/ inspired by [[https://github.com/daedreth/UncleDavesEmacs/][Uncle Dave's Emacs]] and [[https://github.com/snackon/Witchmacs][Witchmacs]].
 
+Contributions are very welcome.
+
 [[./screenshot.png]]
 
 The font is [[https://gitlab.com/protesilaos/iosevka-comfy][Iosevka Comfy]].
@@ -61,9 +63,9 @@ I highly recommend you to use [[https://www.emacswiki.org/emacs/EmacsAsDaemon][E
   - [[#switch-window][=switch-window=]]
   - [[#rainbow][=rainbow=]]
   - [[#powerline][=powerline=]]
-  - [[#doom-modeline][=doom-modeline=]]
   - [[#treemacs][=treemacs=]]
   - [[#page-break-lines][=page-break-lines=]]
+  - [[#sublimity][=sublimity=]]
   - [[#dashboard][=dashboard=]]
 - [[#programming][Programming]]
   - [[#projectile][=projectile=]]
@@ -88,6 +90,8 @@ I highly recommend you to use [[https://www.emacswiki.org/emacs/EmacsAsDaemon][E
 - [[#disclaimer][DISCLAIMER]]
 
 * Installing                                                            :TOC:
+Instead of directly cloning and using this, it's preferable if you read both =init.el= and =config.org=, understand what each section does, and pick what you want separately. [[https://www.youtube.com/watch?v=d6iY_1aMzeg&list=PLX2044Ew-UVVv31a0-Qn3dA6Sd_-NyA1n&index=1][Uncle Dave's]] videos are probably the best introduction to Emacs out there -- the audio is terrible, but the content is great and easy to follow.
+
 ** 1. Install the dependencies if you need them.
 
 =aspell=, =aspell-en=
@@ -106,13 +110,16 @@ I highly recommend you to use [[https://www.emacswiki.org/emacs/EmacsAsDaemon][E
 
 =rust-analyzer=
 
+=gopls=
+
 ** 2. =clone= this repository.
-Remove your current =~/.emacs= and =~/.emacs.d=.
+Remove your current =~/.emacs= and =~/.emacs.d=. Then,
 
 =git clone https://github.com/pprobst/yukimacs ~/.emacs.d=
 
-Or, preferably, pick what you want separately.
 * Themes                                                                :TOC:
+These are some nice themes that you can choose if you want some extra flavor.
+
 #+begin_src emacs-lisp
   (use-package spacemacs-theme
     :defer t)
@@ -644,18 +651,6 @@ Don't keep using C-x o to switch windows anymore.
      ('after-init-hook) . 'powerline-reset)
 #+end_src
 
-** =doom-modeline=
-Alternative to powerline. Choose powerline or doom-modeline.
-#+begin_src emacs-lisp
-  (use-package doom-modeline
-    :disabled
-    :config
-    (setq doom-modeline-height 30)
-    (setq doom-modeline-bar-width 4)
-    (setq doom-modeline-minor-modes t)
-    :hook (after-init . doom-modeline-mode))
-#+end_src
-
 ** =treemacs=
 #+begin_src emacs-lisp
   (use-package treemacs
@@ -693,6 +688,17 @@ Display ugly ^L page breaks as tidy horizontal lines.
     :requires dashboard)
 #+end_src
 
+** =sublimity=
+Smooth-scrolling (=(require 'sublimity-scroll)=), minimap (=(require 'sublimity-map)=) and distraction-free mode (=(require 'sublimity-attractive)=).
+#+begin_src emacs-lisp
+  (use-package sublimity
+    :config
+    (require 'sublimity-scroll)
+    (setq sublimity-scroll-weight 10
+          sublimity-scroll-drift-length 5)
+    (sublimity-mode 1))
+#+end_src
+
 ** =dashboard=
 #+begin_src emacs-lisp
   (use-package dashboard
@@ -707,12 +713,13 @@ Display ugly ^L page breaks as tidy horizontal lines.
     (dashboard-setup-startup-hook)
     (dashboard-modify-heading-icons '((recents . "file-text")
                                       (bookmarks . "book")))
-    (setq dashboard-items '((recents  . 5)))
-                            ;(projects . 5)))
+    (setq dashboard-items '((recents  . 5)
+                            (bookmarks . 5)
+                            (projects . 5)))
     (setq dashboard-banner-logo-title "Y U K I M A C S")
     (setq dashboard-startup-banner "~/.emacs.d/img/yukimacs-logo.png")
     (setq dashboard-center-content t)
-    (setq dashboard-init-info (format "Loaded in %s" (emacs-init-time)))
+    ;(setq dashboard-init-info (format "Loaded in %s" (emacs-init-time)))
     ;(setq dashboard-set-footer nil)
     (setq dashboard-footer-messages '("\"It's a Wonderful Everyday!\""))
     (setq dashboard-footer-icon "")
@@ -943,8 +950,8 @@ Oof.
 
 ** Go
 #+begin_src emacs-lisp
-  ;(use-package go-mode
-  ;  :hook (go-mode . lsp-deferred))
+  (use-package go-mode
+    :hook (go-mode . lsp-deferred))
 #+end_src
 
 ** RON
