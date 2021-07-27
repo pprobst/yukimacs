@@ -3,11 +3,11 @@
 (deftheme yukimacs "2021-05-19")
 
 (let ((class '((class color) (min-colors 89)))
-      (background "#0F0F0F")
-      (fringe-color "#171717")
-      (current-line "#1A1A1A")
+      (background "#000000")
+      (fringe-color "#0A0A0A")
+      (current-line "#141414")
       (selection "#323333")
-      (foreground "#D2D5D6")
+      (foreground "#ffffff")
       (comment "#A5A7A8")
       (cursor "#B9BCBD")
       (red "#CC6666")
@@ -89,9 +89,9 @@
 
    `(powerline-active0 ((,class (:inherit mode-line))))
    `(powerline-active1 ((,class (:inherit mode-line :background ,fringe-color :foreground ,foreground))))
-   `(powerline-active2 ((,class (:inherit mode-line :background "#1c1c1c" :foreground ,purple))))
+   `(powerline-active2 ((,class (:inherit mode-line :background ,current-line :foreground ,purple))))
    `(powerline-inactive1 ((,class (:inherit mode-line-inactive :background ,fringe-color))))
-   `(powerline-inactive2 ((,class (:inherit mode-line-inactive :background "#0f0f0f"))))
+   `(powerline-inactive2 ((,class (:inherit mode-line-inactive :background ,background))))
 
    `(dashboard-text-banner ((,class (:foreground ,purple))))
    `(dashboard-heading ((,class (:foreground ,purple)))))
