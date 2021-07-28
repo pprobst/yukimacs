@@ -346,6 +346,13 @@ When at the end of the "page", scroll just one line at a time.
   (setq c-basic-offset tab-width)
   (setq-default electric-indent-inhibit t)
   (setq backward-delete-char-untabify-method 'nil)
+
+  (use-package highlight-indent-guides
+    :diminish highlight-indent-guides-mode
+    :hook (prog-mode . highlight-indent-guides-mode)
+    :config
+    (setq highlight-indent-guides-method 'character
+          highlight-indent-guides-responsive 'top))
 #+end_src
 
 ** No line wrap in prog-mode
