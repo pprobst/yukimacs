@@ -18,6 +18,7 @@ I highly recommend you to use [[https://www.emacswiki.org/emacs/EmacsAsDaemon][E
   - [[#2-clone-this-repository][2. =clone= this repository.]]
 - [[#themes][Themes]]
 - [[#org-mode][=Org= mode]]
+  - [[#general][General]]
 - [[#eshell][Eshell]]
   - [[#prompt][Prompt]]
   - [[#aliases][Aliases]]
@@ -65,7 +66,6 @@ I highly recommend you to use [[https://www.emacswiki.org/emacs/EmacsAsDaemon][E
   - [[#powerline][=powerline=]]
   - [[#treemacs][=treemacs=]]
   - [[#page-break-lines][=page-break-lines=]]
-  - [[#sublimity][=sublimity=]]
   - [[#dashboard][=dashboard=]]
 - [[#programming][Programming]]
   - [[#projectile][=projectile=]]
@@ -121,15 +121,13 @@ Remove your current =~/.emacs= and =~/.emacs.d=. Then,
 These are some nice themes that you can choose if you want some extra flavor.
 
 #+begin_src emacs-lisp
-  (use-package spacemacs-theme
-    :defer t)
-  (use-package doom-themes
-    :defer t)
-  (use-package modus-themes
-    :defer t)
+  (use-package spacemacs-theme :defer t)
+  (use-package doom-themes :defer t)
+  (use-package modus-themes :defer t)
 #+end_src
 
 * =Org= mode                                                              :TOC:
+** General
 You might've heard of people that use Emacs just because of [[https://orgmode.org/][Org]] mode. Folks use it for a myriad of reasons; from simple note-taking to literate programming and computational notebooks. This configuration file itself is in Org mode, with small sections of Emacs Lisp.
 
 #+begin_src emacs-lisp
@@ -695,17 +693,6 @@ Display ugly ^L page breaks as tidy horizontal lines.
     :requires dashboard)
 #+end_src
 
-** =sublimity=
-Smooth-scrolling (=(require 'sublimity-scroll)=), minimap (=(require 'sublimity-map)=) and distraction-free mode (=(require 'sublimity-attractive)=).
-#+begin_src emacs-lisp
-  (use-package sublimity
-    :config
-    (require 'sublimity-scroll)
-    (setq sublimity-scroll-weight 10
-          sublimity-scroll-drift-length 5)
-    (sublimity-mode 1))
-#+end_src
-
 ** =dashboard=
 #+begin_src emacs-lisp
   (use-package dashboard
@@ -850,6 +837,11 @@ Provides completion.
            (prog-mode . company-mode)
            (org-mode . company-mode)
            (company-mode . yas-minor-mode)))
+
+  (use-package company-prescient
+    :after (selectrum company)
+    :config
+    (company-prescient-mode 1))
 #+end_src
 
 ** C & C++

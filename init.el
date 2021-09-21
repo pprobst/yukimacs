@@ -85,7 +85,8 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(yukimacs))
  '(custom-safe-themes
-   '("f16fcabba9ca65097d2373c32de76a939e1d8d2bf62521b643f5e81c68ede694" default)))
+   '("af4b5aff75a5d012079df291d327ed6e25ca5b17cf8b6c2ee7be0145f8c9fb52" default))
+ '(org-agenda-files '("agenda.org")))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
