@@ -69,6 +69,8 @@
 
 (setq-default shell-file-name "/bin/sh")
 
+(straight-use-package 'org)
+
 ;; Add local packages
 (add-to-list 'load-path "~/.emacs.d/local")
 

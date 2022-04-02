@@ -106,8 +106,6 @@ Instead of directly cloning and using this, it's preferable if you read both =in
 
 =haskell-language-server=
 
-=python-lsp-server=
-
 =rustup component add rust-src=
 
 =rust-analyzer=
@@ -824,26 +822,31 @@ Language server. Will provide us with IDE-like features.
 ** =company=
 Provides completion.
 #+begin_src emacs-lisp
-  (use-package company
-    :diminish
-    :bind
-    (:map company-active-map
-          ("C-n". company-select-next)
-          ("C-p". company-select-previous)
-          ("M-<". company-select-first)
-          ("M->". company-select-last))
-    :config
-    (setq company-dabbrev-other-buffers t
-          company-dabbrev-code-other-buffers t)
-    :hook ((text-mode . company-mode)
-           (prog-mode . company-mode)
-           (org-mode . company-mode)
-           (company-mode . yas-minor-mode)))
+    (use-package company
+      :after lsp-mode
+      :diminish
+      :bind
+      (:map company-active-map
+            ("C-n". company-select-next)
+            ("C-p". company-select-previous)
+            ("M-<". company-select-first)
+            ("M->". company-select-last))
+      :config
+      (setq company-dabbrev-other-buffers t
+            company-dabbrev-code-other-buffers t)
+      :hook ((text-mode . company-mode)
+             (prog-mode . company-mode)
+             (org-mode . company-mode)
+             (company-mode . yas-minor-mode)
+             (lsp-mode . company-mode)))
 
-  (use-package company-prescient
-    :after (selectrum company)
-    :config
-    (company-prescient-mode 1))
+    (use-package company-box
+      :hook (company-mode . company-box-mode))
+
+    (use-package company-prescient
+      :after (selectrum company)
+      :config
+      (company-prescient-mode 1))
 #+end_src
 
 ** C & C++
@@ -874,18 +877,33 @@ Oof.
 
 ** Python
 #+begin_src emacs-lisp
+  (use-package python-mode
+    :ensure t
+    :hook (python-mode . lsp-deferred)
+    :custom
+    ;; NOTE: Set these if Python 3 is called "python3" on your system!
+    ;; (python-shell-interpreter "python3")
+    ;; (dap-python-executable "python3")
+    (dap-python-debugger 'debugpy)
+    :config
+    (require 'dap-python))
+
   (add-hook 'python-mode-hook 'yas-minor-mode)
 
-  (use-package lsp-python-ms
+  (use-package lsp-pyright
+    :ensure t
     :hook (python-mode . (lambda ()
-                           (require 'lsp-python-ms)
-                           (lsp))))
+                         (require 'lsp-pyright)
+                         (lsp))))  ; or lsp-deferred
 
   ;; Reformat python code with black
-  (use-package python-black
+  (use-package blacken
+    :ensure t
+    :diminish
     :after python
-    :hook (python-mode . python-black-on-save-mode-enable-dwim))
-#+end_src
+    :hook (python-mode . blacken-mode)
+    :custom (blacken-line-length 79))
+    #+end_src
 
 ** Lisp
 #+begin_src emacs-lisp
