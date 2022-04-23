@@ -74,12 +74,6 @@
 ;; Add local packages
 (add-to-list 'load-path "~/.emacs.d/local")
 
-;; Loads config
-(when (file-readable-p "~/.emacs.d/config.org")
-  (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -88,6 +82,7 @@
  '(custom-enabled-themes '(yukimacs))
  '(custom-safe-themes
    '("af4b5aff75a5d012079df291d327ed6e25ca5b17cf8b6c2ee7be0145f8c9fb52" default))
+ '(highlight-indent-guides-auto-odd-face-perc 5)
  '(org-agenda-files '("agenda.org")))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -97,5 +92,10 @@
  '(default ((t (:inherit nil :stipple nil :background "#000000" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :extend nil :overline nil :underline nil :slant normal :weight regular :height 120 :width normal :foundry "UKWN" :family "Iosevka Comfy"))))
  '(fixed-pitch ((t (:family "Iosevka Comfy"))))
  '(variable-pitch ((t (:family "Iosevka Comfy")))))
+
+;; Loads config
+(when (file-readable-p "~/.emacs.d/config.org")
+  (org-babel-load-file (expand-file-name "~/.emacs.d/config.org")))
+
 
 ;;; init.el ends here

@@ -27,6 +27,7 @@ I highly recommend you to use [[https://www.emacswiki.org/emacs/EmacsAsDaemon][E
   - [[#open-files-as-root][Open files as root]]
   - [[#super-control-ret-to-open-eshell][Super-Control-RET to open Eshell]]
 - [[#qol][QoL]]
+  - [[#fill-spaces][Fill spaces]]
   - [[#y-or-n-instead-of-yes-or-no-when-confirming]['y' or 'n' instead of 'yes' or 'no' when confirming]]
   - [[#disable-backup-files][Disable backup files]]
   - [[#show-line-numbers][Show line numbers]]
@@ -34,6 +35,7 @@ I highly recommend you to use [[https://www.emacswiki.org/emacs/EmacsAsDaemon][E
   - [[#new-lines-at-the-end-of-the-file][New lines at the end of the file]]
   - [[#utf-8-everywhere][UTF-8 everywhere]]
   - [[#change-gui-elements][Change GUI elements]]
+  - [[#fringe-mode][Fringe mode]]
   - [[#enable-copy-pasting-outside-of-emacs][Enable copy-pasting outside of Emacs]]
   - [[#disable-the-default-startup-screen][Disable the default startup screen]]
   - [[#conservative-scroll][Conservative scroll]]
@@ -260,6 +262,12 @@ You might've heard of people that use Emacs just because of [[https://orgmode.or
 
 * QoL                                                                   :TOC:
 Quality-of-life modifications.
+** Fill spaces
+#+begin_src emacs-lisp
+  ; (setq window-resize-pixelwise t)
+  (setq frame-resize-pixelwise t)
+#+end_src
+
 ** 'y' or 'n' instead of 'yes' or 'no' when confirming
 #+begin_src emacs-lisp
   (defalias 'yes-or-no-p 'y-or-n-p)
@@ -301,7 +309,15 @@ Quality-of-life modifications.
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
+#+end_src
+
+** Fringe mode
+#+begin_src emacs-lisp
   (set-fringe-mode 7)
+  ; (setq-default fringes-outside-margins nil)
+  ; (setq-default indicate-buffer-boundaries nil)
+  ; (setq-default indicate-empty-lines nil)
+  ; (setq-default overflow-newline-into-fringe t)
 #+end_src
 
 ** Enable copy-pasting outside of Emacs
@@ -315,9 +331,8 @@ Quality-of-life modifications.
 #+end_src
 
 ** Conservative scroll
-When at the end of the "page", scroll just one line at a time.
 #+begin_src emacs-lisp
-  (setq scroll-conservatively 100)
+  (setq scroll-conservatively 1)
 #+end_src
 
 ** Disable ring bell sound
@@ -347,10 +362,15 @@ When at the end of the "page", scroll just one line at a time.
 
   (use-package highlight-indent-guides
     :diminish highlight-indent-guides-mode
-    :hook (prog-mode . highlight-indent-guides-mode)
+    :hook ((prog-mode . (lambda ()
+                        (highlight-indent-guides-mode)
+                        (highlight-indent-guides-auto-set-faces))))
     :config
     (setq highlight-indent-guides-method 'character
-          highlight-indent-guides-responsive 'top))
+          highlight-indent-guides-responsive 'top
+          highlight-indent-guides-delay 0))
+
+  ; (highlight-indent-guides-auto-set-faces)
 #+end_src
 
 ** No line wrap in prog-mode
@@ -817,6 +837,9 @@ Language server. Will provide us with IDE-like features.
     :commands lsp-treemacs
     :config
     (lsp-treemacs-sync-mode 1))
+
+  (setq lsp-lens-enable nil)
+  ;(setq lsp-enable-file-watchers nil)
 #+end_src
 
 ** =company=
@@ -830,10 +853,16 @@ Provides completion.
             ("C-n". company-select-next)
             ("C-p". company-select-previous)
             ("M-<". company-select-first)
-            ("M->". company-select-last))
+            ("M->". company-select-last)
+            ("<tab>" . company-complete-selection))
+    (:map lsp-mode-map
+            ("<tab>" . company-indent-or-complete-common))
       :config
       (setq company-dabbrev-other-buffers t
             company-dabbrev-code-other-buffers t)
+      :custom
+      (company-minimum-prefix-length 1)
+      (company-idle-delay 0.0)
       :hook ((text-mode . company-mode)
              (prog-mode . company-mode)
              (org-mode . company-mode)
@@ -851,12 +880,6 @@ Provides completion.
 
 ** C & C++
 #+begin_src emacs-lisp
-  (add-hook 'c++-mode-hook 'yas-minor-mode)
-  (add-hook 'c-mode-hook 'yas-minor-mode)
-
-  (add-hook 'c-mode-hook 'lsp)
-  (add-hook 'c++-mode-hook 'lsp)
-
   (use-package ccls
     :config
     (setq ccls-executable "ccls")
@@ -864,7 +887,7 @@ Provides completion.
     (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
     (setq ccls-sem-highlight-method 'overlay)
     :hook ((c-mode c++-mode) .
-           (lambda () (require 'ccls) (lsp))))
+           (lambda () (require 'ccls) (lsp) (yas-minor-mode))))
 
   (setq-default c-basic-offset 4)
 #+end_src
@@ -890,10 +913,17 @@ Oof.
 
   (add-hook 'python-mode-hook 'yas-minor-mode)
 
-  (use-package lsp-pyright
+  ;(use-package lsp-pyright
+  ;  :ensure t
+  ;  :hook (python-mode . (lambda ()
+  ;                       (require 'lsp-pyright)
+  ;                       (lsp))))  ; or lsp-deferred
+
+  (use-package lsp-python-ms
     :ensure t
+    :init (setq lsp-python-ms-auto-install-server t)
     :hook (python-mode . (lambda ()
-                         (require 'lsp-pyright)
+                         (require 'lsp-python-ms)
                          (lsp))))  ; or lsp-deferred
 
   ;; Reformat python code with black
@@ -950,7 +980,8 @@ Oof.
     (setq rustic-flycheck-setup-mode-line-p nil)
     :hook ((rustic-mode . (lambda ()
                             (lsp-ui-doc-mode)
-                            (company-mode))))
+                            (company-mode)
+                            (yas-minor-mode))))
     :bind (:map rustic-mode-map
                 ("M-j" . lsp-ui-imenu)
                 ("M-?" . lsp-find-references)
