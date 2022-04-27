@@ -81,7 +81,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(yukimacs))
  '(custom-safe-themes
-   '("af4b5aff75a5d012079df291d327ed6e25ca5b17cf8b6c2ee7be0145f8c9fb52" default))
+   '("1a20dbca45dffeeacfd2b5fea5d8f5e345189f2e3c46cffd19d7e0f2d6111490" default))
  '(highlight-indent-guides-auto-odd-face-perc 5)
  '(org-agenda-files '("agenda.org")))
 (custom-set-faces
@@ -90,6 +90,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "#000000" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :extend nil :overline nil :underline nil :slant normal :weight regular :height 120 :width normal :foundry "UKWN" :family "Iosevka Comfy"))))
+ '(company-tooltip-selection ((t (:inherit company-tooltip-selection :extend t))))
  '(fixed-pitch ((t (:family "Iosevka Comfy"))))
  '(variable-pitch ((t (:family "Iosevka Comfy")))))
 

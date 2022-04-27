@@ -93,6 +93,8 @@
    `(powerline-inactive1 ((,class (:inherit mode-line-inactive :background ,fringe-color))))
    `(powerline-inactive2 ((,class (:inherit mode-line-inactive :background ,background))))
 
+   `(company-tooltip-selection ((,class (:foreground ,foreground :background ,selection))))
+
    `(dashboard-text-banner ((,class (:foreground ,purple))))
    `(dashboard-heading ((,class (:foreground ,purple)))))
 
