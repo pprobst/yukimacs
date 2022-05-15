@@ -55,6 +55,7 @@ I highly recommend you to use [[https://www.emacswiki.org/emacs/EmacsAsDaemon][E
   - [[#all-the-icons][=all-the-icons=]]
   - [[#emojify][=emojify=]]
   - [[#which-key][=which-key=]]
+  - [[#undo-tree][=undo-tree=]]
   - [[#evil][=evil=]]
   - [[#popup-kill-ring][=popup-kill-ring=]]
   - [[#beacon][=beacon=]]
@@ -489,6 +490,14 @@ Helps you with commands -- it shows suggestions while you're typing.
     :init (which-key-mode))
 #+end_src
 
+** =undo-tree=
+Better undo; undo + redo. Also, `Ctrl-x u` to have a nice visualization of the undo-tree.
+#+begin_src emacs-lisp
+  (use-package undo-tree
+    :config
+    (global-undo-tree-mode 1))
+#+end_src
+
 ** =evil=
 Imports keybindings and some functionalities from Vi.
 Useful if, like me, you've been a Vim user for some time.
@@ -499,7 +508,8 @@ Useful if, like me, you've been a Vim user for some time.
     (setq evil-want-keybinding nil)
     (setq evil-want-C-u-scroll t)
     :config
-    (evil-mode 1))
+    (evil-mode 1)
+    (evil-set-undo-system 'undo-tree))
 
   ;; Extra bindings for Evil
   (use-package evil-collection
@@ -1038,22 +1048,18 @@ Syntax highlights Rusty Object Notation
     :hook
     (TeX-mode . TeX-PDF-mode)
     (TeX-mode . company-mode)
+    (LaTeX-mode . (lambda ()
+                    (push (list 'output-pdf "Zathura")
+                              TeX-view-program-selection)))
     :init
     (setq reftex-plug-into-AUCTeX t)
     (setq TeX-parse-self t)
     (setq-default TeX-master nil)
-
     (setq TeX-open-quote  "<<")
     (setq TeX-close-quote ">>")
     (setq TeX-electric-sub-and-superscript t)
     (setq font-latex-fontify-script nil)
     (setq TeX-show-compilation nil)
-
-    (setq preview-scale-function 1.5)
-    (setq preview-gs-options
-      '("-q" "-dNOSAFER" "-dNOPAUSE" "-DNOPLATFONTS"
-        "-dPrinted" "-dTextAlphaBits=4" "-dGraphicsAlphaBits=4"))
-
     (setq reftex-label-alist '(AMSTeX)))
 
   (use-package company-auctex
