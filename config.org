@@ -521,6 +521,10 @@ Useful if, like me, you've been a Vim user for some time.
   ;; Commenting lines
   (use-package evil-nerd-commenter
     :bind ("M-/" . evilnc-comment-or-uncomment-lines))
+
+  ;; Multiple cursors in evil-mode
+  (use-package evil-multiedit
+    :config (evil-multiedit-default-keybinds))
 #+end_src
 
 ** =popup-kill-ring=
