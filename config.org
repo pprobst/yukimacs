@@ -733,10 +733,10 @@ Display ugly ^L page breaks as tidy horizontal lines.
     :defer nil
     :preface
     (defun create-scratch-buffer ()
-      "Create a scratch buffer"
-      (interactive)
-      (switch-to-buffer (get-buffer-create "*scratch*"))
-      (lisp-interaction-mode))
+       "Create a scratch buffer"
+       (interactive)
+       (switch-to-buffer (get-buffer-create "*scratch*"))
+       (lisp-interaction-mode))
     :config
     (dashboard-setup-startup-hook)
     (dashboard-modify-heading-icons '((recents . "file-text")
@@ -914,39 +914,32 @@ Oof.
 
 ** Python
 #+begin_src emacs-lisp
-  (use-package python-mode
-    :ensure t
-    :hook (python-mode . lsp-deferred)
-    :custom
-    ;; NOTE: Set these if Python 3 is called "python3" on your system!
-    ;; (python-shell-interpreter "python3")
-    ;; (dap-python-executable "python3")
-    (dap-python-debugger 'debugpy)
-    :config
-    (require 'dap-python))
+    (use-package python-mode
+      :ensure t
+      :hook (python-mode . lsp-deferred)
+      :custom
+      ;; NOTE: Set these if Python 3 is called "python3" on your system!
+      ;; (python-shell-interpreter "python3")
+      ;; (dap-python-executable "python3")
+      (dap-python-debugger 'debugpy)
+      :config
+      (require 'dap-python))
 
-  (add-hook 'python-mode-hook 'yas-minor-mode)
+    (add-hook 'python-mode-hook 'yas-minor-mode)
+  
+    (use-package lsp-pyright
+      :ensure t
+      :hook (python-mode . (lambda ()
+                           (require 'lsp-pyright)
+                           (lsp-deferred))))  ; or lsp
 
-  ;(use-package lsp-pyright
-  ;  :ensure t
-  ;  :hook (python-mode . (lambda ()
-  ;                       (require 'lsp-pyright)
-  ;                       (lsp))))  ; or lsp-deferred
-
-  (use-package lsp-python-ms
-    :ensure t
-    :init (setq lsp-python-ms-auto-install-server t)
-    :hook (python-mode . (lambda ()
-                         (require 'lsp-python-ms)
-                         (lsp))))  ; or lsp-deferred
-
-  ;; Reformat python code with black
-  (use-package blacken
-    :ensure t
-    :diminish
-    :after python
-    :hook (python-mode . blacken-mode)
-    :custom (blacken-line-length 79))
+    ;; Reformat python code with black
+    (use-package blacken
+      :ensure t
+      :diminish
+      :after python
+      :hook (python-mode . blacken-mode)
+      :custom (blacken-line-length 79))
     #+end_src
 
 ** Lisp
