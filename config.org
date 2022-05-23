@@ -2,7 +2,7 @@
 #+TITLE: yukimacs
 #+LANGUAGE: en
 
-A GNU/Emacs config built from the ground up (no Spacemacs or Doom Emacs), /heavily/ inspired by [[https://github.com/daedreth/UncleDavesEmacs/][Uncle Dave's Emacs]] and [[https://github.com/snackon/Witchmacs][Witchmacs]].
+A GNU/Emacs config built from the ground up (no Spacemacs or Doom Emacs), /heavily/ inspired by [[https://github.com/daedreth/UncleDavesEmacs/][Uncle Dave's Emacs]] and [[https://github.com/snackon/Witchmacs][Witchmacs]]. [[https://www.youtube.com/c/SystemCrafters][System Crafters]] videos are also very useful.
 
 I'm unfortunately not a Lisper -- contributions to make my configuration simpler and cleaner are very welcome.
 
@@ -21,6 +21,7 @@ I highly recommend you to use [[https://www.emacswiki.org/emacs/EmacsAsDaemon][E
 - [[#themes][Themes]]
 - [[#org-mode][=Org= mode]]
   - [[#general][General]]
+  - [[#org-roam][Org-roam]]
 - [[#eshell][Eshell]]
   - [[#prompt][Prompt]]
   - [[#aliases][Aliases]]
@@ -96,6 +97,10 @@ I highly recommend you to use [[https://www.emacswiki.org/emacs/EmacsAsDaemon][E
 
 * Installing                                                            :TOC:
 Instead of directly cloning and using this, it's preferable if you read both =init.el= and =config.org=, understand what each section does, and pick what you want separately. [[https://www.youtube.com/watch?v=d6iY_1aMzeg&list=PLX2044Ew-UVVv31a0-Qn3dA6Sd_-NyA1n&index=1][Uncle Dave's]] videos are probably the best introduction to Emacs out there -- the audio is terrible, but the content is great and easy to follow.
+
+** 0. Org-roam directories.
+=mkdir Notes=
+=mkdir Notes/daily=
 
 ** 1. Install the dependencies if you need them.
 
@@ -208,6 +213,42 @@ You might've heard of people that use Emacs just because of [[https://orgmode.or
     (evil-org-agenda-set-keys))
 #+end_src
 
+** Org-roam
+A plain-text personal knowledge management system.
+#+begin_src emacs-lisp
+  (use-package org-roam
+    :ensure t
+    :custom
+    (org-roam-directory "~/Notes")
+    (org-roam-completion-everywhere t)
+    (org-roam-capture-templates
+     ;; "d" is the letter you'll press to choose the template.
+     ;; "default" is the full name of the template.
+     ;; plain is the type of text being inserted.
+     ;; "%?" is the text that will be inserted.
+     ;; unnarrowed t ensures that the full file will be displayed when captured.
+     '(("d" "default" plain "%?"
+        :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n")
+        :unnarrowed t)
+   
+      ("p" "project" plain "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
+        :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: Project")
+        :unnarrowed t)))
+    :bind (("C-c n l" . org-roam-buffer-toggle)
+           ("C-c n f" . org-roam-node-find)
+           ("C-c n i" . org-roam-node-insert)
+           :map org-mode-map
+           ("C-M-i"    . completion-at-point)
+           :map org-roam-dailies-map
+           ("Y" . org-roam-dailies-capture-yesterday)
+           ("T" . org-roam-dailies-capture-tomorrow))
+    :bind-keymap
+    ("C-c n d" . org-roam-dailies-map)
+    :config
+    (require 'org-roam-dailies) ;; Ensure the keymap is available
+    (org-roam-db-autosync-mode))
+#+end_src
+ 
 * Eshell                                                                :TOC:
 ** Prompt
 #+begin_src emacs-lisp
