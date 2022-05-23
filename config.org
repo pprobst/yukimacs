@@ -99,8 +99,7 @@ I highly recommend you to use [[https://www.emacswiki.org/emacs/EmacsAsDaemon][E
 Instead of directly cloning and using this, it's preferable if you read both =init.el= and =config.org=, understand what each section does, and pick what you want separately. [[https://www.youtube.com/watch?v=d6iY_1aMzeg&list=PLX2044Ew-UVVv31a0-Qn3dA6Sd_-NyA1n&index=1][Uncle Dave's]] videos are probably the best introduction to Emacs out there -- the audio is terrible, but the content is great and easy to follow.
 
 ** 0. Org-roam directories.
-=mkdir Notes=
-=mkdir Notes/daily=
+=mkdir Notes Notes/daily=
 
 ** 1. Install the dependencies if you need them.
 
