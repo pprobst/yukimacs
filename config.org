@@ -173,8 +173,8 @@ You might've heard of people that use Emacs just because of [[https://orgmode.or
 
   ;; Custom header sizes.
   (custom-set-faces
-    '(org-level-1 ((t (:inherit outline-1 :height 1.3))))
-    '(org-level-2 ((t (:inherit outline-2 :height 1.2))))
+    '(org-level-1 ((t (:inherit outline-1 :height 1.5))))
+    '(org-level-2 ((t (:inherit outline-2 :height 1.3))))
     '(org-level-3 ((t (:inherit outline-3 :height 1.1))))
     '(org-level-4 ((t (:inherit outline-4 :height 1.0))))
     '(org-level-5 ((t (:inherit outline-5 :height 1.0)))))
@@ -241,19 +241,23 @@ A plain-text personal knowledge management system.
          :if-new (file+head "%<%Y-%m-%d-%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: Project")
          :unnarrowed t)))
     (org-roam-dailies-capture-templates
-      '(("d" "default" entry "* %<%I:%M %p>: %?"
+      '(("d" "default" entry "* %<%H:%M>: %?"
          :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))))
     :bind (("C-c n l" . org-roam-buffer-toggle)
            ("C-c n f" . org-roam-node-find)
            ("C-c n i" . org-roam-node-insert)
+           ("C-c n t" . org-roam-tag-add)
+           ("C-c n a" . org-roam-alias-add)
+           ("C-c n o" . org-id-get-create)
            :map org-mode-map
-           ("C-M-i"    . completion-at-point)
+           ("C-M-i" . completion-at-point)
            :map org-roam-dailies-map
            ("Y" . org-roam-dailies-capture-yesterday)
            ("T" . org-roam-dailies-capture-tomorrow))
     :bind-keymap
     ("C-c n d" . org-roam-dailies-map)
     :config
+    (org-roam-setup)
     (require 'org-roam-dailies) ;; Ensure the keymap is available
     (org-roam-db-autosync-mode))
 #+end_src
