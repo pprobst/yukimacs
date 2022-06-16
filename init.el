@@ -67,7 +67,7 @@
   (gcmh-high-cons-threshold (* 16 1024 1024)) ;; 16 MB
   :hook (after-init . gcmh-mode))
 
-(setq-default shell-file-name "/bin/sh")
+(setq-default shell-file-name "/bin/zsh")
 
 (straight-use-package 'org)
 
@@ -89,9 +89,14 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#000000" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :extend nil :overline nil :underline nil :slant normal :weight regular :height 120 :width normal :foundry "UKWN" :family "Iosevka Comfy"))))
+ '(default ((t (:inherit nil :extend nil :stipple nil :background "#000000" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 110 :width normal :foundry "UKWN" :family "Iosevka Comfy"))))
  '(company-tooltip-selection ((t (:inherit company-tooltip-selection :extend t))))
  '(fixed-pitch ((t (:family "Iosevka Comfy"))))
+ '(org-level-1 ((t (:inherit outline-1 :height 1.5))))
+ '(org-level-2 ((t (:inherit outline-2 :height 1.3))))
+ '(org-level-3 ((t (:inherit outline-3 :height 1.1))))
+ '(org-level-4 ((t (:inherit outline-4 :height 1.0))))
+ '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
  '(variable-pitch ((t (:family "Iosevka Comfy")))))
 
 ;; Loads config

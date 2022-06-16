@@ -173,8 +173,8 @@ You might've heard of people that use Emacs just because of [[https://orgmode.or
 
   ;; Custom header sizes.
   (custom-set-faces
-    '(org-level-1 ((t (:inherit outline-1 :height 1.5))))
-    '(org-level-2 ((t (:inherit outline-2 :height 1.3))))
+    '(org-level-1 ((t (:inherit outline-1 :height 1.3))))
+    '(org-level-2 ((t (:inherit outline-2 :height 1.2))))
     '(org-level-3 ((t (:inherit outline-3 :height 1.1))))
     '(org-level-4 ((t (:inherit outline-4 :height 1.0))))
     '(org-level-5 ((t (:inherit outline-5 :height 1.0)))))
@@ -422,8 +422,7 @@ Quality-of-life modifications.
                         (highlight-indent-guides-auto-set-faces))))
     :config
     (setq highlight-indent-guides-method 'character
-          highlight-indent-guides-responsive 'top
-          highlight-indent-guides-delay 0))
+          highlight-indent-guides-responsive 'top))
 
   ; (highlight-indent-guides-auto-set-faces)
 #+end_src
@@ -548,6 +547,7 @@ Helps you with commands -- it shows suggestions while you're typing.
 Better undo; undo + redo. Also, `Ctrl-x u` to have a nice visualization of the undo-tree.
 #+begin_src emacs-lisp
   (use-package undo-tree
+    :diminish
     :config
     (global-undo-tree-mode 1))
 #+end_src
@@ -557,7 +557,6 @@ Imports keybindings and some functionalities from Vi.
 Useful if, like me, you've been a Vim user for some time.
 #+begin_src emacs-lisp
   (use-package evil
-    :defer nil
     :init
     (setq evil-want-keybinding nil)
     (setq evil-want-C-u-scroll t)
@@ -705,16 +704,17 @@ Better isearch.
 ** =switch-window=
 Don't keep using C-x o to switch windows anymore.
 #+begin_src emacs-lisp
-   (use-package switch-window
-      :config
-      (setq switch-window-input-style 'minibuffer)
-      (setq switch-window-increase 4)
-      (setq switch-window-threshold 2)
-      (setq switch-window-shortcut-style 'qwerty)
-      (setq switch-window-qwerty-shortcuts
-            '("a" "s" "d" "f" "j" "k" "l"))
-      :bind
-      ([remap other-window] . switch-window))
+  (use-package switch-window
+     :config
+     (setq switch-window-input-style 'minibuffer)
+     (setq switch-window-increase 4)
+     (setq switch-window-threshold 2)
+     (setq switch-window-shortcut-style 'qwerty)
+     (setq switch-window-qwerty-shortcuts
+           '("a" "s" "d" "f" "j" "k" "l"))
+     (setq switch-window-minibuffer-shortcut ?z)
+     :bind
+     ([remap other-window] . switch-window))
 #+end_src
 
 ** =rainbow=
@@ -780,11 +780,23 @@ Display ugly ^L page breaks as tidy horizontal lines.
   (use-package page-break-lines
     :requires dashboard)
 #+end_src
+ 
+** =sublimity=
+Smooth scrolling, minimap and distraction-free mode.
+#+begin_src emacs-lisp
+  (use-package sublimity
+    :config
+    (require 'sublimity-scroll)
+    (require 'sublimity-attractive)
+    (setq sublimity-attractive-centering-width nil
+      sublimity-scroll-weight 5
+      sublimity-scroll-drift-length 10) 
+    (sublimity-mode 1))
+#+end_src
 
 ** =dashboard=
 #+begin_src emacs-lisp
   (use-package dashboard
-    :defer nil
     :preface
     (defun create-scratch-buffer ()
        "Create a scratch buffer"
@@ -854,6 +866,7 @@ Useful snippets.
       (use-package yasnippet-snippets)
       (use-package auto-yasnippet)
       (yas-reload-all))
+  (yas-global-mode t)
 #+end_src
 
 ** =flycheck=
@@ -892,13 +905,14 @@ Language server. Will provide us with IDE-like features.
     (lsp-ui-doc-delay 2.0)
     (lsp-ui-doc-include-signature t)
     (lsp-ui-flycheck-enable t)
-    (lsp-ui-peek-always-show t))
+    (lsp-ui-peek-always-show t)
+    (lsp-ui-doc-position 'bottom))
 
-  (use-package dap-mode
-    :after lsp-mode
-    :config
-    (dap-mode t)
-    (dap-ui-mode t))
+  ;(use-package dap-mode
+  ;  :after lsp-mode
+  ;  :config
+  ;  (dap-mode t)
+  ;  (dap-ui-mode t))
 
   (use-package lsp-treemacs
     :after (lsp-mode)
@@ -930,7 +944,7 @@ Provides completion.
             company-dabbrev-code-other-buffers t)
       :custom
       (company-minimum-prefix-length 1)
-      (company-idle-delay 0.0)
+      (company-idle-delay 0.3)
       :hook ((text-mode . company-mode)
              (prog-mode . company-mode)
              (org-mode . company-mode)
@@ -968,32 +982,11 @@ Oof.
 
 ** Python
 #+begin_src emacs-lisp
-    (use-package python-mode
-      :ensure t
-      :hook (python-mode . lsp-deferred)
-      :custom
-      ;; NOTE: Set these if Python 3 is called "python3" on your system!
-      ;; (python-shell-interpreter "python3")
-      ;; (dap-python-executable "python3")
-      (dap-python-debugger 'debugpy)
-      :config
-      (require 'dap-python))
-
-    (add-hook 'python-mode-hook 'yas-minor-mode)
-  
-    (use-package lsp-pyright
-      :ensure t
-      :hook (python-mode . (lambda ()
-                           (require 'lsp-pyright)
-                           (lsp-deferred))))  ; or lsp
-
-    ;; Reformat python code with black
-    (use-package blacken
-      :ensure t
-      :diminish
-      :after python
-      :hook (python-mode . blacken-mode)
-      :custom (blacken-line-length 79))
+  (use-package lsp-pyright
+    :ensure t
+    :hook (python-mode . (lambda ()
+                         (require 'lsp-pyright)
+                         (lsp))))
     #+end_src
 
 ** Lisp
