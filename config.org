@@ -119,6 +119,8 @@ Instead of directly cloning and using this, it's preferable if you read both =in
 
 =gopls=
 
+=pylint=
+
 ** 2. =clone= this repository.
 Remove your current =~/.emacs= and =~/.emacs.d=. Then,
 
