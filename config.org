@@ -16,6 +16,7 @@ I highly recommend you to use [[https://www.emacswiki.org/emacs/EmacsAsDaemon][E
 
 * Table of Contents                                                     :TOC:
 - [[#installing][Installing]]
+  - [[#0-org-roam-directories][0. Org-roam directories.]]
   - [[#1-install-the-dependencies-if-you-need-them][1. Install the dependencies if you need them.]]
   - [[#2-clone-this-repository][2. =clone= this repository.]]
 - [[#themes][Themes]]
@@ -28,6 +29,7 @@ I highly recommend you to use [[https://www.emacswiki.org/emacs/EmacsAsDaemon][E
   - [[#open-files-as-root][Open files as root]]
   - [[#super-control-ret-to-open-eshell][Super-Control-RET to open Eshell]]
 - [[#qol][QoL]]
+  - [[#prefer-newer-package-files][Prefer newer package files.]]
   - [[#fill-spaces][Fill spaces]]
   - [[#y-or-n-instead-of-yes-or-no-when-confirming]['y' or 'n' instead of 'yes' or 'no' when confirming]]
   - [[#disable-backup-files][Disable backup files]]
@@ -70,8 +72,11 @@ I highly recommend you to use [[https://www.emacswiki.org/emacs/EmacsAsDaemon][E
   - [[#switch-window][=switch-window=]]
   - [[#rainbow][=rainbow=]]
   - [[#powerline][=powerline=]]
+  - [[#awesome-tray][=awesome-tray=]]
+  - [[#awesome-tab][=awesome-tab=]]
   - [[#treemacs][=treemacs=]]
   - [[#page-break-lines][=page-break-lines=]]
+  - [[#sublimity][=sublimity=]]
   - [[#dashboard][=dashboard=]]
 - [[#programming][Programming]]
   - [[#projectile][=projectile=]]
