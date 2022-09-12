@@ -526,7 +526,6 @@ Icons on Emacs. Backend for other packages.
 #+begin_src emacs-lisp
   ;; Run M-x all-the-icons-install-fonts
   (use-package all-the-icons
-    :commands all-the-icons-install-fonts
     :init
     (unless (find-font (font-spec :name "all-the-icons"))
       (all-the-icons-install-fonts t)))
@@ -747,7 +746,6 @@ Don't keep using C-x o to switch windows anymore.
 Stylish tray.
 #+begin_src emacs-lisp
   (use-package powerline
-     :disabled
      :config
      (setq powerline-default-separator 'bar)
      :init
@@ -761,6 +759,7 @@ Stylish tray.
 Distraction-free tray. Alternative to Powerline.
 #+begin_src emacs-lisp
   (use-package awesome-tray
+    :disabled
     :straight (awesome-tray :type git
                 :host github
                 :repo "manateelazycat/awesome-tray")
@@ -843,6 +842,7 @@ Display ugly ^L page breaks as tidy horizontal lines.
 Smooth scrolling, minimap and distraction-free mode.
 #+begin_src emacs-lisp
   (use-package sublimity
+    :disabled
     :config
     (require 'sublimity-scroll)
     (require 'sublimity-attractive)
