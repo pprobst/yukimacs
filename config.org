@@ -72,11 +72,9 @@ I highly recommend you to use [[https://www.emacswiki.org/emacs/EmacsAsDaemon][E
   - [[#switch-window][=switch-window=]]
   - [[#rainbow][=rainbow=]]
   - [[#powerline][=powerline=]]
-  - [[#awesome-tray][=awesome-tray=]]
   - [[#awesome-tab][=awesome-tab=]]
   - [[#treemacs][=treemacs=]]
   - [[#page-break-lines][=page-break-lines=]]
-  - [[#sublimity][=sublimity=]]
   - [[#dashboard][=dashboard=]]
 - [[#programming][Programming]]
   - [[#projectile][=projectile=]]
@@ -755,29 +753,6 @@ Stylish tray.
      ('after-init-hook) . 'powerline-reset)
 #+end_src
  
-** =awesome-tray=
-Distraction-free tray. Alternative to Powerline.
-#+begin_src emacs-lisp
-  (use-package awesome-tray
-    :disabled
-    :straight (awesome-tray :type git
-                :host github
-                :repo "manateelazycat/awesome-tray")
-    :init
-    (setq awesome-tray-active-modules '(
-                                      "evil"
-                                      "location"
-                                      "file-path"
-                                      "mode-name"
-                                      "git"
-                                      "belong"
-                                      "flymake"
-                                      ))
-    :config
-    (awesome-tray-mode 1))
-
-#+end_src
-
 ** =awesome-tab=
 Tabs for Emacs.
 #+begin_src emacs-lisp
@@ -838,20 +813,6 @@ Display ugly ^L page breaks as tidy horizontal lines.
     :requires dashboard)
 #+end_src
  
-** =sublimity=
-Smooth scrolling, minimap and distraction-free mode.
-#+begin_src emacs-lisp
-  (use-package sublimity
-    :disabled
-    :config
-    (require 'sublimity-scroll)
-    (require 'sublimity-attractive)
-    (setq sublimity-attractive-centering-width nil
-      sublimity-scroll-weight 5
-      sublimity-scroll-drift-length 10) 
-    (sublimity-mode 1))
-#+end_src
-
 ** =dashboard=
 #+begin_src emacs-lisp
   (use-package dashboard
@@ -953,6 +914,8 @@ Language server. Will provide us with IDE-like features.
     :custom
     (lsp-auto-guess-root t)
     (lsp-log-io t)
+    (read-process-output-max (* 1024 1024)) 
+    (lsp-idle-delay 0.5)
     (lsp-prefer-flymake nil))
 
   ;; Enhance UI
@@ -960,11 +923,14 @@ Language server. Will provide us with IDE-like features.
     :after (lsp-mode)
     :hook (lsp-mode . lsp-ui-mode)
     :custom
-    (lsp-ui-doc-delay 2.0)
+    (lsp-ui-doc-enable nil)
+    (lsp-ui-doc-header t)
+    ;(lsp-ui-doc-delay 2.0)
     (lsp-ui-doc-include-signature t)
     (lsp-ui-flycheck-enable t)
     (lsp-ui-peek-always-show t)
-    (lsp-ui-doc-position 'bottom))
+    (lsp-ui-sideline-show-code-actions t)
+    (lsp-ui-sideline-delay 0.05))
 
   ;(use-package dap-mode
   ;  :after lsp-mode
@@ -1041,11 +1007,10 @@ Oof.
 ** Python
 #+begin_src emacs-lisp
   (use-package lsp-pyright
-    :ensure t
-    :hook (python-mode . (lambda ()
-                         (require 'lsp-pyright)
-                         (lsp))))
-    #+end_src
+  :hook (python-mode . (lambda () (require 'lsp-pyright) (lsp)))
+  :init (when (executable-find "python3")
+          (setq lsp-pyright-python-executable-cmd "python3")))
+#+end_src
 
 ** Lisp
 #+begin_src emacs-lisp
