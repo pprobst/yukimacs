@@ -23,11 +23,7 @@ I highly recommend you to use [[https://www.emacswiki.org/emacs/EmacsAsDaemon][E
 - [[#org-mode][=Org= mode]]
   - [[#general][General]]
   - [[#org-roam][Org-roam]]
-- [[#eshell][Eshell]]
-  - [[#prompt][Prompt]]
-  - [[#aliases][Aliases]]
-  - [[#open-files-as-root][Open files as root]]
-  - [[#super-control-ret-to-open-eshell][Super-Control-RET to open Eshell]]
+- [[#vterm][vterm]]
 - [[#qol][QoL]]
   - [[#prefer-newer-package-files][Prefer newer package files.]]
   - [[#fill-spaces][Fill spaces]]
@@ -52,7 +48,7 @@ I highly recommend you to use [[https://www.emacswiki.org/emacs/EmacsAsDaemon][E
   - [[#visiting-the-configuration][Visiting the configuration]]
   - [[#reloading-the-configuration][Reloading the configuration]]
 - [[#general-packages][General packages]]
-  - [[#diminish][=diminish=]]
+  - [[#minions][=minions=]]
   - [[#exec-path-from-shell][=exec-path-from-shell=]]
   - [[#no-littering][=no-littering=]]
   - [[#all-the-icons][=all-the-icons=]]
@@ -66,7 +62,7 @@ I highly recommend you to use [[https://www.emacswiki.org/emacs/EmacsAsDaemon][E
   - [[#hl-todo][=hl-todo=]]
   - [[#flyspell][=flyspell=]]
   - [[#avy][=avy=]]
-  - [[#selectrum][=selectrum=]]
+  - [[#vertico][=vertico=]]
   - [[#marginalia][=marginalia=]]
   - [[#ctrlf][=ctrlf=]]
   - [[#switch-window][=switch-window=]]
@@ -188,7 +184,6 @@ You might've heard of people that use Emacs just because of [[https://orgmode.or
   (setq org-src-window-setup 'current-window)
 
   (use-package org-indent
-      :diminish
       :straight nil)
 
   (setq org-todo-keywords
@@ -214,7 +209,6 @@ You might've heard of people that use Emacs just because of [[https://orgmode.or
 
   ;; Evil bindings for Org mode
   (use-package evil-org
-    :diminish
     :after (evil org)
     :config
     (add-hook 'org-mode-hook 'evil-org-mode)
@@ -266,60 +260,22 @@ A plain-text personal knowledge management system.
     (require 'org-roam-dailies) ;; Ensure the keymap is available
     (org-roam-db-autosync-mode))
 #+end_src
+
+* vterm
+A fully-fledged terminal inside Emacs.
+#+begin_src emacs-lisp
+  (use-package vterm
+    :defer t
+    :straight t
+    :config
+    (setq vterm-shell "/usr/bin/zsh"))
+
+  (use-package multi-vterm
+    :after vterm
+    :defer t
+    :straight (:build t))
+#+end_src
  
-* Eshell                                                                :TOC:
-** Prompt
-#+begin_src emacs-lisp
-  (setq eshell-prompt-regexp "^[^αλ\n]*[αλ] ")
-  (setq eshell-prompt-function
-        (lambda nil
-          (concat
-           (if (string= (eshell/pwd) (getenv "HOME"))
-               (propertize "~" 'face `(:foreground "#99CCFF"))
-             (replace-regexp-in-string
-              (getenv "HOME")
-              (propertize "~" 'face `(:foreground "#99CCFF"))
-              (propertize (eshell/pwd) 'face `(:foreground "#99CCFF"))))
-           (if (= (user-uid) 0)
-               (propertize " α " 'face `(:foreground "#FF6666"))
-           (propertize " λ " 'face `(:foreground "#A6E22E"))))))
-
-  (setq eshell-highlight-prompt nil)
-#+end_src
-
-** Aliases
-#+begin_src emacs-lisp
-  (defalias 'open 'find-file-other-window)
-  (defalias 'clean 'eshell/clear-scrollback)
-#+end_src
-
-** Open files as root
-#+begin_src emacs-lisp
-  (defun eshell/sudo-open (filename)
-    "Open a file as root in Eshell."
-    (let ((qual-filename (if (string-match "^/" filename)
-                             filename
-                           (concat (expand-file-name (eshell/pwd)) "/" filename))))
-      (switch-to-buffer
-       (find-file-noselect
-        (concat "/sudo::" qual-filename)))))
-#+end_src
-
-** Super-Control-RET to open Eshell
-#+begin_src emacs-lisp
-  (defun eshell-other-window ()
-    "Create or visit an eshell buffer."
-    (interactive)
-    (if (not (get-buffer "*eshell*"))
-        (progn
-          (split-window-sensibly (selected-window))
-          (other-window 1)
-          (eshell))
-      (switch-to-buffer-other-window "*eshell*")))
-
-  (global-set-key (kbd "<s-C-return>") 'eshell-other-window)
-#+end_src
-
 * QoL                                                                   :TOC:
 Quality-of-life modifications.
 ** Prefer newer package files.
@@ -426,7 +382,6 @@ Quality-of-life modifications.
   (setq backward-delete-char-untabify-method 'nil)
 
   (use-package highlight-indent-guides
-    :diminish highlight-indent-guides-mode
     :hook ((prog-mode . (lambda ()
                         (highlight-indent-guides-mode)
                         (highlight-indent-guides-auto-set-faces))))
@@ -493,10 +448,11 @@ Quality-of-life modifications.
 #+end_src
 
 * General packages                                                      :TOC:
-** =diminish=
-Hides minor modes to prevent clutter.
+** =minions=
+A minor-mode menu for the mode line.
 #+begin_src emacs-lisp
-  (use-package diminish)
+  (use-package minions
+    :config (minions-mode 1))
 #+end_src
 
 ** =exec-path-from-shell=
@@ -532,7 +488,6 @@ Icons on Emacs. Backend for other packages.
     :after all-the-icons
     :hook
     ((dired-mode . all-the-icons-dired-mode))
-    :diminish
     :config
     (setq all-the-icons-dired-monochrome nil))
 #+end_src
@@ -548,7 +503,6 @@ Cringe stuff.
 Helps you with commands -- it shows suggestions while you're typing.
 #+begin_src emacs-lisp
   (use-package which-key
-    :diminish
     :init (which-key-mode))
 #+end_src
 
@@ -556,7 +510,6 @@ Helps you with commands -- it shows suggestions while you're typing.
 Better undo; undo + redo. Also, `Ctrl-x u` to have a nice visualization of the undo-tree.
 #+begin_src emacs-lisp
   (use-package undo-tree
-    :diminish
     :config
     (global-undo-tree-mode 1))
 #+end_src
@@ -575,7 +528,6 @@ Useful if, like me, you've been a Vim user for some time.
 
   ;; Extra bindings for Evil
   (use-package evil-collection
-    :diminish evil-collection-unimpaired-mode
     :after (evil)
     :config
     (evil-collection-init))
@@ -600,7 +552,6 @@ Browse through your kill-ring with M-y instead of merely "cycling" through it. U
 Briefly highlights the cursor when switching windows/buffers.
 #+begin_src emacs-lisp
   (use-package beacon
-    :diminish
     :init
     (beacon-mode 1))
 #+end_src
@@ -628,8 +579,7 @@ Highlight words like "TODO" etc. during programming.
 ** =flyspell=
 On-the-fly spellchecking.
 #+begin_src emacs-lisp
-  (use-package flyspell
-    :diminish flyspell-mode)
+  (use-package flyspell)
 
   (use-package guess-language
     :config
@@ -659,35 +609,76 @@ It's hard to explain, but you'll use C-n and C-p way less.
       ("M-s" . avy-goto-char))
 #+end_src
 
-** =selectrum=
+** =vertico=
 A better completion UI. Searching for files and commands is now easier.
 #+begin_src emacs-lisp
-  (use-package selectrum
-    :hook (after-init . selectrum-mode))
+  (defun def/minibuffer-backward-kill (arg)
+    "When minibuffer is completing a file name, delete up to parent folder otherwise delete word"
+    (interactive "p")
+    (if minibuffer-completing-file-name
+        ;; Borrowed from https://github.com/raxod502/selectrum/issues/498#issuecomment-803283608
+        (if (string-match-p "/." (minibuffer-contents))
+            (zap-up-to-char (- arg) ?/)
+          (delete-minibuffer-contents))
+      (backward-kill-word arg)))
 
-  ;; "Your candidates are sorted by frecency. Your most recent choices are saved,
-  ;; and those are sorted first. After that, your most frequent choices are saved,
-  ;; and those are sorted next. The rest of the candidates are sorted by length.
-  ;; This algorithm turns out to do very well in practice while being fast and
-  ;; not very magical."
-  (use-package prescient
-    :after selectrum
-    :config
-    (prescient-persist-mode 1))
-
-  (use-package selectrum-prescient
-    :after (selectrum prescient)
-    :config
-    (selectrum-prescient-mode 1))
-
-  ;; Search without order.
-  ;; (e.g. try M-x emacs time)
-  (use-package orderless
-    :after selectrum
+  (use-package vertico
+    :bind (:map vertico-map
+                ("C-j" . vertico-next)
+                ("C-k" . vertico-previous)
+                ("C-f" . vertico-exit)
+                :map minibuffer-local-map
+                ("M-h" . def/minibuffer-backward-kill))
     :custom
-    (completion-styles (list 'orderless))
-    (selectrum-refine-candidates-function #'orderless-filter)
-    (selectrum-highlight-candidates-function #'orderless-highlight-matches))
+    (vertico-cycle t)
+    (vertico-scroll-margin 1)
+    ;;(vertico-resize t)
+    :init
+    (vertico-mode))
+
+  ;; Persistent history.
+  (use-package savehist
+    :straight nil
+    :init
+    (setq history-length 25)
+    (savehist-mode))
+
+  ;; A few more useful configurations...
+  (use-package emacs
+    :init
+    ;; Add prompt indicator to `completing-read-multiple'.
+    ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
+    (defun crm-indicator (args)
+      (cons (format "[CRM%s] %s"
+                    (replace-regexp-in-string
+                     "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
+                     crm-separator)
+                    (car args))
+            (cdr args)))
+    (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+
+    ;; Do not allow the cursor in the minibuffer prompt
+    (setq minibuffer-prompt-properties
+          '(read-only t cursor-intangible t face minibuffer-prompt))
+    (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+
+    ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
+    ;; Vertico commands are hidden in normal buffers.
+    ;; (setq read-extended-command-predicate
+    ;;       #'command-completion-default-include-p)
+
+    ;; Enable recursive minibuffers
+    (setq enable-recursive-minibuffers t))
+
+  ;; Optionally use the `orderless' completion style.
+  (use-package orderless
+    :init
+    ;; Configure a custom style dispatcher (see the Consult wiki)
+    ;; (setq orderless-style-dispatchers '(+orderless-dispatch)
+    ;;       orderless-component-separator #'orderless-escapable-split-on-space)
+    (setq completion-styles '(orderless basic)
+          completion-category-defaults nil
+          completion-category-overrides '((file (styles partial-completion)))))
 #+end_src
 
 ** =marginalia=
@@ -730,12 +721,10 @@ Don't keep using C-x o to switch windows anymore.
 =rainbow-mode= highlights color hexadecimals with the appropriate color, while =rainbow-delimiters= colors delimiters (e.g. parentheses).
 #+begin_src emacs-lisp
   (use-package rainbow-mode
-    :diminish
     :init
       (add-hook 'prog-mode-hook 'rainbow-mode))
 
   (use-package rainbow-delimiters
-    :diminish
     :init
       (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 #+end_src
@@ -866,7 +855,6 @@ Display ugly ^L page breaks as tidy horizontal lines.
 Project management.
 #+begin_src emacs-lisp
   (use-package projectile
-    :diminish
     :config
     (projectile-mode t)
     (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
@@ -880,7 +868,6 @@ Project management.
 Useful snippets.
 #+begin_src emacs-lisp
   (use-package yasnippet
-    :diminish yas-minor-mode
     :config
       (use-package yasnippet-snippets)
       (use-package auto-yasnippet)
@@ -892,7 +879,6 @@ Useful snippets.
 Syntax checking.
 #+begin_src emacs-lisp
   (use-package flycheck
-    :diminish
     :hook (after-init . global-flycheck-mode)
     :custom
     (flycheck-check-syntax-automatically '(save mode-enabled)))
@@ -902,7 +888,6 @@ Syntax checking.
 Display documentation (e.g. arguments of a function).
 #+begin_src emacs-lisp
   (use-package eldoc
-    :diminish
     :hook (after-init . global-eldoc-mode))
 #+end_src
 
@@ -953,7 +938,6 @@ Provides completion.
 #+begin_src emacs-lisp
     (use-package company
       :after lsp-mode
-      :diminish
       :bind
       (:map company-active-map
             ("C-n". company-select-next)
