@@ -207,7 +207,7 @@ You might've heard of people that use Emacs just because of [[https://orgmode.or
     (org-mode-hook . toc-org-mode)
     (markdown-mode-hook . toc-org-mode))
 
-  ;; Evil bindings for Org mode
+  ;; Evil bindings for Org mode.
   (use-package evil-org
     :after (evil org)
     :config
@@ -217,6 +217,11 @@ You might've heard of people that use Emacs just because of [[https://orgmode.or
                 (evil-org-set-key-theme '(navigation insert textobjects additional calendar))))
     (require 'evil-org-agenda)
     (evil-org-agenda-set-keys))
+
+  ;; Make invisible parts of Org elements appear visible.
+  (use-package org-appear
+    :config
+    (add-hook 'org-mode-hook 'org-appear-mode))
 #+end_src
 
 ** Org-roam
