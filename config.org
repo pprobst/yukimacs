@@ -68,6 +68,7 @@ I highly recommend you to use [[https://www.emacswiki.org/emacs/EmacsAsDaemon][E
   - [[#switch-window][=switch-window=]]
   - [[#rainbow][=rainbow=]]
   - [[#powerline][=powerline=]]
+  - [[#doom-modeline][=doom-modeline=]]
   - [[#awesome-tab][=awesome-tab=]]
   - [[#treemacs][=treemacs=]]
   - [[#page-break-lines][=page-break-lines=]]
@@ -383,8 +384,14 @@ Quality-of-life modifications.
   (setq-default indent-tabs-mode nil) ;; spaces instead of tabs
   (setq-default standard-indent 4)
   (setq c-basic-offset tab-width)
-  (setq-default electric-indent-inhibit t)
+  ;;(setq-default electric-indent-inhibit t)
   (setq backward-delete-char-untabify-method 'nil)
+  
+  ;; Keeps code always indented.
+  (use-package aggressive-indent
+    :diminish aggressive-indent-mode
+    :config
+    (add-hook 'prog-mode-hook #'aggressive-indent-global-mode))
 
   (use-package highlight-indent-guides
     :hook ((prog-mode . (lambda ()
@@ -393,8 +400,6 @@ Quality-of-life modifications.
     :config
     (setq highlight-indent-guides-method 'character
           highlight-indent-guides-responsive 'top))
-
-  ; (highlight-indent-guides-auto-set-faces)
 #+end_src
 
 ** No line wrap in prog-mode
@@ -457,7 +462,8 @@ Quality-of-life modifications.
 A minor-mode menu for the mode line.
 #+begin_src emacs-lisp
   (use-package minions
-    :config (minions-mode 1))
+    :config (minions-mode 1)
+    (setq minions-mode-line-lighter "☰"))
 #+end_src
 
 ** =exec-path-from-shell=
@@ -738,6 +744,7 @@ Don't keep using C-x o to switch windows anymore.
 Stylish tray.
 #+begin_src emacs-lisp
   (use-package powerline
+     :disabled
      :config
      (setq powerline-default-separator 'bar)
      :init
@@ -745,6 +752,23 @@ Stylish tray.
      (powerline-center-evil-theme)
      :hook
      ('after-init-hook) . 'powerline-reset)
+#+end_src
+ 
+** =doom-modeline=
+Another stylish tray.
+#+begin_src emacs-lisp
+  (use-package doom-modeline
+    :after (all-the-icons)
+    :config
+    (setq doom-modeline-minor-modes t)
+    (setq doom-modeline-height 25)
+    (setq doom-modeline-bar-width 4)
+    (setq doom-modeline-indent-info t)
+    (setq doom-modeline-lsp t)
+    (setq doom-modeline-github t)
+    (setq doom-modeline-buffer-modification-icon t)
+    :hook (after-init . doom-modeline-mode))
+
 #+end_src
  
 ** =awesome-tab=
@@ -1138,7 +1162,11 @@ Syntax highlights Rusty Object Notation
     ("M-g" . magit-status))
 
   (use-package treemacs-magit
-      :after treemacs magit)
+    :after treemacs magit)
+  
+  (use-package ghub
+    :demand t
+    :after magit)
 #+end_src
 
 * DISCLAIMER                                                            :TOC:
