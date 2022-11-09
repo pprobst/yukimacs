@@ -384,14 +384,14 @@ Quality-of-life modifications.
   (setq-default indent-tabs-mode nil) ;; spaces instead of tabs
   (setq-default standard-indent 4)
   (setq c-basic-offset tab-width)
-  ;;(setq-default electric-indent-inhibit t)
+  (setq-default electric-indent-inhibit t)
   (setq backward-delete-char-untabify-method 'nil)
   
   ;; Keeps code always indented.
-  (use-package aggressive-indent
-    :diminish aggressive-indent-mode
-    :config
-    (add-hook 'prog-mode-hook #'aggressive-indent-global-mode))
+  ;;(use-package aggressive-indent
+  ;;  :diminish aggressive-indent-mode
+  ;;  :config
+  ;;  (add-hook 'prog-mode-hook #'aggressive-indent-global-mode))
 
   (use-package highlight-indent-guides
     :hook ((prog-mode . (lambda ()
@@ -898,10 +898,17 @@ Useful snippets.
 #+begin_src emacs-lisp
   (use-package yasnippet
     :config
-      (use-package yasnippet-snippets)
-      (use-package auto-yasnippet)
-      (yas-reload-all))
-  (yas-global-mode t)
+      ;;(use-package yasnippet-snippets)
+      ;;(use-package auto-yasnippet)
+    (yas-reload-all)
+    (yas-global-mode))
+
+  ;; Collection of snippets from Doom Emacs.
+  (use-package doom-snippets
+    :after yasnippet
+    :straight (doom-snippets :type git :host github :repo "hlissner/doom-snippets" :files ("*.el" "*")))
+  
+  (global-set-key (kbd "C-c y") 'yas-insert-snippet)
 #+end_src
 
 ** =flycheck=
@@ -965,36 +972,39 @@ Language server. Will provide us with IDE-like features.
 ** =company=
 Provides completion.
 #+begin_src emacs-lisp
-    (use-package company
-      :after lsp-mode
-      :bind
-      (:map company-active-map
-            ("C-n". company-select-next)
-            ("C-p". company-select-previous)
-            ("M-<". company-select-first)
-            ("M->". company-select-last)
-            ("<tab>" . company-complete-selection))
-    (:map lsp-mode-map
-            ("<tab>" . company-indent-or-complete-common))
-      :config
-      (setq company-dabbrev-other-buffers t
-            company-dabbrev-code-other-buffers t)
-      :custom
-      (company-minimum-prefix-length 1)
-      (company-idle-delay 0.3)
-      :hook ((text-mode . company-mode)
-             (prog-mode . company-mode)
-             (org-mode . company-mode)
-             (company-mode . yas-minor-mode)
-             (lsp-mode . company-mode)))
+   (use-package company
+     :after lsp-mode
+     :bind
+     (:map company-active-map
+           ("C-n". company-select-next)
+           ("C-p". company-select-previous)
+           ("M-<". company-select-first)
+           ("M->". company-select-last)
+           ("<tab>" . company-complete-selection))
+   (:map lsp-mode-map
+           ("<tab>" . company-indent-or-complete-common))
+     :config
+     (setq company-dabbrev-other-buffers t
+           company-dabbrev-code-other-buffers t)
+     :custom
+     (company-minimum-prefix-length 1)
+     (company-idle-delay 0.3)
+     :hook ((text-mode . company-mode)
+            (prog-mode . company-mode)
+            (org-mode . company-mode)
+            (company-mode . yas-minor-mode)
+            (lsp-mode . company-mode)))
 
-    (use-package company-box
-      :hook (company-mode . company-box-mode))
+   (use-package company-box
+     :hook (company-mode . company-box-mode))
 
-    (use-package company-prescient
-      :after (selectrum company)
-      :config
-      (company-prescient-mode 1))
+   (use-package company-prescient
+     :after (selectrum company)
+     :config
+     (company-prescient-mode 1)
+     (prescient-persist-mode))
+
+  (add-hook 'after-init-hook 'global-company-mode)
 #+end_src
 
 ** C & C++
