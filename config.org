@@ -223,6 +223,20 @@ You might've heard of people that use Emacs just because of [[https://orgmode.or
   (use-package org-appear
     :config
     (add-hook 'org-mode-hook 'org-appear-mode))
+
+  ;; Automatically toggle Org mode LaTeX fragment previews as the cursor enters and exits them.
+  (use-package org-fragtog
+    :config
+    (add-hook 'org-mode-hook 'org-fragtog-mode))
+
+  (use-package org-modern
+    :ensure nil
+    :hook (org-mode . org-modern-mode)
+    :custom
+    (org-modern-star nil)
+    (org-modern-hide-stars nil)
+    (org-modern-variable-pitch nil)
+    (org-modern-label-border 0.1))
 #+end_src
 
 ** Org-roam
@@ -501,6 +515,12 @@ Icons on Emacs. Backend for other packages.
     ((dired-mode . all-the-icons-dired-mode))
     :config
     (setq all-the-icons-dired-monochrome nil))
+
+  (use-package all-the-icons-completion
+    :after all-the-icons
+    :config
+    (add-hook 'marginalia-mode-hook #'all-the-icons-completion-marginalia-setup)
+    (all-the-icons-completion-mode))
 #+end_src
 
 ** =emojify=
@@ -1102,6 +1122,13 @@ Oof.
 #+begin_src emacs-lisp
   (use-package go-mode
     :hook (go-mode . lsp-deferred))
+
+  ;; Set up before-save hooks to format buffer and add/delete imports.
+  ;; Make sure you don't have other gofmt/goimports hooks enabled.
+  (defun lsp-go-install-save-hooks ()
+    (add-hook 'before-save-hook #'lsp-format-buffer t t)
+    (add-hook 'before-save-hook #'lsp-organize-imports t t))
+  (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 #+end_src
 
 ** RON
@@ -1181,4 +1208,5 @@ Syntax highlights Rusty Object Notation
 
 * DISCLAIMER                                                            :TOC:
 This free software project is not related in any way to the video game development company [[https://www.keromakura.net/][KeroQ]].
+
 

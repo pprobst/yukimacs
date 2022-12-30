@@ -87,13 +87,16 @@
  '(custom-safe-themes
    '("1a20dbca45dffeeacfd2b5fea5d8f5e345189f2e3c46cffd19d7e0f2d6111490"))
  '(highlight-indent-guides-auto-odd-face-perc 5)
- '(org-agenda-files nil))
+ '(org-agenda-files nil)
+ '(org-format-latex-options
+   '(:foreground default :background default :scale 1.5 :html-foreground "Black" :html-background "Transparent" :html-scale 1.5 :matchers
+                 ("begin" "$1" "$" "$$" "\\(" "\\["))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :extend nil :stipple nil :background "#000000" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 110 :width normal :foundry "UKWN" :family "Iosevka Comfy"))))
+ '(default ((t (:inherit nil :extend nil :stipple nil :background "#000000" :foreground "#ffffff" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "CTDB" :family "Iosevka Comfy"))))
  '(company-tooltip-selection ((t (:inherit company-tooltip-selection :extend t))))
  '(fixed-pitch ((t (:family "Iosevka Comfy"))))
  '(homoglyph ((t (:foreground "cornflower blue"))))
