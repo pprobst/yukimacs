@@ -95,6 +95,9 @@
 
    `(company-tooltip-selection ((,class (:foreground ,foreground :background ,selection))))
 
+   `(lsp-ui-doc-background ((,class (:background nil))))
+   `(lsp-ui-doc-header ((,class (:foreground ,foreground :background ,current-line))))
+   
    `(dashboard-text-banner ((,class (:foreground ,purple))))
    `(dashboard-heading ((,class (:foreground ,purple)))))
 
