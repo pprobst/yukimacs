@@ -45,6 +45,7 @@ I highly recommend you to use [[https://www.emacswiki.org/emacs/EmacsAsDaemon][E
   - [[#switches-cursor-automatically-to-new-window][Switches cursor automatically to new window]]
   - [[#highlights-current-line][Highlights current line]]
   - [[#bracket-pair-matching][Bracket pair-matching]]
+  - [[#tab-behavior][TAB behavior]]
   - [[#visiting-the-configuration][Visiting the configuration]]
   - [[#reloading-the-configuration][Reloading the configuration]]
 - [[#general-packages][General packages]]
@@ -230,13 +231,31 @@ You might've heard of people that use Emacs just because of [[https://orgmode.or
     (add-hook 'org-mode-hook 'org-fragtog-mode))
 
   (use-package org-modern
-    :ensure nil
-    :hook (org-mode . org-modern-mode)
+    :disabled
+    ;:ensure nil
+    :after org
+    :hook
+    (org-mode . org-modern-mode)
+    (org-agenda-finalize . org-modern-agenda)
     :custom
     (org-modern-star nil)
     (org-modern-hide-stars nil)
     (org-modern-variable-pitch nil)
     (org-modern-label-border 0.1))
+
+  (use-package org-modern-indent
+    ;:after org-modern
+    :straight (org-modern-indent :host github :repo "jdtsmith/org-modern-indent")
+    :hook
+    (org-indent-mode . org-modern-indent-mode))
+
+  ;; Properly align tables containing variable-pitch font, CJK characters and images.
+  (use-package valign
+    :hook
+    (org-mode . valign-mode)
+    (markdown-mode . valign-mode)
+    :config
+    (setq valign-fancy-bar 1))
 #+end_src
 
 ** Org-roam
@@ -302,7 +321,7 @@ Quality-of-life modifications.
     #+begin_src emacs-lisp
       (setq load-prefer-newer t)
     #+end_src
-
+    
 ** Fill spaces
 #+begin_src emacs-lisp
   ; (setq window-resize-pixelwise t)
@@ -346,7 +365,7 @@ Quality-of-life modifications.
 #+end_src
 
 ** Change GUI elements
-#+begin_src emacs-lisp
+    #+begin_src emacs-lisp
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
@@ -454,6 +473,16 @@ Quality-of-life modifications.
   (electric-pair-mode t)
 #+end_src
 
+
+** TAB behavior
+#+begin_src emacs-lisp
+  ;; TAB cycle if there are only few candidates
+  (setq completion-cycle-threshold 3)
+
+  ;; Enable indentation+completion using the TAB key.
+  (setq tab-always-indent 'complete)
+#+end_src
+
 ** Visiting the configuration
 #+begin_src emacs-lisp
   (defun config-visit()
@@ -525,7 +554,7 @@ Icons on Emacs. Backend for other packages.
 
 ** =emojify=
 Cringe stuff.
-#+begin_src emacs-lisp
+    #+begin_src emacs-lisp
   (use-package emojify
     :hook (after-init . global-emojify-mode))
 #+end_src
@@ -868,7 +897,8 @@ Display ugly ^L page breaks as tidy horizontal lines.
                             (bookmarks . 5)
                             (projects . 5)))
     (setq dashboard-banner-logo-title "Y U K I M A C S")
-    (setq dashboard-startup-banner "~/.emacs.d/img/yukimacs-logo.png")
+    ;(setq dashboard-banner-logo-title nil)
+    (setq dashboard-startup-banner "~/.emacs.d/img/yukimacs-logo-smaller.png")
     (setq dashboard-center-content t)
     ;(setq dashboard-init-info (format "Loaded in %s" (emacs-init-time)))
     ;(setq dashboard-set-footer nil)
