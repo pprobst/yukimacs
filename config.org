@@ -46,6 +46,7 @@ I highly recommend you to use [[https://www.emacswiki.org/emacs/EmacsAsDaemon][E
   - [[#highlights-current-line][Highlights current line]]
   - [[#bracket-pair-matching][Bracket pair-matching]]
   - [[#tab-behavior][TAB behavior]]
+  - [[#dimmer][Dimmer]]
   - [[#visiting-the-configuration][Visiting the configuration]]
   - [[#reloading-the-configuration][Reloading the configuration]]
 - [[#general-packages][General packages]]
@@ -483,6 +484,21 @@ Quality-of-life modifications.
   (setq tab-always-indent 'complete)
 #+end_src
 
+** Dimmer
+Dimmers unfocused buffers.
+#+begin_src emacs-lisp
+  (use-package dimmer
+    :hook (after-init . dimmer-mode)
+    :config
+    (setq dimmer-fraction 0.5
+          dimmer-adjustment-mode :foreground
+          dimmer-use-colorspace :rgb
+          dimmer-watch-frame-focus-events nil)
+    (dimmer-configure-which-key)
+    (dimmer-configure-magit)
+    (dimmer-configure-posframe))
+#+end_src
+
 ** Visiting the configuration
 #+begin_src emacs-lisp
   (defun config-visit()
@@ -877,7 +893,9 @@ Tabs for Emacs.
 Display ugly ^L page breaks as tidy horizontal lines.
 #+begin_src emacs-lisp
   (use-package page-break-lines
-    :requires dashboard)
+    :requires dashboard
+    :init
+      (global-page-break-lines-mode))
 #+end_src
  
 ** =dashboard=
@@ -893,11 +911,7 @@ Display ugly ^L page breaks as tidy horizontal lines.
     (dashboard-setup-startup-hook)
     (dashboard-modify-heading-icons '((recents . "file-text")
                                       (bookmarks . "book")))
-    (setq dashboard-items '((recents  . 5)
-                            (bookmarks . 5)
-                            (projects . 5)))
     (setq dashboard-banner-logo-title "Y U K I M A C S")
-    ;(setq dashboard-banner-logo-title nil)
     (setq dashboard-startup-banner "~/.emacs.d/img/yukimacs-logo-smaller.png")
     (setq dashboard-center-content t)
     ;(setq dashboard-init-info (format "Loaded in %s" (emacs-init-time)))
@@ -907,6 +921,9 @@ Display ugly ^L page breaks as tidy horizontal lines.
     (setq dashboard-set-navigator t)
     (setq dashboard-set-heading-icons t)
     (setq dashboard-set-file-icons t)
+    (setq dashboard-items '((recents  . 5)
+                            (bookmarks . 5)
+                            (projects . 5)))
     (setq dashboard-navigator-buttons
           `(;; line1
             ((,nil
@@ -924,7 +941,6 @@ Display ugly ^L page breaks as tidy horizontal lines.
               "Open yukimacs' config file for easy editing"
               (lambda (&rest _) (find-file "~/.emacs.d/config.org"))
               'default)))))
-
   ;; With Emacs as daemon mode, when running `emacsclient`, open *dashboard* instead of *scratch*.
   (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
 #+end_src
