@@ -2,9 +2,9 @@
 #+TITLE: yukimacs
 #+LANGUAGE: en
 
-A GNU/Emacs config built from the ground up (no Spacemacs or Doom Emacs), /heavily/ inspired by [[https://github.com/daedreth/UncleDavesEmacs/][Uncle Dave's Emacs]] and [[https://github.com/snackon/Witchmacs][Witchmacs]]. [[https://www.youtube.com/c/SystemCrafters][System Crafters]] videos are also very useful.
+A GNU/Emacs config built from the ground up (no Spacemacs or Doom Emacs), /heavily/ inspired by [[https://github.com/daedreth/UncleDavesEmacs/][Uncle Dave's Emacs]] and [[https://github.com/snackon/Witchmacs][Witchmacs]].
 
-I'm unfortunately not a Lisper -- contributions to make my configuration simpler and cleaner are very welcome.
+I'm unfortunately not a Lisper -- contributions to make my configuration simpler and cleaner are very, very welcome.
 
 Keep in mind that this configuration fits my particular needs, and has features that will probably be never used by anyone else.
 
@@ -98,7 +98,7 @@ I highly recommend you to use [[https://www.emacswiki.org/emacs/EmacsAsDaemon][E
 - [[#disclaimer][DISCLAIMER]]
 
 * Installing                                                            :TOC:
-Instead of directly cloning and using this, it's preferable if you read both =init.el= and =config.org=, understand what each section does, and pick what you want separately. [[https://www.youtube.com/watch?v=d6iY_1aMzeg&list=PLX2044Ew-UVVv31a0-Qn3dA6Sd_-NyA1n&index=1][Uncle Dave's]] videos are probably the best introduction to Emacs out there -- the audio is terrible, but the content is great and easy to follow.
+Instead of directly cloning and using this, it's preferable if you read both =init.el= and =config.org=, understand what each section does, and pick what you want separately. [[https://www.youtube.com/watch?v=d6iY_1aMzeg&list=PLX2044Ew-UVVv31a0-Qn3dA6Sd_-NyA1n&index=1][Uncle Dave's]] videos are probably the best introduction to Emacs out there -- the audio is terrible, but the content is great and easy to follow. [[https://www.youtube.com/c/SystemCrafters][System Crafters]], [[https://www.youtube.com/@XahLee][Xah Lee]] and [[https://www.youtube.com/@protesilaos][Protesilaos Stavrou]] can also be helpful.
 
 ** 0. Org-roam directories.
 =mkdir Notes Notes/daily=
@@ -485,9 +485,10 @@ Quality-of-life modifications.
 #+end_src
 
 ** Dimmer
-Dimmers unfocused buffers.
+Dimmers unfocused buffers. It can be a bit problematic, so it's disabled by default.
 #+begin_src emacs-lisp
   (use-package dimmer
+    :disabled
     :hook (after-init . dimmer-mode)
     :config
     (setq dimmer-fraction 0.5
