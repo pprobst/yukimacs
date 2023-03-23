@@ -1010,9 +1010,6 @@ Language server. Will provide us with IDE-like features.
   (use-package lsp-ui
     :after (lsp-mode)
     :hook (lsp-mode . lsp-ui-mode)
-    ;:custom-face
-    ;(lsp-ui-doc-background ((t (:background nil))))
-    ;(lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
     :bind
     (:map lsp-ui-mode-map
         ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
@@ -1028,7 +1025,7 @@ Language server. Will provide us with IDE-like features.
     (lsp-ui-doc-show-with-cursor t)
     (lsp-ui-doc-position 'top)
     (lsp-ui-doc-alignment 'window)
-    (lsp-ui-doc-delay 2.0)
+    (lsp-ui-doc-delay 3.0)
     (lsp-ui-doc-include-signature t)
     (lsp-ui-flycheck-enable t)
     (lsp-ui-peek-always-show t)
@@ -1036,7 +1033,7 @@ Language server. Will provide us with IDE-like features.
     (lsp-ui-sideline-show-diagnostics nil)
     (lsp-ui-sideline-show-hover t)
     (lsp-ui-sideline-ignore-duplicate t)
-    (lsp-ui-sideline-delay 0.5))
+    (lsp-ui-sideline-delay 3.0))
 
   ;(use-package dap-mode
   ;  :after lsp-mode
@@ -1066,14 +1063,14 @@ Provides completion.
            ("M-<". company-select-first)
            ("M->". company-select-last)
            ("<tab>" . company-complete-selection))
-   (:map lsp-mode-map
+     (:map lsp-mode-map
            ("<tab>" . company-indent-or-complete-common))
      :config
      (setq company-dabbrev-other-buffers t
            company-dabbrev-code-other-buffers t)
      :custom
      (company-minimum-prefix-length 1)
-     (company-idle-delay 0.3)
+     (company-idle-delay 0.5)
      :hook ((text-mode . company-mode)
             (prog-mode . company-mode)
             (org-mode . company-mode)
@@ -1081,7 +1078,9 @@ Provides completion.
             (lsp-mode . company-mode)))
 
    (use-package company-box
-     :hook (company-mode . company-box-mode))
+     :hook (company-mode . company-box-mode)
+     :config
+     (setq company-box-max-candidates 50))
 
    (use-package company-prescient
      :after (selectrum company)
