@@ -85,7 +85,7 @@
  '(awesome-tray-mode-line-active-color "#AA5544")
  '(custom-enabled-themes '(yukimacs))
  '(custom-safe-themes
-   '("08f2c4214622acc6be507af4160db9b7058c963632327413889b8c2accc0bc27"))
+   '("8c0b4b10f99fc2bfdbcf24b29152742aa9b414ce9a7244be12dc963c8ff03a23"))
  '(highlight-indent-guides-auto-odd-face-perc 5)
  '(org-agenda-files nil)
  '(org-format-latex-options

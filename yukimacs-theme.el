@@ -93,11 +93,13 @@
    `(powerline-inactive1 ((,class (:inherit mode-line-inactive :background ,fringe-color))))
    `(powerline-inactive2 ((,class (:inherit mode-line-inactive :background ,background))))
 
-   `(company-tooltip-selection ((,class (:foreground ,foreground :background ,selection))))
-
-   `(lsp-ui-doc-background ((,class (:background nil))))
+   `(lsp-ui-doc-background ((,class (:background fringe-color))))
    `(lsp-ui-doc-header ((,class (:foreground ,foreground :background ,current-line))))
-   
+
+   `(company-tooltip ((,class (:background ,fringe-color))))
+   `(company-tooltip-selection ((,class (:background ,current-line))))
+   `(company-tooltip-scrollbar-thumb ((,class (:background ,current-line))))
+
    `(dashboard-text-banner ((,class (:foreground ,purple))))
    `(dashboard-heading ((,class (:foreground ,purple)))))
 
