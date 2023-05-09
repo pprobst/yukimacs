@@ -53,8 +53,7 @@ I highly recommend you to use [[https://www.emacswiki.org/emacs/EmacsAsDaemon][E
   - [[#minions][=minions=]]
   - [[#exec-path-from-shell][=exec-path-from-shell=]]
   - [[#no-littering][=no-littering=]]
-  - [[#all-the-icons][=all-the-icons=]]
-  - [[#emojify][=emojify=]]
+  - [[#nerd-icons][=nerd-icons=]]
   - [[#which-key][=which-key=]]
   - [[#undo-tree][=undo-tree=]]
   - [[#evil][=evil=]]
@@ -69,12 +68,12 @@ I highly recommend you to use [[https://www.emacswiki.org/emacs/EmacsAsDaemon][E
   - [[#ctrlf][=ctrlf=]]
   - [[#switch-window][=switch-window=]]
   - [[#rainbow][=rainbow=]]
-  - [[#powerline][=powerline=]]
   - [[#doom-modeline][=doom-modeline=]]
   - [[#awesome-tab][=awesome-tab=]]
   - [[#treemacs][=treemacs=]]
   - [[#page-break-lines][=page-break-lines=]]
   - [[#dashboard][=dashboard=]]
+  - [[#gptel][=gptel=]]
 - [[#programming][Programming]]
   - [[#projectile][=projectile=]]
   - [[#yasnippet][=yasnippet=]]
@@ -122,6 +121,8 @@ Instead of directly cloning and using this, it's preferable if you read both =in
 =gopls=
 
 =pylint=
+
+=nerd-fonts=
 
 ** 2. =clone= this repository.
 Remove your current =~/.emacs= and =~/.emacs.d=. Then,
@@ -366,7 +367,7 @@ Quality-of-life modifications.
 #+end_src
 
 ** Change GUI elements
-    #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
@@ -375,10 +376,10 @@ Quality-of-life modifications.
 ** Fringe mode
 #+begin_src emacs-lisp
   (set-fringe-mode 7)
-  ; (setq-default fringes-outside-margins nil)
-  ; (setq-default indicate-buffer-boundaries nil)
-  ; (setq-default indicate-empty-lines nil)
-  ; (setq-default overflow-newline-into-fringe t)
+  ;(setq-default fringes-outside-margins nil)
+  ;(setq-default indicate-buffer-boundaries nil)
+  ;(setq-default indicate-empty-lines nil)
+  ;(setq-default overflow-newline-into-fringe t)
 #+end_src
 
 ** Enable copy-pasting outside of Emacs
@@ -546,34 +547,36 @@ Keep folders clean.
         `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 #+end_src
 
-** =all-the-icons=
-Icons on Emacs. Backend for other packages.
+** =nerd-icons=
+Icons on Emacs. Dependency for other pacakges.
 #+begin_src emacs-lisp
-  ;; Run M-x all-the-icons-install-fonts
-  (use-package all-the-icons
-    :init
-    (unless (find-font (font-spec :name "all-the-icons"))
-      (all-the-icons-install-fonts t)))
+  (use-package nerd-icons
+    :custom
+    (nerd-icons-scale-factor 1.0)
+    (nerd-icons-default-adjust 0.0))
 
-  (use-package all-the-icons-dired
-    :after all-the-icons
+  (use-package nerd-icons-completion
+    :straight
+    (nerd-icons-completion :type git :host github
+                           :repo "rainstormstudio/nerd-icons-completion")
+    :demand t
     :hook
-    ((dired-mode . all-the-icons-dired-mode))
+    (marginalia-mode . nerd-icons-completion-marginalia-setup)
     :config
-    (setq all-the-icons-dired-monochrome nil))
+    (nerd-icons-completion-mode))
 
-  (use-package all-the-icons-completion
-    :after all-the-icons
+  (use-package nerd-icons-dired
+    :straight (nerd-icons-dired :type git :host github
+                                :repo "rainstormstudio/nerd-icons-dired")
+    :hook
+    (dired-mode . nerd-icons-dired-mode))
+
+  (use-package treemacs-nerd-icons
+    :straight (treemacs-nerd-icons :type git :host github
+                                   :repo "rainstormstudio/treemacs-nerd-icons")
     :config
-    (add-hook 'marginalia-mode-hook #'all-the-icons-completion-marginalia-setup)
-    (all-the-icons-completion-mode))
-#+end_src
-
-** =emojify=
-Cringe stuff.
-    #+begin_src emacs-lisp
-  (use-package emojify
-    :hook (after-init . global-emojify-mode))
+    (with-eval-after-load 'treemacs
+      (treemacs-load-theme "nerd-icons")))
 #+end_src
 
 ** =which-key=
@@ -806,35 +809,23 @@ Don't keep using C-x o to switch windows anymore.
       (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 #+end_src
 
-** =powerline=
-Stylish tray.
-#+begin_src emacs-lisp
-  (use-package powerline
-     :disabled
-     :config
-     (setq powerline-default-separator 'bar)
-     :init
-     (require 'powerline)
-     (powerline-center-evil-theme)
-     :hook
-     ('after-init-hook) . 'powerline-reset)
-#+end_src
- 
 ** =doom-modeline=
 Another stylish tray.
 #+begin_src emacs-lisp
   (use-package doom-modeline
-    :after (all-the-icons)
+    :after (nerd-icons)
     :config
     (setq doom-modeline-minor-modes t)
-    (setq doom-modeline-height 25)
-    (setq doom-modeline-bar-width 4)
+    (setq doom-modeline-major-mode-icon t)
+    (setq doom-modeline-enable-word-count t)
+    (setq doom-modeline-height 30)
+    (setq doom-modeline-bar-width 5)
     (setq doom-modeline-indent-info t)
     (setq doom-modeline-lsp t)
     (setq doom-modeline-github t)
     (setq doom-modeline-buffer-modification-icon t)
+    (setq doom-modeline-unicode-fallback t)
     :hook (after-init . doom-modeline-mode))
-
 #+end_src
  
 ** =awesome-tab=
@@ -868,12 +859,6 @@ Tabs for Emacs.
     :bind (:map global-map
                 ("C-x t t" . treemacs)
                 ("C-x t 1" . treemacs-select-window)))
-
-  (use-package treemacs-all-the-icons
-    :after treemacs
-    :init
-    (require 'treemacs-all-the-icons)
-    (treemacs-load-theme 'all-the-icons))
 
   (use-package treemacs-evil
     :after (treemacs evil))
@@ -912,8 +897,9 @@ Display ugly ^L page breaks as tidy horizontal lines.
     (dashboard-setup-startup-hook)
     (dashboard-modify-heading-icons '((recents . "file-text")
                                       (bookmarks . "book")))
-    (setq dashboard-banner-logo-title "Y U K I M A C S")
-    (setq dashboard-startup-banner "~/.emacs.d/img/yukimacs-logo-smaller.png")
+    ;(setq dashboard-banner-logo-title "Y U K I M A C S")
+    (setq dashboard-banner-logo-title "\n")
+    (setq dashboard-startup-banner "~/.emacs.d/img/yukimacs-logo-classic-alt.png")
     (setq dashboard-center-content t)
     ;(setq dashboard-init-info (format "Loaded in %s" (emacs-init-time)))
     ;(setq dashboard-set-footer nil)
@@ -946,6 +932,14 @@ Display ugly ^L page breaks as tidy horizontal lines.
   (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
 #+end_src
 
+** =gptel=
+ChatGPT interface in Emacs.
+#+begin_src emacs-lisp
+  ;(use-package gptel
+  ;  :config
+  ;  (let* ((open-ai-auth (car (auth-source-search :host "OpenAI"))))
+  ;    (setq gptel-api-key (plist-get open-ai-auth :api_key))))
+#+end_src
 * Programming                                                           :TOC:
 ** =projectile=
 Project management.
@@ -1033,7 +1027,7 @@ Language server. Will provide us with IDE-like features.
     (lsp-ui-sideline-show-diagnostics nil)
     (lsp-ui-sideline-show-hover t)
     (lsp-ui-sideline-ignore-duplicate t)
-    (lsp-ui-sideline-delay 3.0))
+    (lsp-ui-sideline-delay 0.5))
 
   ;(use-package dap-mode
   ;  :after lsp-mode
