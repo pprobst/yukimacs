@@ -4,6 +4,8 @@
 
 A GNU/Emacs config built from the ground up (no Spacemacs or Doom Emacs), /heavily/ inspired by [[https://github.com/daedreth/UncleDavesEmacs/][Uncle Dave's Emacs]] and [[https://github.com/snackon/Witchmacs][Witchmacs]].
 
+For the Doom version of Yukimacs, go [[https://github.com/pprobst/yukimacs-doom][here]].
+
 I'm unfortunately not a Lisper -- contributions to make my configuration simpler and cleaner are very, very welcome.
 
 Keep in mind that this configuration fits my particular needs, and has features that will probably be never used by anyone else.
